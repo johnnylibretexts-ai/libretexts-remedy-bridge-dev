@@ -1,23 +1,30 @@
 import { AltTextGenerator } from '../ai/alt-text.js';
+import { plan as planImage, handlers as imageHandlers } from '../image-planner/index.js';
+import type { PlannerInput } from '../image-planner/index.js';
 import { BaseStrategy, errorMessage } from './base.js';
 import type { InternalStrategyContext, StrategyReport } from './types.js';
 
 /**
  * ImageStrategy
  *
- * Generates alt text for `<img>` that has `alt=""` but looks informational
- * (large, or src hints at a diagram/chart) and for `<img>` with suspicious
- * generic alt text. Defers to the existing `AltTextGenerator` which already
- * handles the vision call shape.
+ * For each `<img>` that needs attention, ask the image planner to classify
+ * the image and choose a strategy id. Dispatch to the concrete handler in
+ * `imageHandlers`. When no concrete handler exists for the chosen strategy,
+ * fall back to a flat alt-text generation via vision (the project's
+ * pre-planner behavior) so we don't regress during the handler rollout.
  *
- * Runs *after* the rules/img-alt.ts fix — the rule targets missing alt;
- * this strategy targets the "alt='' but probably informational" subset that
- * the rule flags but doesn't auto-fix.
+ * The `needsAlt` gate still decides WHICH images are candidates:
+ *   - missing `alt` attribute
+ *   - generic alt text ("image", "photo", "diagram", …)
+ *   - empty alt on an image that looks informational (large, or a URL that
+ *     hints at a diagram)
+ *
+ * The planner decides WHAT to do with each candidate.
  */
 export class ImageStrategy extends BaseStrategy {
   readonly id = 'images';
   readonly description =
-    'Generate alt text for images with empty or generic alt on large/informational images.';
+    'Classify each image, then dispatch to the matching remediation handler.';
 
   private static readonly GENERIC_ALTS = new Set([
     'image',
@@ -50,50 +57,85 @@ export class ImageStrategy extends BaseStrategy {
       const alt = img.getAttribute('alt');
       const src = img.getAttribute('src') ?? '';
       if (!src) continue;
+      if (!this.needsAlt(img, alt, src)) continue;
 
-      const needsAlt = this.needsAlt(img, alt, src);
-      if (!needsAlt) continue;
-      if (ctx.budget.exhausted) {
-        if (!report.errors.some((e) => e.includes('budget exhausted'))) {
-          report.errors.push(`${this.id}: budget exhausted`);
+      const absoluteSrc = absoluteUrl(src, ctx.hostname);
+      const input: PlannerInput = {
+        rawSrc: src,
+        absoluteSrc,
+        alt,
+        width: parseIntOrNull(img.getAttribute('width')) ?? undefined,
+        height: parseIntOrNull(img.getAttribute('height')) ?? undefined,
+        role: img.getAttribute('role'),
+        figcaption: findFigcaptionNear(img) ?? undefined,
+        contextExcerpt: pageContext.slice(0, 500),
+      };
+
+      const decision = planImage(input);
+
+      // decorative-mark costs no budget; everything else does.
+      const needsLlm = decision.strategy !== 'decorative-mark';
+      if (needsLlm) {
+        if (ctx.budget.exhausted) {
+          if (!report.errors.some((e) => e.includes('budget exhausted'))) {
+            report.errors.push(`${this.id}: budget exhausted`);
+          }
+          break;
         }
-        break;
+        if (!ctx.budget.consume()) {
+          report.errors.push(`${this.id}: budget exhausted`);
+          break;
+        }
+        report.llmCalls += 1;
       }
 
-      if (!ctx.budget.consume()) {
-        report.errors.push(`${this.id}: budget exhausted`);
-        break;
-      }
-      report.llmCalls += 1;
+      const handler = imageHandlers[decision.strategy];
+      const label = `[${decision.strategy} kind=${decision.kind} conf=${decision.confidence.toFixed(2)}]`;
 
       try {
-        if (!generator) {
-          generator = new AltTextGenerator({ client: this.getLlm(ctx) });
+        if (handler) {
+          const result = await handler(img, {
+            doc,
+            llm: needsLlm ? this.getLlm(ctx) : undefined,
+            absoluteSrc,
+            pageContext,
+          });
+          if (result.ok) {
+            report.fixesApplied.push(
+              `${label} ${result.mutation ?? 'applied'} src=${truncate(src, 40)}`,
+            );
+          } else if (result.error) {
+            report.errors.push(`${this.id}:${decision.strategy} ${result.error}`);
+          }
+        } else if (decision.strategy === 'alt-text-vision') {
+          // No concrete handler yet → flat alt-text fallback (pre-planner behavior).
+          if (!generator) generator = new AltTextGenerator({ client: this.getLlm(ctx) });
+          const newAlt = await generator.generate(absoluteSrc, pageContext);
+          img.setAttribute('alt', newAlt);
+          report.fixesApplied.push(
+            `${label} set alt: "${truncate(newAlt, 60)}" src=${truncate(src, 40)}`,
+          );
+        } else if (decision.strategy === 'manual-review') {
+          report.errors.push(
+            `${this.id}:manual-review (conf=${decision.confidence.toFixed(2)}) src=${truncate(src, 40)}`,
+          );
+        } else {
+          // chart-longdesc / ocr-text — handlers not yet implemented.
+          report.errors.push(
+            `${this.id}:${decision.strategy} not yet implemented src=${truncate(src, 40)}`,
+          );
         }
-        const absolute = absoluteUrl(src, ctx.hostname);
-        const newAlt = await generator.generate(absolute, pageContext);
-        img.setAttribute('alt', newAlt);
-        report.fixesApplied.push(
-          `Set alt on img src=${truncate(src, 60)}: "${truncate(newAlt, 60)}"`,
-        );
       } catch (err) {
-        report.errors.push(`${this.id}: ${errorMessage(err)}`);
+        report.errors.push(`${this.id}:${decision.strategy} ${errorMessage(err)}`);
       }
     }
   }
 
   private needsAlt(img: HTMLImageElement, alt: string | null, src: string): boolean {
-    // Missing attribute: leave to the rule layer; we don't duplicate that.
     if (alt === null) return false;
-
     const trimmed = alt.trim().toLowerCase();
-
-    // Generic alt on any image: replace.
     if (trimmed && ImageStrategy.GENERIC_ALTS.has(trimmed)) return true;
-
-    // Empty alt: only replace if the image looks informational.
     if (trimmed === '') return this.looksInformational(img, src);
-
     return false;
   }
 
@@ -116,10 +158,23 @@ function parseIntOrNull(s: string | null): number | null {
 }
 
 function absoluteUrl(src: string, hostname: string): string {
-  if (/^https?:\/\//i.test(src)) return src;
+  if (/^(https?|data|blob):/i.test(src)) return src;
   if (src.startsWith('//')) return `https:${src}`;
   if (src.startsWith('/')) return `https://${hostname}${src}`;
   return `https://${hostname}/${src}`;
+}
+
+function findFigcaptionNear(img: HTMLElement): string | null {
+  let node: HTMLElement | null = img.parentElement;
+  while (node) {
+    if (node.tagName === 'FIGURE') {
+      const cap = node.querySelector('figcaption');
+      const text = cap?.textContent?.trim();
+      return text || null;
+    }
+    node = node.parentElement;
+  }
+  return null;
 }
 
 function truncate(s: string, n: number): string {
