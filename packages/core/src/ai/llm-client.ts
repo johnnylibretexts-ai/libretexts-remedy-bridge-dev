@@ -8,6 +8,8 @@
  * matrix in every rule.
  */
 
+import { LlmCache, hashPayload, resolveCacheDir } from './llm-cache.js';
+
 export type ProviderId = 'openrouter' | 'ollama-cloud' | 'ollama-local' | 'gemini-compat' | 'custom';
 
 export interface ProviderConfig {
@@ -29,6 +31,13 @@ export interface LLMClientOptions {
   /** Max concurrent in-flight requests from this client. Default 4. */
   concurrency?: number;
   debug?: boolean;
+  /**
+   * When set, LLM responses are cached to disk keyed by payload hash.
+   * Opt-in — do NOT enable for production CXone writes (risks landing
+   * stale alt text on live pages). `runLocalPipeline` opts in by default.
+   * If unset, `resolveCacheDir(undefined, process.env)` is consulted.
+   */
+  cacheDir?: string;
 }
 
 export interface ChatRequest {
@@ -148,6 +157,7 @@ export class LLMClient {
   private readonly inflight: Array<() => void> = [];
   private active = 0;
   private readonly debug: boolean;
+  private readonly cache: LlmCache | null;
   readonly usage: Usage[] = [];
 
   constructor(opts: LLMClientOptions = {}) {
@@ -161,6 +171,13 @@ export class LLMClient {
       opts.concurrency ?? (Number.isFinite(envConcurrency) && envConcurrency > 0 ? envConcurrency : defaultConcurrency),
     );
     this.debug = opts.debug ?? Boolean(process.env.DEBUG);
+    const cacheDir = resolveCacheDir(opts.cacheDir, process.env);
+    this.cache = cacheDir ? new LlmCache(cacheDir) : null;
+  }
+
+  /** Cache stats for the lifetime of this client. `null` when caching is disabled. */
+  get cacheStats(): { hits: number; misses: number } | null {
+    return this.cache ? this.cache.stats : null;
   }
 
   private async acquire(): Promise<() => void> {
@@ -219,6 +236,28 @@ export class LLMClient {
   }
 
   private async completion(payload: Record<string, unknown>, model: string): Promise<string> {
+    // Cache check — keyed by stable hash of {payload, provider}. Same
+    // payload on a different provider rightly misses (different model family).
+    const cacheKey = this.cache
+      ? hashPayload({ provider: this.provider.id, payload })
+      : '';
+    if (this.cache) {
+      const hit = await this.cache.get(cacheKey);
+      if (hit) {
+        if (this.debug) {
+          console.error(`[llm] cache hit ${cacheKey.slice(0, 12)} (${model})`);
+        }
+        this.usage.push({
+          inputTokens: hit.inputTokens ?? 0,
+          outputTokens: hit.outputTokens ?? 0,
+          elapsedMs: 0,
+          model,
+          provider: this.provider.id,
+        });
+        return hit.response;
+      }
+    }
+
     const url = `${this.provider.baseUrl}/chat/completions`;
     const release = await this.acquire();
     let lastErr: unknown;
@@ -262,7 +301,18 @@ export class LLMClient {
             model,
             provider: this.provider.id,
           });
-          return extractText(data);
+          const text = extractText(data);
+          if (this.cache) {
+            await this.cache.set(cacheKey, {
+              ts: new Date().toISOString(),
+              model,
+              provider: this.provider.id,
+              response: text,
+              inputTokens: usage.prompt_tokens,
+              outputTokens: usage.completion_tokens,
+            });
+          }
+          return text;
         } catch (err) {
           lastErr = err;
           if (err instanceof LLMError && err.status && !RETRYABLE_STATUSES.has(err.status)) throw err;

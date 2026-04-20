@@ -28,6 +28,12 @@ export interface LocalPipelineOptions {
   hostname?: string;
   /** Env override for LLM client; defaults to process.env. */
   env?: NodeJS.ProcessEnv;
+  /**
+   * Directory for the LLM response cache. Default `.remedy/cache` — Local
+   * Lab runs benefit hugely from deterministic replay. Pass empty string
+   * to disable caching for this run.
+   */
+  cacheDir?: string;
 }
 
 export interface LocalPipelineResult {
@@ -60,7 +66,16 @@ export async function runLocalPipeline(
   // Build a tier-1 LLM client from env. Strategies that need it will call it;
   // strategies that don't (decorative-mark, headings, deterministic paths)
   // ignore it. Budget=0 short-circuits all LLM work cleanly.
-  const llm = buildTierClient({ tier: 1 }, env);
+  //
+  // Caching defaults ON for Local Lab: fixture iteration should be free
+  // and deterministic after the first warm-up. Pass cacheDir:'' to disable.
+  const llm = buildTierClient(
+    {
+      tier: 1,
+      cacheDir: opts.cacheDir === undefined ? '.remedy/cache' : opts.cacheDir || undefined,
+    },
+    env,
+  );
 
   const runner = new StrategyRunner();
   const { html: afterHtmlRaw, reports } = await runner.run(html, {

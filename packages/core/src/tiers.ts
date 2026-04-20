@@ -18,6 +18,8 @@ export interface TierConfig {
   tier: 1 | 2 | 3;
   textModel?: string;
   visionModel?: string;
+  /** Directory for LLM response cache (opt-in). Passed to LLMClient. */
+  cacheDir?: string;
 }
 
 /**
@@ -45,6 +47,8 @@ export function buildTierClient(
 
   if (cfg.visionModel) opts.visionModel = cfg.visionModel;
   else if (tierEnvVision) opts.visionModel = tierEnvVision;
+
+  if (cfg.cacheDir !== undefined) opts.cacheDir = cfg.cacheDir;
 
   return new LLMClient(opts);
 }
