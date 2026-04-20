@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { localApi, type LocalRunResponse } from '../api.js';
 import { FixtureSelector } from '../components/FixtureSelector.js';
-import { ThreePaneViewer } from '../components/ThreePaneViewer.js';
+import { ThreePaneViewer, type Theme } from '../components/ThreePaneViewer.js';
 
 export function LocalLab() {
   const [relPath, setRelPath] = useState('');
@@ -9,6 +9,7 @@ export function LocalLab() {
   const [result, setResult] = useState<LocalRunResponse | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [theme, setTheme] = useState<Theme>('libretexts');
 
   async function onRun() {
     if (!relPath) return;
@@ -44,6 +45,22 @@ export function LocalLab() {
           <button onClick={onRun} disabled={!relPath || busy}>
             Run
           </button>
+          <div className="mode-toggle" style={{ marginLeft: 8 }}>
+            <button
+              className={theme === 'bare' ? 'active' : ''}
+              onClick={() => setTheme('bare')}
+              title="Bare HTML with readability CSS"
+            >
+              Bare
+            </button>
+            <button
+              className={theme === 'libretexts' ? 'active' : ''}
+              onClick={() => setTheme('libretexts')}
+              title="MindTouch library shell — how it looks on chem.libretexts.org"
+            >
+              LibreTexts
+            </button>
+          </div>
           <span className="muted" style={{ fontSize: 12 }}>
             local only · no CXone writes possible
           </span>
@@ -55,7 +72,7 @@ export function LocalLab() {
       {result && (
         <>
           <div className="card">
-            <ThreePaneViewer result={result} />
+            <ThreePaneViewer result={result} theme={theme} />
           </div>
           <div className="card">
             <h2>Strategy reports · diff · {result.elapsedMs}ms</h2>

@@ -1,0 +1,2998 @@
+<!DOCTYPE html>
+<!-- MindTouch iframe shell — derived from a public LibreTexts chemistry chapter.
+     Scripts stripped; forms neutered; content replaced with {{CONTENT}} placeholder.
+     CSS fetched at runtime from its original CDN (a.mtstatic.com + cdn.libretexts.net).
+     Do NOT vendor seated.css — proprietary NICE/CXone Expert asset.
+     See docs/LEVEL-B-VIEWER-DESIGN.md. -->
+<html  lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="generator" content="MindTouch"/>
+        <meta name="robots" content="index,follow"/>
+        <meta property="og:title" content="1.1: Chapter 01"/>
+        <meta property="og:site_name" content="Chemistry LibreTexts"/>
+        <meta property="og:type" content="article"/>
+        <meta property="og:locale" content="en_US"/>
+        <meta property="og:description" content=""/>
+        <meta name="description" content=""/>
+        <link rel="canonical" href="https://chem.libretexts.org/Workbench/LAMC_Chem_51/01%3A_Chapter_Notes/1.01%3A_Chapter_01"/>
+        <link rel="search" type="application/opensearchdescription+xml" title="Chemistry LibreTexts Search" href="https://chem.libretexts.org/@api/deki/site/opensearch/description"/>
+        <link rel="apple-touch-icon" href="https://a.mtstatic.com/@public/production/site_4334/1474925206-apple-touch-icon.png"/>
+        <link rel="shortcut icon" href="https://a.mtstatic.com/@public/production/site_4334/1478193457-favicon.ico"/>
+        <link rel="alternate" type="application/atom+xml" title="What's new feed" href="https://chem.libretexts.org/@api/deki/site/feed"/>
+        <link rel="alternate" type="application/atom+xml" title="Page and subpages changes feed" href="https://chem.libretexts.org/@api/deki/pages/554933/feed?feedtype=subpagechanges&amp;depth=infinity"/>
+        <link rel="alternate" type="application/atom+xml" title="Page changes feed" href="https://chem.libretexts.org/@api/deki/pages/554933/feed?feedtype=pagechanges"/>
+
+        <title>Local Lab · LibreTexts preview</title>
+
+    <style type="text/css">/*<![CDATA[*/#fileAttachTable {
+    width: 100%;
+}/*]]>*/</style><style type="text/css">/*<![CDATA[*/
+.MathJax {
+  font-size: .85em; /* Increases the base font size of all MathJax output */
+}
+
+mjx-help-background {
+      z-index: 1000;	
+    }/*]]>*/</style><style type="text/css">/*<![CDATA[*/
+dt {
+    color: #0372a6;
+    cursor: pointer;
+}
+@media only screen{
+    dd {
+        display: none;
+    }
+    dd.mt-listing-detailed-overview {
+        display: block;
+}/*]]>*/</style><style type="text/css">/*<![CDATA[*/
+/* CSS pseudo-element styling https://fontawesome.com/how-to-use/on-the-web/advanced/css-pseudo-elements */
+
+/* general reset/setup styling for icons - needed on all */
+
+.lt-icon-default::before, .lt-icon-brain::before, .lt-icon-pin::before , .lt-icon-hand::before, .lt-icon-pathway::before, .lt-icon-logic::before, .lt-icon-check::before, .lt-icon-question::before, .lt-icon-exclamation::before    {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block; 
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  line-height: 1.5;
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 900;
+  margin-right: 0.5rem;
+}
+
+/*default */
+
+.box-example .lt-icon-default::before {
+  content: "\f00c";
+}
+.box-exercise .lt-icon-default::before {
+  content: "\f128";
+}
+.box-query .lt-icon-default::before {
+  content: "\f126";
+}
+.box-adapt .lt-icon-default::before {
+  content: "\f126";
+}
+.box-interactive .lt-icon-default::before{
+  content: "\f542";
+}
+.box-note .lt-icon-default::before {
+  content: "\f08d";
+}
+.box-objectives .lt-icon-default::before {
+  content: "\f5dc";
+}
+.box-definition .lt-icon-default::before {
+  content: "\f303";
+}
+.box-theorem .lt-icon-default::before {
+  content: "\f1b3";
+}
+.box-warning .lt-icon-default::before {
+  content: "\f256";    
+}
+
+/*specific icons*/
+.lt-icon-brain::before  {
+  content: "\f5dc";
+}
+
+.lt-icon-pin::before {
+  content: "\f08d";
+}
+
+.lt-icon-pathway::before, {
+  content: "\f126";
+}
+
+.lt-icon-logic::before, {
+  content: "\f1b3";
+}
+
+.lt-icon-hand::before, {
+  content: "\f126";
+}
+
+.lt-icon-pathway::before, {
+  content: "\f256";
+}
+
+.lt-icon-check::before, {
+  content: "\f00c";
+}
+
+.lt-icon-question::before, {
+  content: "\f128";
+}
+
+.lt-icon-exclamation::before, {
+  content: "\f12a";
+}/*]]>*/</style><style type="text/css">/*<![CDATA[*/
+.Headertext{
+display:none;
+}/*]]>*/</style><style type="text/css">/*<![CDATA[*/
+.support-widget {
+position: fixed;
+z-index: 9999;
+display: inline-flex;
+bottom: 0px;
+right: 0px;
+margin-right: 10px;
+}
+
+.support-widget-button {
+    font-size: 27px !important;
+}
+
+@media print {
+    .support-widget {
+        display: none;
+        visibility: hidden;
+    }
+}/*]]>*/</style><style type="text/css">/*<![CDATA[*/
+/* Partner Area CSS */
+.partners-logo {
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	flex-wrap: wrap;
+	position: relative;
+	z-index: 1;
+}
+
+.partners-logo a {
+	display: inline-block;
+	max-width: 15%;
+	margin-bottom: 15px;
+}
+#topHeader {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+#topHeader > ol {
+	display: flex;
+	justify-content: space-around;
+	flex: 1;
+}
+
+#topHeader > ol > li > a {
+	display: flex;
+	align-items: center;
+	border: 2px solid white;
+	border-radius: 10px;
+	padding: 2px;
+	color: #127bc4;
+	/* font-size: 0px; */
+	transition-duration: .5s;
+	flex-direction: column;
+	text-align: center;
+}
+
+#topHeader > ol > li:last-child {
+	margin-right: 1rem;
+}
+
+#topHeader > ol > li > a:hover {
+	font-size: medium;
+}
+
+#topHeader > ol > li > a > img {
+	width: 23px;
+	height: 23px;
+	margin-right: 2px;
+	object-fit: contain;
+	max-width: unset;
+}
+
+@media only screen and (max-width: 767px) {
+	.partners-logo a {
+		max-width: 30%;
+	}
+}
+@media only screen and (max-width: 1350px) {
+	#topHeader > ol {
+		font-size: 0px;
+	}
+}
+
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+	.partners-logo a {
+		max-width: 150px;
+	}
+}
+div.elm-nav-container > a > img {
+	max-width: unset;
+}
+
+nav.elm-nav.my-custom-class {
+	padding: .25rem 0;
+}
+
+#bottomFooter p.mt-align-center {
+    margin: 5px;
+    line-height: initial;
+}
+
+.LTBranding {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	height: min-content;
+}
+
+.LTBranding img{
+	object-fit: contain;
+}/*]]>*/</style><style type="text/css">/*<![CDATA[*/
+/**
+ * Accessibility
+*/
+.elm-skip-link {
+    position: absolute !important;
+    overflow: hidden;
+    clip: rect(1px,1px,1px,1px);
+    width: 1px;
+    height: 1px;
+    word-wrap: normal;
+    right: 30px;
+}
+.elm-skip-link:focus,
+.elm-skip-link:active {
+    position: static !important;
+    overflow: visible;
+    clip: auto;
+    width: auto;
+    height: auto;
+    margin: 0;
+    color: black;
+    background: unset;
+    font-weight: bold;
+}
+
+a:focus-visible {
+    outline-offset: 2px;
+    outline: black solid 2px;
+}
+
+/**
+ * Darkmode
+*/
+.darkMode {
+   background-color:#252525;
+    color: white;
+}
+
+.darkMode .mt-content-container p {
+    color: white;
+}
+
+.darkMode .mt-content-container .boxexample,
+.darkMode .mt-content-container .boxexercise,
+.darkMode .mt-content-container .boxlemma,
+.darkMode .mt-content-container .boxnotation,
+.darkMode .mt-content-container .boxnotewithlegend,
+.darkMode .mt-content-container .boxnotewithoutlegend,
+.darkMode .mt-content-container .boxprocedure,
+.darkMode .mt-content-container .boxproposition,
+.darkMode .mt-content-container .boxquery,
+.darkMode .mt-content-container .boxtheorem,
+.darkMode .mt-content-container .boxobjectives,
+.darkMode .mt-content-container .box-example,
+.darkMode .mt-content-container .box-exercise,
+.darkMode .mt-content-container .box-lemma,
+.darkMode .mt-content-container .box-notation,
+.darkMode .mt-content-container .box-warning,
+.darkMode .mt-content-container .box-note,
+.darkMode .mt-content-container .box-notewithlegend,
+.darkMode .mt-content-container .box-notewithoutlegend,
+.darkMode .mt-content-container .box-procedure,
+.darkMode .mt-content-container .box-proposition,
+.darkMode .mt-content-container .box-query,
+.darkMode .mt-content-container .box-theorem,
+.darkMode .mt-content-container .box-objectives
+{
+    background: #f0f5ff24;
+    box-shadow: 3px 3px 4px #00000085;
+}
+
+.darkMode p.boxtitle {
+    color:white;
+}
+
+.darkMode th {
+    background:#00629a;
+}
+
+.darkMode tr, .darkMode tr td {
+    background:none;
+}
+
+.darkMode tr:nth-child(even), .darkMode tr:nth-child(even) td {
+    background:#555555;
+}
+
+.optimize {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+/* Hide header if in iframe*/
+.contentOnly .elm-header,
+.contentOnly .elm-meta-icons,
+.contentOnly div.annotator-frame,
+.adaptView .elm-footer,
+/*.contentOnly article#elm-main-content > *:not(:first-child, .mt-content-container), */
+.adaptView article#elm-main-content > header,
+.contentOnly hypothesis-sidebar,
+.contentOnly #custom_open,
+.contentOnly .sbHeader {
+    display:none;
+}
+
+.sidebar-container > div > ul.sidebar-collapsed\:bg-black\/\[\.08\] {
+    background-color: transparent !important;
+}
+
+.contentOnly #mt-summary {
+    display:none!important;
+}
+
+iframe.imathas_problem, iframe.webwork_problem {
+    border: none;
+    width: 100%;
+}
+
+/*GeoGebra fix*/
+article.elm-content-container, section.mt-content-container {
+	height: auto !important;
+	width: auto !important;
+}
+
+.elm-meta-top .mt-article-pagination a {
+	width: auto;
+	color: #30b3f6;
+}
+
+.elm-meta-top .mt-article-pagination a:hover {
+	color: #b4b4b4;
+}
+
+.elm-meta-top .elm-article-pagination {
+	float: unset;
+}
+
+#elm-main-content ol.elm-meta-data .elm-social-share {
+	margin: 0;
+}
+
+#MathJax_Zoom {
+ color: black;
+}
+
+#donate {
+	background-color: green;
+	color: white;
+	display: flex;
+	padding: 5px;
+	align-items: center;
+}
+
+#donate:hover {
+	background-color: #005E00;
+}
+
+.youtubeImageContainer {
+    position: relative;
+}
+
+a.notSS {
+	width: auto;
+	height: auto;
+	margin-top: 0;
+}
+
+.toc-button.mt-icon-hierarchy-trigger-closed:before {
+	content: "\e8a6";
+	font-size: 150%;
+}
+
+span.fancytree-icon:before {
+	content: "\e8aa";
+}
+
+.mt-icon-hierarchy-trigger-open:before {
+	font-size: 150%;
+}
+
+span.fancytree-has-children > span.fancytree-icon:before {
+	content: "\e8b3";
+}
+
+span.fancytree-title > a {
+	color: #666;
+}
+
+span.fancytree-selected .fancytree-title, span.fancytree-selected .fancytree-icon {
+	color: #1a9003;
+}
+
+.toc-hierarchy > div {
+	display: none;
+}
+
+.toc-hierarchy h6 {
+	margin-top: 0;
+	color: #137ac3
+}
+
+.pageInfo {
+	float: left;
+	margin: 0 1em 0 0;
+}
+
+.cc {
+	color: black;
+}
+
+.glossarizer_replaced {
+    border-bottom: 1px #333 dotted;
+}
+
+#pageTagsHolder {
+	display: none;
+}
+
+#batchPrint {
+	display: flex;
+	align-items: stretch;
+	justify-content: center;
+}
+
+#TOCbutton {
+	margin: 2px;
+	display: flex;
+	line-height: 2.4;
+	justify-content: center;
+	align-items: center;
+	color: #127bc4;
+	font-size: 100%;
+	height: 100%;
+}
+
+@media (min-width: 1000px) {
+	nav.elm-header-global-nav ol.mt-breadcrumbs {
+		max-width: 85% !important;
+	}
+	#TOCbutton {
+		width: auto;
+	}
+}
+
+div.propagatorLoader {
+	display: flex;
+	margin: 10px;
+	justify-content: center;
+}
+
+.loaderStatus {
+	/* flex: 1; */
+	justify-content: center;
+	text-align: center;
+}
+
+/* Modal Foundation*/
+#warningModal {
+
+  position: fixed ;
+  left: 0px;
+  top: 0px;
+  bottom:0px;
+  right:0px;
+  margin:0px;
+
+  display: none; /* Hidden by default */
+  z-index: 10000;
+  padding-top: 0px; /* Location of the box */
+
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgb(0,0,0,0);/* Black w/ opacity */
+}
+
+/* Modal Content */
+#warningModalSlide {
+
+  font-family: 'Roboto';
+  font-size: 14px;
+  background-color: #EFEFEF ;
+  margin: auto;
+  padding: 15px;
+  /*border: 0px solid #888;*/
+  width: 40%;
+  box-shadow: -2px 8px 10px #c7c7c7;
+}
+
+#elm-main-content figure {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+    margin: 0;
+    page-break-inside: avoid;
+    margin-bottom: 0.3em !important;
+}
+
+.mt-video-widget:not(.cke_widget_element) {
+     margin: 1rem auto !important;
+}
+
+.glmol{
+    text-align: left;
+}
+
+#copyResults img {
+	width: 30px;
+	height: 30px;
+	object-fit: contain;
+}
+
+#LTform, #LTPreview {
+	display: flex;
+	flex-direction: column;
+}
+
+#LTFormContainer, .LTFormHeader, #LTFormFooter {
+	display: flex;
+}
+
+#LTFormContainer .fancytree-container, #LTPreviewForm .fancytree-container {
+	background: #f3f3f3;
+	border-radius: 10px;
+	overflow: auto;
+	flex: 1;
+}
+
+#LTLeft, #LTRight, #LTPreviewForm, #LTTutorial {
+	/*flex: 1;*/
+	align-items: stretch;
+	height: 60vh;
+	max-width: 45vw;
+	overflow: hidden;
+	width: 100%;
+	background: #f3f3f3;
+	border-radius: 10px;
+	display: flex;
+	flex-direction: column;
+}
+
+#LTLeft, #LTTutorial {
+	border-radius: 0 0 10px 10px;
+}
+
+select.LTFormSubdomain {
+	border-radius: 10px 10px 0 0;
+}
+
+#LTFormFooter {
+	flex-direction: column;
+}
+
+.LTFormHeader {
+	justify-content: flex-end;
+	margin-top: 30px;
+	background-color: #127bc4;
+	padding: 10px;
+	border-radius: 5px;
+	color: white
+}
+
+ul.ui-fancytree.fancytree-container.fancytree-plain.fancytree-ext-dnd5 {
+}
+
+#LTFormContainer > div {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin: 10px;
+	max-width: 45vw;
+}
+
+.LTTitle {
+	flex: 1;
+	display: flex;
+	align-items: center;
+}
+
+div#LTPreviewForm {
+	max-width: unset;
+	margin: 10px;
+	width: auto;
+}
+
+div#LTLeftAlert, div#LTRightAlert {
+	height: 30px;
+	background-color: rgba(18, 122, 196, 0.61);
+	width: inherit;
+	z-index: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+select#LTFormSubdomain {
+	border-radius: 10px 10px 0 0;
+}
+
+#mt-site-search-input {
+    max-width: 40vw;
+}
+
+#getTOCLink {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: slategrey;
+	color: white;
+	width: fit-content;
+	padding: 0 3px;
+}
+
+.annotator-frame.annotator-collapsed > div.annotator-bucket-bar {
+	background: none;
+}
+
+.mobileOnly {
+	display: none;
+}
+
+#RemixerIcon, #DownloadIcon, #SSOInstructorIcon {
+	width: auto;
+}
+
+#RemixerIcon:before, #DownloadIcon:before, #SSOInstructorIcon:before {
+	vertical-align: middle;
+}
+
+.elm-header-user-nav .mt-user-menu li.mt-user-quick-login {
+	margin-left: 0;
+}
+
+.mt-user-menu {
+    display: flex;
+    justify-content: center;
+}
+li.elm-social-share a {
+    height: unset;
+    width: auto;
+    margin: 0 2px 0 0;
+}
+
+#LTRight > ul > li {
+	min-height: 100%;
+}
+
+.react-toggle {
+	height: 24px;
+}
+
+.buttonsetForm > button:first-child {
+	background: #525050;
+	color: white;
+}
+
+/*Added to make a hyperlink position below the breadcrumb bar and is viewable */
+/*#pageText > .mt-section > span:first-child {
+    top: -50px;
+    display: block;
+    position: relative;
+}*/
+
+.elm-header-notice.fixed {
+position: static;
+}
+
+.elm-fixed-header {
+position: static;
+}
+
+/* Dropdown Button */
+.LTdropdown > .dropbtn {
+    color: inherit;
+	background-color: inherit;
+	border: none;
+	height: 100%;
+	padding: 5px;
+	display: flex;
+	align-items: center;
+	box-sizing: border-box;
+}
+
+.LTdropdown a:visited {
+    color: inherit;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.LTdropdown {
+	position: relative;
+	display: inline-block;
+	margin-right: 2px;
+    color: white;
+    background: black;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.LTdropdown-content {
+    color: inherit;
+	display: none;
+	position: absolute;
+	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    background: inherit;
+	z-index: 5;
+	flex-direction: column;
+	align-items: stretch;
+	width: max-content;
+	width: -moz-max-content;
+}
+
+/* Links inside the dropdown */
+.LTdropdown > .LTdropdown-content a {
+    color: inherit;
+    background: inherit;
+	padding: 12px 16px;
+	text-decoration: none;
+	display: block;
+	width: initial;
+	text-align: center;
+	font-size: 12px;
+    margin: 0;
+}
+
+/* Change color of dropdown links on hover */
+.LTdropdown > .LTdropdown-content a:hover  {
+    filter: brightness(85%);
+	transition-duration: 250ms;
+    color: white;
+}
+
+.LTdropdown-content a:before  {
+    margin-right: 2px;
+}
+
+.LTdropdown-content a:not(:first-child) {
+	border-top: 1px solid white;
+}
+
+/* Show the dropdown menu on hover */
+.LTdropdown:hover .LTdropdown-content {
+	display: flex;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.LTdropdown:hover .dropbtn {
+    filter: brightness(85%);
+}
+
+nav.elm-header-user-nav > div.elm-nav-container > ol {
+	display: flex;
+}
+
+nav.elm-header-user-nav > div.elm-nav-container > ol > li {
+	display: flex;
+}
+
+li.elm-global-search {
+	flex: 1
+}
+
+#mt-site-search-input {
+	width: auto;
+}
+
+.mt-breadcrumbs a span.nb-comment-highlight {
+   font-size: unset;
+   margin-right: unset;
+   vertical-align: unset;
+}
+
+/* <SSO-LibreOne> */
+
+.mt-user-quick-login {
+    display: none !important;
+}
+
+.mt-user-menu-user > .mt-icon-quick-sign-in.mt-dropdown-link.mt-toggle-right {
+    display: none !important;
+}
+
+.mt-icon-quick-sign-in::before {
+    color: #127BC4;
+}
+
+.sso-user:hover:after {
+    content: " (Logout)";
+    font-family: inherit;
+    font-style: italic;
+}
+
+.authenticated-sso.elm-header-user-nav {
+    background-color: #0f67a6;
+
+}
+.authenticated-sso.elm-header-user-nav .mt-user-menu-user  {
+    background: #323232;
+    border-radius: 5px;
+}
+.authenticated-sso.elm-header-user-nav .mt-user-menu > li > a {
+    color: white;
+}
+
+/*  */
+
+/*Media Queries*/
+@media (max-width: 600px) {
+	.mobileOnly {
+		display: block;
+	}
+
+	.mobileHide {
+		display: none;
+	}
+
+	.LTBranding {
+		flex-direction: column;
+	}
+
+}
+
+@media (max-width: 875px) {
+	#RemixerIcon, #DownloadIcon, #SSOInstructorIcon {
+		width: 1.95em;
+	}
+}
+
+@media (min-width: 1000px) {
+	nav.elm-header-global-nav ol.mt-breadcrumbs {
+		max-width: 85% !important;
+	}
+
+	#TOCbutton {
+		width: auto;
+	}
+}
+
+@media (max-width: 1001px) {
+
+	#TOCbutton {
+		width: 20px;
+		justify-content: flex-start;
+	}
+}
+/*
+@media (min-width: 83em) {
+   article.elm-content-container {
+      min-width: unset;
+   }
+}
+*/
+/*
+@media (min-width: 37.5em){
+    .elm-header-user-nav {
+        z-index: 1;
+    }
+}
+*/
+
+.mt-content-container img {
+    height: auto!important;
+    object-fit: contain;
+}
+.mt-content-container .mt-sortable-listing-link img {
+    height: 150px!important;
+}
+
+.mt-video-widget > p {
+    text-align: center;
+}
+
+option[value="article:topic-portfolio"] {
+    display: none;
+}
+option[value="article:howto"] {
+    display: none;
+}
+option[value="article:reference"] {
+    display: none;
+}
+
+.live-tag-link {
+    white-space: normal;
+    user-select: text;
+    -webkit-user-drag: none;
+}
+
+span.mt-font-ma-shan-zheng{
+    font-family: 'Ma Shan Zheng';
+
+}
+
+.cke_librebox .cke_combo_open {
+    margin-left: 0;
+}
+
+.cke_librebox .cke_combo_inlinelabel {
+    padding-left: 2px;
+    padding-right: 0;
+}
+
+.cke_librequery .cke_combo_open {
+    margin-left: 0;
+}
+
+.cke_librequery .cke_combo_inlinelabel {
+    padding-left: 2px;
+    padding-right: 0;
+}
+
+.cke_button_icon.cke_button__librequeryoptions_icon {
+  background-image: url('https://cdn.libretexts.net/Icons/query.ico') !important;
+  background-position: 0px !important;
+  background-size: 16px !important;
+}
+
+/** Heading 7 **/
+.lt-heading-7 {
+    text-align: left!important;
+    font: normal normal 700 112.5%/1.2 Tahoma,Arial,serif;
+    color: #000;
+    margin: 2rem 0 0.5rem;
+    padding: 0;
+}
+
+@media (min-width: 37.5em) {
+    .lt-heading-7 {
+        font-size: 112.5% !important;
+    }
+}
+
+@media (min-width: 18.75em) {
+    .lt-heading-7 {
+        font-size: 105.5% !important;
+    }
+}
+
+/** AutoAttribution **/
+#librelens-attribution-list li {
+    font-size: 0.95rem !important;
+}
+
+/** Prevent overflow with large images in sections **/
+section::after {
+  content: '';
+  clear: both;
+  display: block
+}/*]]>*/</style><style type="text/css">/*<![CDATA[*/
+.printOnly {
+	display: none;
+}
+
+.hideprint {
+	visibility: visible !important;
+	display: block !important;
+}
+
+.showprint {
+	visibility: hidden !important;
+	display: none !important;
+}
+
+@media print {
+    .mt-banner{display:none;}
+
+	h1#title {
+		margin-top: 0!important
+	}
+	.box-interactive,
+	.box-query,
+	.box-adapt {
+		visibility: hidden !important;
+		display: none !important;
+	}
+	table.mt-responsive-table {
+		/*table-layout: auto;
+        */
+	}
+	.elm-meta-top .mt-article-pagination * {
+		display: none;
+	}
+	.mt-author-container {
+		background: #f0f0f0;
+		border-radius: .5em;
+		visibility: hidden !important;
+		display: none !important;
+	}
+	#elm-main-content {
+		padding-bottom: 0;
+	}
+	main.elm-skin-container {
+		display: inline;
+	}
+	.mt-video-widget:not(.cke_widget_element) {
+		margin: 0 auto !important;
+		width: 60% !important;
+		page-break-inside: avoid;
+	}
+	.elm-skin-container {
+		background-color: #ffffff !important;
+	}
+	.mt-sortable-listing {
+		background-color: #ffffff !important;
+	}
+	.twocolumn {
+		-webkit-column-count: 2;
+		/* Chrome, Safari, Opera */
+		-moz-column-count: 2;
+		/* Firefox */
+		column-count: 2;
+	}
+	.threecolumn {
+		-webkit-column-count: 3;
+		/* Chrome, Safari, Opera */
+		-moz-column-count: 3;
+		/* Firefox */
+		column-count: 3;
+	}
+	.hideprint {
+		visibility: hidden !important;
+		display: none !important;
+	}
+	.showprint {
+		visibility: visible !important;
+		display: block !important;
+	}
+	.printOnly {
+		display: block;
+	}
+	.printHide {
+		display: none;
+	}
+	img {
+		zoom: 0.60;
+		page-break-inside: avoid;
+	}
+	.mt-author-container img {
+		zoom: 1;
+	}
+	.MathJax_Display {
+		margin-top: 0.7em !important;
+		margin-bottom: 0.7em !important;
+	}
+	#flash-messages {
+		visibility: hidden !important;
+		display: none !important;
+	}
+	blockquote {
+		display: block;
+		font-size: 120%;
+		color: black;
+		margin-top: 0px;
+		margin-bottom: 0px;
+		margin-left: 40px;
+		padding-left: 15px;
+		padding-top: 0px;
+		padding-bottom: 0px;
+		border-left: 3px solid #0f67a6;
+		border-top: 0px;
+		border-bottom: 0px;
+		border-right: 0px;
+	}
+	p {
+		text-align: justify;
+		orphans: 2;
+		widows: 2;
+		margin-block-start: 0.5em;
+		margin-block-end: 0.5em;
+		margin-inline-start: 0px;
+		margin-inline-end: 0px;
+	}
+	.definition,
+	.note1,
+	.example,
+	.exercise,
+	.skills {
+		border: solid 1px hsla(0, 0%, 0%, 0.5);
+		-moz-border-radius: 5px;
+		-webkit-border-radius: 5px;
+		border-radius: 5px;
+		padding-left: 7px;
+		padding-right: 7px;
+		padding-bottom: 0px;
+		padding-top: 0px;
+		margin-bottom: 5px;
+		margin-top: 5px;
+	}
+	.definition {
+		background-color: hsla(7, 93%, 41%, 0.03);
+	}
+	.example {
+		background-color: hsla(215, 93%, 39%, 0.03);
+	}
+	.note1 {
+		background-color: hsla(78, 93%, 39%, 0.03);
+	}
+	.exercise {
+		background-color: hsla(283, 93%, 24%, 0.03);
+	}
+	.skills {
+		background-color: hsla(7, 93%, 41%, 0.03);
+	}
+	ol.elm-meta-top {
+		display: none;
+	}
+	body:not(.cke_editable) .mt-responsive-table th,
+	body:not(.cke_editable) .mt-responsive-table td,
+	body:not(.cke_editable) table th[data-th] {
+		display: table-cell !important;
+		background-image: none !important;
+		font-size: 95%;
+	}
+	#mt-page-health-container,
+	header.elm-header,
+	#mt-toc-container,
+	#mt-content-side,
+	div#mt-summary,
+	li.elm-pdf-export,
+	li.elm-social-share,
+	footer.elm-footer,
+	footer.elm-content-footer,
+	li.elm-meta-icons,
+	li.elm-last-modified,
+	li.elm-page-restriction,
+	body:not(.cke_editable) .mt-responsive-table td:before {
+		display: none !important;
+	}
+	body {
+		font-size: 0.80em !important;
+		font-family: 'Big Caslon', 'Book Antiqua', 'Palatino Linotype', Georgia, serif !important;
+	}
+	.mt-content-container ol,
+	.mt-content-container p,
+	.mt-content-container ul {
+		font-family: 'Big Caslon', 'Book Antiqua', 'Palatino Linotype', Georgia, serif !important;
+		font-size: 100%;
+		line-height: 1.4;
+	}
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+    h6{
+		color: hsl(205, 82%, 42%);
+		align-content: left;
+		font-family: "Tahoma", Arial, serif !important;
+		text-align: left !important;
+		margin: 0.8em 0 0 0 !important;
+		page-break-after: avoid !important;
+		page-break-inside: avoid !important;
+		break-after: avoid !important;
+		break-after: avoid-page !important;
+		orphans: 1;
+		margin-block-end: -3px !important;
+	}
+	h1 {
+		font-size: 18px !important;
+	}
+	h2 {
+		font-size: 15px !important;
+	}
+	h3, h4, h5, h6 {
+		font-size: 13px !important;
+	}
+    h5, h6 {
+        color: 	#000000 !important;
+	}
+	.mt-new-features-container {
+		display: none;
+	}
+	/*https://stackoverflow.com/questions/9238868/how-do-i-avoid-a-page-break-immediately-after-a-heading/53742871#53742871*/
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		page-break-inside: avoid;
+	}
+	h2::after {
+		content: "";
+		display: block;
+		height: 2.5rem;
+		/* pretend that the header is at least 8rem high so this header cannot fit near the end of page */
+		margin-bottom: -2.5rem;
+		/* however, reduce the margin the same amount so that the following content can stay in its usual place */
+	}
+	h3::after {
+		content: "";
+		display: block;
+		height: 2.5rem;
+		/* pretend that the header is at least 8rem high so this header cannot fit near the end of page */
+		margin-bottom: -2.5rem;
+		/* however, reduce the margin the same amount so that the following content can stay in its usual place */
+	}
+	h4::after {
+		content: "";
+		display: block;
+		height: 2.5rem;
+		/* pretend that the header is at least 8rem high so this header cannot fit near the end of page */
+		margin-bottom: -2.5rem;
+		/* however, reduce the margin the same amount so that the following content can stay in its usual place */
+	}
+	.box-legend::before {
+		content: "";
+		display: block;
+		height: 5rem;
+		/* pretend that the header is at least 8rem high so this header cannot fit near the end of page */
+		margin-bottom: -5rem;
+		/* however, reduce the margin the same amount so that the following content can stay in its usual place */
+		page-break-inside: avoid;
+		break-inside: avoid;
+	}
+	p.boxtitle {
+		font-style: normal;
+		font-size: 120%;
+		color: DarkSlateGray;
+		line-height: 80% !important;
+		background: none;
+		margin-top: 0 !important;
+		margin-bottom: 0 !important;
+		padding: 0 !important;
+		text-align: left !important;
+		border-bottom: 1px solid DarkSlateGray;
+		font-family: "Tahoma", Arial, serif !important;
+		page-break-after: avoid;
+		page-break-inside: avoid;
+		break-after: avoid-page;
+		orphans: 1;
+	}
+	dt {
+		color: initial;
+	}
+	dl,
+	dt {
+		text-align: left !important;
+	}
+	.row {
+		padding: 0;
+		margin: 0;
+		list-style: none;
+		display: -webkit-box;
+		display: -moz-box;
+		display: -ms-flexbox;
+		display: -webkit-flex;
+		display: flex;
+		-webkit-flex-flow: row wrap;
+		justify-content: center;
+		break-inside: avoid;
+	}
+	#elm-main-content figcaption {
+		caption-side: bottom;
+		text-align: justify;
+		font-size: 90%;
+		margin-left: 5%;
+		margin-right: 5%;
+		margin-top: 0.3em;
+		break-inside: avoid-page;
+	}
+	.rightfig {
+		display: table;
+		float: right;
+		margin: 0em 0 0em 1em;
+	}
+	.rightfigcaption {
+		display: table-caption;
+		caption-side: bottom;
+		margin: 0.3em 0 0 0;
+		text-align: justify;
+		font-size: 90%;
+	}
+	/**************************** table bar ***************************/
+	caption {
+		display: table-caption;
+		text-align: center;
+		font-family: 'Big Caslon', 'Book Antiqua', 'Palatino Linotype', Georgia, serif !important;
+        padding: 0 0 0.2rem 0;
+	}
+	body:not(.cke_editable) .mt-responsive-table td,
+	body:not(.cke_editable) .mt-responsive-table th {
+		padding: 0.4em !important;
+		padding-top: 0.3em !important;
+		padding-right: 0.4em !important;
+		padding-bottom: 0.3em !important;
+		padding-left: 0.4em !important;
+		vertical-align: middle;
+	}
+	body:not(.cke_editable) .mt-responsive-table p {
+		margin: 0em !important;
+	}
+	body:not(.cke_editable) .mt-responsive-table tr td:last-child {
+		border: none !important;
+	}
+	body:not(.cke_editable) .mt-responsive-table tr th:last-child {
+		border-bottom-width: 0.15em !important;
+	}
+	table {
+        margin-bottom: 1rem !important;
+		-webkit-print-color-adjust: exact;
+		page-break-inside: none;
+	}
+	.mt-content-container table p {
+		margin: 0em !important;
+	}
+	th,
+	td {
+		font-family: 'Big Caslon', 'Book Antiqua', 'Palatino Linotype', Georgia, serif !important;
+		/*text-align: center;
+        */
+		/*vertical-align: middle;
+        */
+	}
+	/**************************** lists ***************************/
+	ul,
+	ol {
+		text-align: left !important;
+		margin: 0.3em 0 0.5em 0;
+	}
+	ol li,
+	ul li {
+		text-align: left !important;
+		font-family: 'Big Caslon', 'Book Antiqua', 'Palatino Linotype', Georgia, serif !important;
+		margin-top: 0em !important;
+		margin-bottom: 0em !important;
+	}
+	.attributions li,
+	.attributions p {
+		line-height: 1.25 !important;
+		margin-block-start: 0em !important;
+		margin-block-end: 0em !important;
+  		font-size: 80% !important;
+
+	}
+	/**************************** author bar ***************************/
+	.mt-author-container {
+		/*background: @secondary-container-background-color;*/
+		/*border: 1px solid @secondary-container-border-color;*/
+		/*border-radius: @border-radius-default;*/
+		clear: both;
+		/*color: @tertiary-font-color;*/
+		font-size: 85%;
+		margin: 0 0 1em;
+		overflow: hidden;
+		padding: .5em 1em;
+	}
+	.mt-author-container ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.mt-author-container .mt-author-image {
+		float: left;
+		margin: 0 1em 0 0;
+	}
+	.mt-author-container .mt-author-image-crop {
+		/*border: 1px solid @primary-container-border-color;*/
+		border-radius: 50%;
+		height: 3em;
+		overflow: hidden;
+		position: relative;
+		width: 3em;
+	}
+	.mt-author-container .mt-author-image-crop img {
+		display: inline;
+		height: 100%;
+		margin: 0 auto;
+		width: auto;
+	}
+	.mt-author-container img {
+		max-height: 3em;
+		max-width: 3em;
+		vertical-align: middle;
+	}
+	elm-skin-container {
+		display: block !important;
+	}
+	hypothesis-sidebar,
+	hypothesis-adder,
+	.h-sidebar-iframe,
+	.annotator-frame {
+		display: none;
+	}
+	/* canvas, img, object, video {
+         max-width: 100%;
+         max-height: 500px;
+    }
+     */
+	/**************** Box container styles *******************/
+	.mt-content-container .boxobjectives,
+	.boxexample,
+	.boxexercise,
+	.boxquery,
+	.boxnotewithlegend,
+	.boxnotewithoutlegend,
+	.boxprocedure,
+	.boxdefinition,
+	.boxtheorem,
+	.boxlemma,
+	.boxnotation,
+	.boxproposition {
+		-moz-border-radius: 8px;
+		-webkit-border-radius: 8px;
+		border-radius: 8px;
+		padding-top: 0em;
+		padding-bottom: 0em;
+		padding-left: 1em;
+		padding-right: 1em;
+		margin-bottom: 1em;
+		overflow: visible;
+		border: 0px;
+		orphans: 2;
+	}
+	.mt-content-container .boxnotewithlegend,
+	.boxprocedure,
+	.notation {
+		background-color: hsla(20, 0%, 93%, 1);
+	}
+	.mt-content-container .boxexample,
+	.boxexercise {
+		background-color: hsla(220, 100%, 97%, 1);
+	}
+	.mt-content-container .boxwarning {
+		background-color: hsla(0, 100%, 96%, 1);
+	}
+	.mt-content-container .boxdefinition,
+	.boxtheorem,
+	.boxlemma,
+	.boxnotation,
+	.boxproposition {
+		background-color: hsla(28, 80%, 95%, 1);
+	}
+	.mt-content-container .boxobjectives {
+		background-color: hsla(0, 0%, 90%, 1);
+	}
+	.mt-content-container .boxnotewithoutlegend {
+		background-color: hsla(20, 0%, 93%, 1);
+		padding-right: 1em;
+		padding-left: 1em;
+		padding-top: 0.5em !important;
+		padding-bottom: 0.5em !important;
+		margin-right: 1em;
+		margin-left: 1em;
+	}
+	.mt-content-container .boxquery {
+		border: 2px solid green;
+		page-break-inside: avoid;
+		visibility: hidden !important;
+		display: none !important;
+	}
+	/**************** Box legend container styles *******************/
+	.mt-content-container .boxlegend {
+		font-style: normal !important;
+		font-size: 1.1em !important;
+		font-weight: normal !important;
+		font-family: "Tahoma", Arial, serif !important;
+		padding-top: 0.2em !important;
+		padding-bottom: 0.2em !important;
+		padding-left: 0.3em !important;
+		padding-right: 0.3em !important;
+		margin-left: 0.35em;
+		color: white;
+		border-radius: 3px;
+		overflow: visible;
+		break-inside: avoid !important;
+	}
+	.boxnotewithlegend .boxlegend {
+		background-color: hsla(20, 0%, 45%, 1);
+	}
+	.boxnotewithoutlegend .boxlegend {
+		background-color: hsla(20, 0%, 45%, 1);
+		font-size: 0em !important;
+		visibility: hidden !important;
+	}
+	.boxprocedure .boxlegend {
+		background-color: hsla(20, 0%, 45%, 1);
+	}
+	.boxnotation .boxlegend {
+		background-color: hsla(20, 0%, 45%, 1);
+	}
+	.boxexample .boxlegend {
+		background-color: hsla(220, 100%, 60%, 1);
+	}
+	.boxexercise .boxlegend {
+		background-color: hsla(0, 100%, 56%, 1);
+	}
+	.boxquery .boxlegend {
+		background-color: hsl(120, 100%, 25%, 1);
+	}
+	.boxobjectives .boxlegend {
+		background-color: hsla(0, 0%, 10%, 1);
+	}
+	.boxdefinition .boxlegend {
+		background-color: hsla(28, 80%, 52%, 1);
+	}
+	.boxtheorem .boxlegend {
+		background-color: hsla(28, 80%, 52%, 1);
+	}
+	.boxlemma .boxlegend {
+		background-color: hsla(28, 80%, 52%, 1);
+	}
+	.boxnotation .boxlegend {
+		background-color: hsla(28, 80%, 52%, 1);
+	}
+	.boxproposition .boxlegend {
+		background-color: hsla(28, 80%, 52%, 1);
+	}
+	/****************************************** Current New boxes **********************************************************************/
+	.box-objectives,
+	.box-emphasis,
+	.box-structure,
+	.box-example,
+	.box-exercise,
+	.box-warning,
+	.box-query,
+	.box-note,
+	.box-procedure,
+	.box-definition,
+	.box-theorem,
+	.box-lemma,
+	.box-notation,
+	.box-proposition,
+	.box-interactive {
+		display: block;
+		border-top: none;
+		border-bottom: none;
+		border-right: none;
+		padding: 0px 10px 1px 8px;
+		margin-bottom: 0.8em !important;
+		margin-top: 0.8em !important;
+		orphans: 3;
+		border-radius: 4px 8px 8px 4px;
+		-moz-border-radius: 4px 8px 8px 4px;
+		-webkit-border-radius: 4px 8px 8px 4px;
+	}
+	.box-emphasis {
+		padding: 5px 10px 5px 10px;
+	}
+	/**************** Tuning the box colors ***************/
+	.box-objectives {
+		background-color: hsla(204, 83%, 97%, 1);
+		border-left: 4px solid hsla(204, 83%, 41%, 1);
+	}
+	.box-example {
+		background-color: hsla(204, 83%, 97%, 1);
+		border-left: 4px solid hsla(204, 83%, 41%, 1);
+	}
+	.box-exercise {
+		background-color: hsla(204, 83%, 97%, 1);
+		border-left: 4px solid hsla(204, 83%, 41%, 1);
+	}
+	.box-warning {
+		background-color: hsl(0, 100%, 96%);
+		border-left: 4px solid hsl(0, 100%, 31%);
+	}
+	.box-note {
+		background-color: hsl(180, 8%, 94%);
+		border-left: 4px solid hsl(180, 8%, 40%);
+	}
+	.box-emphasis {
+		background-color: hsl(180, 8%, 94%);
+		border-left: 4px solid hsl(180, 8%, 40%);
+	}
+	.box-structure {
+		background-color: hsl(240, 67%, 97%);
+		border-left: 4px solid hsl(240, 67%, 62%);
+	}
+	.box-query {
+		border: 3px solid hsla(220, 100%, 60%, 1);
+	}
+	.box-interactive {
+		border: 3px solid black;
+	}
+	.box-definition,
+	.box-theorem,
+	.box-lemma,
+	.box-notation,
+	.box-proposition {
+		background-color: hsl(124, 33%, 94%);
+		border-left: 4px solid hsl(132, 36%, 27%);
+	}
+	.boxprocedure,
+	.notation {
+		background-color: hsla(20, 0%, 93%, 1);
+		border-left: 4px solid hsl(43, 81%, 36%, 1)
+	}
+	/************** Defining the Legends ******************/
+	.box-legend {
+		display: block;
+		overflow: hidden;
+		margin: 0 0 5px 0;
+		transform: translate(-11px, 0px);
+		break-inside: avoid-page !important;
+		page-break-inside: avoid !important;
+	}
+	.box-legend>span {
+		float: left;
+		font-family: "Tahoma", Arial, serif !important;
+		font-size: 13px !important;
+		font-weight: normal !important;
+		color: white;
+		padding: 3px 5px 3px 5px !important;
+		margin: 0 0 3px 0;
+		line-height: 0.8em;
+		border-radius: 1px;
+	}
+	.box-legend p {
+		float: left;
+		font-family: "Tahoma", Arial, serif !important;
+		font-size: 14px !important;
+		font-weight: normal !important;
+		color: white;
+		font-size: 14px !important;
+		padding: 4px 5px 4px 5px !important;
+		margin: 0 3px 3px 0;
+		line-height: 0.8em;
+		border-radius: 1px;
+	}
+	/************** Tuning the Legends ******************/
+	.box-objectives .box-legend>span {
+		background-color: hsl(212, 77%, 47%, 1);
+	}
+	.box-example .box-legend>span {
+		background-color: hsl(212, 77%, 47%, 1);
+	}
+	.box-exercise .box-legend>span {
+		background-color: hsl(212, 77%, 47%, 1);
+	}
+	.box-query .box-legend>span {
+		background-color: hsl(212, 77%, 47%, 1);
+	}
+	.box-interactive .box-legend>span {
+		background-color: black;
+	}
+	.box-note .box-legend>span {
+		background-color: hsl(180, 8%, 40%);
+	}
+	.box-warning .box-legend>span {
+		background-color: hsl(0, 100%, 31%);
+	}
+	.box-structure .box-legend>span {
+		background-color: hsl(240, 67%, 62%);
+	}
+	.box-procedure .box-legend>span {
+		background-color: hsla(39, 100%, 58%, 1);
+	}
+	.box-definition .box-legend>span {
+		background-color: hsl(132, 36%, 27%);
+	}
+	.box-theorem .box-legend>span {
+		background-color: hsl(132, 36%, 27%);
+	}
+	.box-lemma .box-legend>span {
+		background-color: hsl(132, 36%, 27%);
+	}
+	.box-notation .box-legend>span {
+		background-color: hsl(132, 36%, 27%);
+	}
+	.box-proposition .box-legend>span {
+		background-color: hsl(132, 36%, 27%);
+	}
+	.box-definition>header,
+	.box-structure>header,
+	.box-note>header,
+	.box-theorem>header,
+	.box-example>header,
+	.box-exercise>header,
+	.box-query>header,
+	.box-adapt>header,
+	.box-objectives>header,
+	.box-warning>header {
+		display: inline-flex;
+		overflow: hidden;
+		break-inside: avoid-page;
+		page-break-inside: avoid;
+		text-align: left;
+		width: auto;
+		margin: 0 0px 2px 0px !important;
+		padding: 2px 6px 2px 4px !important;
+		transform: translate(-11px, 0px) !important;
+		border-radius: 3px 5px 5px 0;
+		-moz-border-radius: 3px 5px 5px 0;
+		-webkit-border-radius: 3px 5px 5px 0;
+	}
+	.box-definition>header *,
+	.box-structure>header *,
+	.box-note>header *,
+	.box-theorem>header *,
+	.box-example>header *,
+	.box-exercise>header *,
+	.box-query>header *,
+	.box-adapt>header *,
+	.box-objectives>header *,
+	.box-warning>header * {
+		font-family: "Tahoma", Arial, serif !important;
+		font-size: 14px !important;
+		font-weight: 400 !important;
+		color: white !important;
+		;
+		width: auto !important;
+		;
+		float: left !important;
+		;
+		line-height: 1 !important;
+		;
+		margin-block-start: 0 !important;
+		margin-block-end: 0 !important;
+	}
+	.box-definition>header,
+	.box-theorem>header {
+		background-color: hsl(132, 36%, 27%);
+	}
+	.box-definition>header * {
+		background-color: hsl(132, 36%, 27%);
+	}
+	.box-example>header,
+	.box-exercise>header,
+	.box-query>header,
+	.box-objectives>header,
+	.box-adapt>header {
+		background-color: hsla(204, 83%, 41%, 1);
+	}
+	.box-note>header {
+		background-color: hsl(180, 8%, 40%);
+	}
+	.box-example>header *,
+	.box-objectives>header *,
+	.box-exercise>header * {
+		background-color: hsla(204, 83%, 41%, 1);
+	}
+	.box-note>header * {
+		background-color: hsl(180, 8%, 40%);
+	}
+	.box-structure>header {
+		background-color: hsl(240, 67%, 62%);
+	}
+	.box-structure>header * {
+		background-color: hsl(240, 67%, 62%);
+	}
+	.box-warning>header {
+		background-color: hsl(0, 100%, 31%);
+	}
+	.box-warning>header * {
+		background-color: hsl(0, 100%, 31%);
+	}
+	.mt-content-container::before {
+		content: none;
+	}
+	section::before {
+		content: "";
+		display: block;
+		height: 4 rem;
+		/* pretend that the header is at least 8rem high so this header cannot fit near the end of page */
+		margin-bottom: -4 rem;
+		/* however, reduce the margin the same amount so that the following content can stay in its usual place */
+		page-break-inside: avoid;
+		break-inside: avoid;
+	}
+
+	/* AutoAttribution */
+	.mt-content-container .autoattribution p {
+		font-size: 90% !important;
+	}
+	#librelens-attribution-list li {
+		font-size: 90% !important;
+	}
+}/*]]>*/</style><style type="text/css">/*<![CDATA[*/
+ul.jmolPopupMenu {
+overflow: initial;
+float: initial;
+max-height: none;
+opacity: initial;
+}
+ul.jmolPopupMenu .ui-menu, .ui-selectmenu-button {
+overflow: initial;
+}
+
+ul.jmolPopupMenu .ui-menu, ul.jmolPopupMenu .ui-menu-item {
+float: initial;
+max-height: none;
+}
+
+ul.jmolPopupMenu .ui-state-disabled {
+opacity: initial;
+}
+
+div.iCn3D .icn3d-mn.ui-menu {
+    overflow: visible;
+    max-height: unset;
+}
+div.iCn3D .icn3d-mn.ui-menu .ui-menu-item{
+    padding: 0;
+    overflow: visible;
+    float: none;
+}
+
+div.iCn3D label:after{
+     content: unset;
+}
+
+div.iCn3D div {
+    word-wrap: normal;
+}/*]]>*/</style><style type="text/css">/*<![CDATA[*/
+@media print {
+
+.mt-content-container .mt-responsive-table, .mt-content-container table {
+    font-size: 100%;
+    margin: 0 auto 0 auto;
+    border: 1px solid #E8E8E8;
+    margin-bottom: 1rem !important;
+}
+
+.mt-content-container .mt-responsive-table caption, .mt-content-container table caption { 
+    display: table-caption;
+    text-align: center;
+    font-size: 90%;
+    padding: 0 0 0.2rem 0;
+}
+
+.mt-content-container .mt-responsive-table th, .mt-content-container table th {
+  font-size: inherit;
+  vertical-align: middle;
+  border-bottom: 1px solid #E8E8E8;
+  margin: inherit;
+  padding: 0.4em !important;
+}
+
+.mt-content-container .mt-responsive-table tr, .mt-content-container table tr {
+  page-break-inside:avoid; 
+  page-break-after:auto;
+  margin: inherit;
+  font-size: inherit;
+  vertical-align: middle;
+  padding: 0.4em !important;
+  border-bottom: 1px solid #E8E8E8;
+}
+    
+.mt-content-container .mt-responsive-table td, .mt-content-container table td {
+  border: 1px solid #E8E8E8;
+  page-break-inside: avoid !important;
+  page-break-before: avoid;
+  margin: inherit;
+  vertical-align: middle;
+  padding: 0.4em !important;
+}
+
+.mt-content-container table ol, 
+.mt-content-container table ul,
+.mt-content-container table p,
+.mt-content-container table ol,
+.mt-content-container table ul,
+.mt-content-container table p {
+    font-size: inherit;
+    margin: inherit;
+}
+    
+}/*]]>*/</style><style type="text/css">/*<![CDATA[*/
+.elm-header nav.elm-nav.my-custom-class > .elm-nav-container {
+    display: flex;
+    justify-content: space-between;
+}
+#header-buttons {
+    align-self: center;
+}
+
+#menu {
+    width: 953px;
+    height: 28px;
+    font-size: 14px;
+    font-family: Arial, Tahoma, Geneva, sans-serif;
+    text-align: center;
+    border-radius: 2px;
+    background-color: #6384A6;
+    overflow:hidden;
+    margin-top:5px;
+    margin-bottom:0px;
+    margin-left:0px;
+    margin-right:00px;
+
+}
+#menu ul {
+    padding: 4px 0px;
+    margin: 0px;
+}
+#menu li {
+    display: inline;
+}
+#menu a {
+    text-decoration: none;
+    color: #FFFFFF;
+    padding: 32px 32px 32px 32px;
+}
+#menu a:hover {
+    color: #000000;
+}
+
+p.center { text-align: center; }
+div.center {
+  margin-left: auto;
+  margin-right: auto;
+  width: 960px;
+}
+img.center {
+  display: block;
+}
+
+}/*]]>*/</style><style type="text/css">/*<![CDATA[*/
+#menu2 {
+    width: 953px;
+    height: 24px;
+    font-size: 12px;
+    font-family: Arial, Tahoma, Geneva, sans-serif;
+    text-align: center;
+    border-radius: 2px;
+    background-color: #888888;
+    overflow:hidden;
+    margin-top:5px;
+    margin-bottom:5px;
+    margin-left:0px;
+    margin-right:00px;
+}
+#menu2 ul {
+    padding: 4px 0px;
+    margin: 0px;
+}
+#menu2 li {
+    display: inline;
+}
+#menu2 a {
+    text-decoration: none;
+    color: #000000;
+    padding: 32px 32px 32px 32px;
+}
+#menu2 a:hover {
+    color: #FFFFFF;
+}
+
+p.center { text-align: center; }
+div.center {
+  margin-left: auto;
+  margin-right: auto;
+  width: 960px;
+}
+img.center {
+  display: block;
+}
+
+}/*]]>*/</style>
+
+        <link media="screen" type="text/css" rel="stylesheet" href="https://a.mtstatic.com/@cache/layout/seated.css?_=d21fee1f3f8cf62c8868bc3d44492763_Y2hlbS5saWJyZXRleHRzLm9yZw==:site_4334" id="mt-screen-css" />
+
+        <link media="print" type="text/css" rel="stylesheet" href="https://a.mtstatic.com/@cache/layout/print.css?_=fdcf81f1044a03cfc99836f4719ccaa4:site_4334" id="mt-print-css" />
+
+        <!-- Matomo -->
+
+<!-- End Matomo Code -->
+
+</head>
+<body class="elm-user-pro-member elm-user-pro-edit columbia-page-main columbia-article-topic columbia-browser-chrome columbia-platform-macintosh columbia-breadcrumb-home-workbench-lamcchem51-01%3Achapternotes-1.01%3Achapter01 columbia-live no-touch columbia-lang-en-us columbia-skin-elm columbia-group-basicuser"
+
+      >
+
+<a class="elm-skip-link" href="#elm-main-content" title="Press enter to skip to the main content">Skip to main content</a><main class="elm-skin-container" data-ga-category="Pro | page">
+    <div class="mt-new-features-container" data-ga-action="New feature banner">
+    <div id="mt-new-features-bar">
+        <button class="mt-new-features-close" data-ga-label="Close">Close</button>
+        <a data-ga-label="Link" href="https://expert-help.nice.com/Admin/Release_Notes?source=product" target="_blank">Read about the latest CXone Expert release</a>
+    </div>
+</div>
+
+    <header class="elm-header" id="elm-header">
+        <div class="elm-header-custom">
+
+<div id="readerview_wrapper" style="display:none;"><div class="readerOn" id="readerview">
+<div class="header-left-control">
+<div class="header-menu"><button aria-controls="offcanvas-menu" aria-expanded="false" aria-labelledby="toc-btn-label" data-target="offcanvas-menu" data-type="collapse" id="toggle_ocm"><span hidden="hidden" id="toc-btn-label">Table of Contents</span> <span aria-hidden="true" class="material-symbols-outlined" focusable="false">menu</span></button></div>
+
+<div class="header-branding"><a href="https://chem.libretexts.org/" rel="internal"><img alt="Library homepage" class="internal default" src="https://cdn.libretexts.net/Logos/chem_full.png" style="width: auto; height: 70px;" /></a></div>
+</div>
+
+<div class="header-title">&nbsp;</div>
+
+<div class="header-end"><button aria-controls="search" aria-expanded="false" class="header-btn" data-target="search" data-type="collapse" id="toogle_search"><span aria-hidden="true" class="material-symbols-outlined" focusable="false">search</span> <span class="visually-hidden">Search</span></button><button aria-controls="toolbar" aria-expanded="false" class="header-btn" data-target="toolbar" data-type="collapse" id="toggle_tools"><span aria-hidden="true" class="material-symbols-outlined" focusable="false">build_circle </span> <span class="visually-hidden">Toolbar</span></button><button class="header-btn hidden" disabled="disabled" id="open_homework"><span aria-hidden="true" class="material-symbols-outlined" focusable="false">fact_check</span> <span class="visually-hidden">Homework</span></button><button class="header-btn" id="exit_reader"><span aria-hidden="true" class="material-symbols-outlined" focusable="false">cancel</span> <span>Exit Reader Mode</span></button></div>
+</div>
+
+<div id="offcanvas-menu">
+<div class="hidden" id="toc">&nbsp;</div>
+
+<div id="siteMenu">
+<ul>
+    <li><a href="https://chem.libretexts.org/Courses" rel="internal"><span aria-hidden="true" class="material-symbols-outlined" focusable="false">school</span> <span class="menu-label">Campus Bookshelves</span></a></li>
+    <li><a href="https://chem.libretexts.org/Bookshelves" rel="internal"><span aria-hidden="true" class="material-symbols-outlined" focusable="false">menu_book</span> <span class="menu-label">Bookshelves</span></a></li>
+    <li><a href="https://chem.libretexts.org/Ancillary_Materials" rel="internal"><span aria-hidden="true" class="material-symbols-outlined" focusable="false">perm_media</span> <span class="menu-label">Learning Objects</span></a></li>
+</ul>
+
+<ul>
+    <li><a href="https://chem.libretexts.org/Special:Userlogin?readerView#tab=login" rel="internal"><span aria-hidden="true" class="material-symbols-outlined" focusable="false">login</span> <span class="menu-label">Login</span></a></li>
+    <li><a target="_blank" href="https://register.libretexts.org/" rel="external noopener nofollow" class="link-https"><span aria-hidden="true" class="material-symbols-outlined" focusable="false">how_to_reg</span> <span class="menu-label">Request Instructor Account</span></a></li>
+    <li><a target="_blank" href="https://commons.libretexts.org/" rel="external noopener nofollow" class="link-https"><span aria-hidden="true" class="material-symbols-outlined" focusable="false">hub</span> <span class="menu-label">Instructor Commons</span></a></li>
+</ul>
+</div>
+
+</div>
+
+<div id="search">
+<div mt-section-origin="Template:Custom/Views/Header/Header_Panel" class="mt-section"><h2 class="editable">Search</h2>
+
+<form id="book_search" action="#" onsubmit="return false">
+<div class="form-item"><label for="searchBar">Search this book</label> <input id="searchBar" name="searchBar" placeholder="Keyword(s)" type="text"></input></div>
+
+<div class="form-action"><button class="header-btn" id="searchButton">Submit Search</button></div>
+</form>
+
+<div id="search_results">&nbsp;</div>
+</div></div>
+
+<div id="readability">
+<p><button id="chevron-icon">x</button></p>
+
+<div class="settings-section" id="beeline">
+<div class="setting">
+<div class="setting-title">
+<div mt-section-origin="Template:Custom/Views/Header/Header_Panel/Readability" class="mt-section"><h4 class="editable">Text Color</h4>
+<button class="bee-readability reset btn btn-sm btn-link" id="text_color_reset">Reset</button></div></div>
+
+<div class="setting-control text_color"><button class="bee-readability" id="sb_bright"><span class="bee-btn-render">&nbsp;</span><span class="bee-btn-label">Bright</span></button><button class="bee-readability" id="sb_blues"><span class="bee-btn-render">&nbsp;</span><span class="bee-btn-label">Blues</span></button><button class="bee-readability" id="sb_gray"><span class="bee-btn-render">&nbsp;</span><span class="bee-btn-label">Gray</span></button><button class="bee-readability" id="sb_inverted"><span class="bee-btn-render">&nbsp;</span><span class="bee-btn-label">Inverted</span></button></div>
+</div>
+</div>
+
+<div class="settings-section" id="textSize">
+<div class="setting">
+<div class="setting-title">
+<div mt-section-origin="Template:Custom/Views/Header/Header_Panel/Readability" class="mt-section"><h4 class="editable">Text Size</h4>
+<button class="reset btn btn-sm btn-link" id="text_size_reset">Reset</button></div></div>
+
+<div class="font-adjuster"><button aria-label="Increase" class="btn_plus" id="btn_inc" tabindex="0">+</button><button aria-label="Increase" class="btn_minus" id="btn_dsc" tabindex="0">-</button>
+
+<div class="range_base" id="range_bs" type="input" value="18">&nbsp;</div>
+</div>
+</div>
+</div>
+
+<div class="settings-section" id="textSize">
+<div class="setting">
+<div class="setting-title">
+<div mt-section-origin="Template:Custom/Views/Header/Header_Panel/Readability" class="mt-section"><h4 class="editable">Margin Size</h4>
+<button class="reset btn btn-sm btn-link" id="margin_size_reset">Reset</button></div></div>
+
+<div class="margin-adjuster"><button aria-label="Increase Margin Size" class="btn_plus" id="btn_inc_margin" tabindex="0">+</button><button aria-label="Decrease Margin Size" class="btn_minus" id="btn_dec_margin" tabindex="0">-</button>
+
+<div class="margin_display" id="margin_disp" type="input" value="55">&nbsp;</div>
+</div>
+</div>
+</div>
+
+<div class="settings-section" id="textSize">
+<div class="setting">
+<div class="setting-title">
+<div mt-section-origin="Template:Custom/Views/Header/Header_Panel/Readability" class="mt-section"><h4 class="editable">Font Type</h4>
+</div></div>
+
+<div class="dyslexic-toggle">Enable Dyslexic Font <label class="switch"><input id="dyslexic-checkbox" type="checkbox"></input><span class="slider round">&nbsp;</span></label></div>
+</div>
+</div>
+
+</div>
+
+<div id="toolbar">
+<ul class="toolbar_menu" id="toolbar_menu">
+    <li class="toolbar-item" id="dl-menu"><a aria-expanded="false" class="toolbar-btn toolbar-top has-submenu" id="download" href="https://chem.libretexts.org/?downloads" rel="internal"><span>Downloads</span> <span aria-hidden="true" class="material-symbols-outlined" focusable="false">expand_more</span> </a>
+
+    <div class="sub-nav">
+    <ul class="subnav-group" id="dropdown_downloads">
+        <li><a class="toolbar-btn toolbar-inner" id="download_pdf_page" href="https://chem.libretexts.org/?downloadpage" rel="internal"><span>Download Page (PDF)</span> </a></li>
+        <li><a class="toolbar-btn toolbar-inner" id="download_pdf_full" href="https://chem.libretexts.org/?downloadfull" rel="internal"><span>Download Full Book (PDF)</span> </a></li>
+    </ul>
+    </div>
+    </li>
+    <li class="toolbar-item" id="res-menu"><a aria-expanded="false" class="toolbar-btn toolbar-top has-submenu" id="resources" href="https://chem.libretexts.org/?resources" rel="internal"><span>Resources</span> <span aria-hidden="true" class="material-symbols-outlined" focusable="false">expand_more</span> </a>
+    <div class="sub-nav">
+    <ul class="subnav-group" id="dropdown_resources">
+        <li><a aria-controls="pop" class="toolbar-btn toolbar-inner" data-src="https://pubchem.ncbi.nlm.nih.gov/periodic-table/#view=table&amp;embed=true&amp;hide_all_headings=true" data-title="Periodic Table" data-type="popelement" id="periodicTable" href="https://chem.libretexts.org/?pertable" rel="internal"><span>Periodic Table</span> </a></li>
+        <li><a aria-controls="pop" class="toolbar-btn toolbar-inner" data-src="https://chem.libretexts.org/Ancillary_Materials/Reference/Units_and_Conversions/Physical_Constants?adaptView" data-title="Physics Constants" data-type="popelement" id="physicsConstants" href="https://chem.libretexts.org/?physconst" rel="internal"><span>Physics Constants</span> </a></li>
+        <li><a class="toolbar-btn toolbar-inner hidden" disabled="disabled" id="scientificCalculator" href="https://chem.libretexts.org/?scientificcal" rel="internal">Scientific Calculator</a></li>
+    </ul>
+    </div>
+    </li>
+    <li class="toolbar-item" id="ref-menu"><a aria-expanded="false" class="toolbar-btn toolbar-top has-submenu" id="refmenu" href="https://chem.libretexts.org/?references" rel="internal"><span>Reference</span> <span aria-hidden="true" class="material-symbols-outlined" focusable="false">expand_more</span> </a>
+    <div class="sub-nav">
+    <ul class="subnav-group" id="dropdown_ref">
+        <li><a class="toolbar-btn toolbar-inner" data-micromodal-trigger="modal-main" data-modal-src="cite" data-modal-title="Reference &amp; Cite" data-target="modal_readerview" data-type="modal" id="cite" href="https://chem.libretexts.org/?refmodal" rel="internal"><span>Reference &amp; Cite</span> </a></li>
+    </ul>
+    </div>
+    </li>
+    <li class="toolbar-item" id="tools-menu"><a aria-expanded="false" class="toolbar-btn toolbar-top has-submenu" id="toolsmenu" href="https://chem.libretexts.org/?tools" rel="internal"><span>Tools</span> <span aria-hidden="true" class="material-symbols-outlined" focusable="false">expand_more</span> </a>
+    <div class="sub-nav">
+    <ul class="subnav-group" id="dropdown_tools">
+    </ul>
+    </div>
+    </li>
+    <li class="toolbar-item" id="help-menu"><a aria-expanded="false" class="toolbar-btn toolbar-top has-submenu" id="helpmenu" href="https://chem.libretexts.org/?help" rel="internal"><span>Help</span> <span aria-hidden="true" class="material-symbols-outlined" focusable="false">expand_more</span> </a>
+    <div class="sub-nav">
+    <ul class="subnav-group" id="dropdown_feed">
+        <li><a class="toolbar-btn toolbar-inner" data-micromodal-trigger="modal-main" data-modal-src="help" data-modal-title="Help &amp; Documentation" data-target="modal-main" data-type="modal" id="help" href="https://chem.libretexts.org/?helpmodal" rel="internal"><span>Get Help</span> </a></li>
+        <li><a aria-disabled="true" class="toolbar-btn toolbar-inner hidden" id="feedback" role="button" href="https://chem.libretexts.org/?feedback" rel="internal"><span>Feedback</span> </a></li>
+        <li><a aria-disabled="true" class="toolbar-btn toolbar-inner hidden" id="readability" role="button" href="https://chem.libretexts.org/?readability" rel="internal"><span>Readability</span> </a></li>
+    </ul>
+    </div>
+    </li>
+</ul>
+</div>
+
+<div class="modal" id="modal_readerview">
+<div class="modal-content">
+<div class="modal-header">
+<div mt-section-origin="Template:Custom/Views/Header/Header_Panel" class="mt-section"><h2 tabindex="0" class="modal-title editable">&nbsp;</h2>
+<span class="modal-close" tabindex="0">x</span></div></div>
+
+<div class="modal-body">
+<p>selected template will load here</p>
+</div>
+</div>
+</div>
+
+<div aria-hidden="true" class="modal micromodal-slide" id="modal-main">
+<div class="modal__overlay" data-micromodal-close="data-micromodal-close" tabindex="-1">
+<div aria-labelledby="modal-main-title" aria-modal="true" class="modal__container" role="dialog">
+<header class="modal__header">
+<div mt-section-origin="Template:Custom/Views/Header/Header_Panel" class="mt-section"><h2 id="modal-main-title" class="modal__title editable">Error</h2>
+<button aria-label="Close dialog" class="modal__close" data-micromodal-close="data-micromodal-close"></button></div></header>
+
+<main class="modal__content" id="modal-main-body">
+<p>This action is not available.</p>
+</main>
+
+<footer class="modal__footer">&nbsp;</footer>
+</div>
+</div>
+</div>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.libretexts.net/github/readerview/readerview.min.css" />
+
+</div>
+
+<div class="mt-container-highlight" style="background-color: #ffffff;">
+<nav class="elm-nav my-custom-class">
+<div class="elm-nav-container">
+
+<div class="LTBranding"><a href="https://chem.libretexts.org/" rel="internal"><img alt="Library homepage" class="internal default" src="https://cdn.libretexts.net/Logos/chem_full.png" style="width: auto; height: 70px;" /></a></div>
+
+<div id="header-buttons"><button class="header-btn" id="enter_reader"><span aria-hidden="true" class="material-symbols-outlined" focusable="false">chrome_reader_mode</span> <span>Enter Reader Mode</span></button></div>
+</div>
+
+</nav>
+</div>
+
+<div style="display:none"><div style="display:none" id="parentTitleHolder">1: Chapter Notes</div><div style="display:none" id="parentParentTitleHolder">LAMC Chem 51</div><div style="display:none" id="subpagesHolder">{ }</div><div style="display:none" id="parentSubpagesHolder">{ &quot;1.01:_Chapter_01&quot; : &quot;property get [Map MindTouch.Deki.Logic.ExtensionProcessorQueryProvider+&lt;&gt;c__DisplayClass234_0.&lt;PageSubPageProperty&gt;b__1]()&quot;, &quot;1.02:_Chapter_02&quot; : &quot;property get [Map MindTouch.Deki.Logic.ExtensionProcessorQueryProvider+&lt;&gt;c__DisplayClass234_0.&lt;PageSubPageProperty&gt;b__1]()&quot;, &quot;1.03:_Chapter_03&quot; : &quot;property get [Map MindTouch.Deki.Logic.ExtensionProcessorQueryProvider+&lt;&gt;c__DisplayClass234_0.&lt;PageSubPageProperty&gt;b__1]()&quot;, &quot;1.04:_Chapter_04&quot; : &quot;property get [Map MindTouch.Deki.Logic.ExtensionProcessorQueryProvider+&lt;&gt;c__DisplayClass234_0.&lt;PageSubPageProperty&gt;b__1]()&quot;, &quot;1.05:_Chapter_06&quot; : &quot;property get [Map MindTouch.Deki.Logic.ExtensionProcessorQueryProvider+&lt;&gt;c__DisplayClass234_0.&lt;PageSubPageProperty&gt;b__1]()&quot;, &quot;1.06:_Chapter_07&quot; : &quot;property get [Map MindTouch.Deki.Logic.ExtensionProcessorQueryProvider+&lt;&gt;c__DisplayClass234_0.&lt;PageSubPageProperty&gt;b__1]()&quot;, &quot;1.07:_Chapter_08&quot; : &quot;property get [Map MindTouch.Deki.Logic.ExtensionProcessorQueryProvider+&lt;&gt;c__DisplayClass234_0.&lt;PageSubPageProperty&gt;b__1]()&quot;, &quot;1.08:_Chapter_09&quot; : &quot;property get [Map MindTouch.Deki.Logic.ExtensionProcessorQueryProvider+&lt;&gt;c__DisplayClass234_0.&lt;PageSubPageProperty&gt;b__1]()&quot;, &quot;1.09:_Chapter_11&quot; : &quot;property get [Map MindTouch.Deki.Logic.ExtensionProcessorQueryProvider+&lt;&gt;c__DisplayClass234_0.&lt;PageSubPageProperty&gt;b__1]()&quot; }</div><div style="display:none" id="parentParentSubpagesHolder">{ &quot;00:_Front_Matter&quot; : &quot;property get [Map MindTouch.Deki.Logic.ExtensionProcessorQueryProvider+&lt;&gt;c__DisplayClass234_0.&lt;PageSubPageProperty&gt;b__1]()&quot;, &quot;01:_Chapter_Notes&quot; : &quot;property get [Map MindTouch.Deki.Logic.ExtensionProcessorQueryProvider+&lt;&gt;c__DisplayClass234_0.&lt;PageSubPageProperty&gt;b__1]()&quot;, &quot;02:_Worksheets&quot; : &quot;property get [Map MindTouch.Deki.Logic.ExtensionProcessorQueryProvider+&lt;&gt;c__DisplayClass234_0.&lt;PageSubPageProperty&gt;b__1]()&quot;, &quot;03:_Lab_Materials&quot; : &quot;property get [Map MindTouch.Deki.Logic.ExtensionProcessorQueryProvider+&lt;&gt;c__DisplayClass234_0.&lt;PageSubPageProperty&gt;b__1]()&quot;, &quot;04:_Test_Prep&quot; : &quot;property get [Map MindTouch.Deki.Logic.ExtensionProcessorQueryProvider+&lt;&gt;c__DisplayClass234_0.&lt;PageSubPageProperty&gt;b__1]()&quot;, &quot;05:_Homework&quot; : &quot;property get [Map MindTouch.Deki.Logic.ExtensionProcessorQueryProvider+&lt;&gt;c__DisplayClass234_0.&lt;PageSubPageProperty&gt;b__1]()&quot;, &quot;06:_Reference&quot; : &quot;property get [Map MindTouch.Deki.Logic.ExtensionProcessorQueryProvider+&lt;&gt;c__DisplayClass234_0.&lt;PageSubPageProperty&gt;b__1]()&quot;, &quot;zz:_Back_Matter&quot; : &quot;property get [Map MindTouch.Deki.Logic.ExtensionProcessorQueryProvider+&lt;&gt;c__DisplayClass234_0.&lt;PageSubPageProperty&gt;b__1]()&quot; }</div><div style="display:none" id="modifiedHolder">Sun, 11 Jan 2026 23:20:58 GMT</div><div style="display:none" id="titleHolder">1.1: Chapter 01</div><div style="display:none" id="IDHolder">554933</div><div style="display:none" id="pageIDHolder">554933</div><div style="display:none" id="pageAuthorHolder">[REDACTED]</div><div style="display:none" id="groupHolder">{ BasicUser : { guid : &quot;205a337efb8d4d9d912697d519e2318c&quot;, id : 69, name : &quot;BasicUser&quot; } }</div><div style="display:none" id="usernameHolder">[REDACTED]</div><div style="display:none" id="displaynameHolder">[REDACTED]</div><div style="display:none" id="userEmailHolder">[REDACTED]</div><div style="display:none" id="emailHolder">[REDACTED]</div><div style="display:none" id="userIDHolder">[REDACTED]</div><div style="display:none" id="proHolder">true</div><div style="display:none" id="adminHolder">false</div><div style="display:none" id="pageTagsHolder">[ &quot;article:topic&quot; ]</div><div style="display:none" id="tagsHolder">[ &quot;article:topic&quot; ]</div><div style="display:none" id="ssoHolder">https://chem.libretexts.org/@app/auth/3/login?returnto=https%3A%2F%2Fchem.libretexts.org%2FWorkbench%2FLAMC_Chem_51%2F01%253A_Chapter_Notes%2F1.01%253A_Chapter_01</div></div>
+
+<div class="mt-style-conditional style-wrap" title="Conditional content &lt;strong&gt;(Pro member)&lt;/strong&gt;">
+<div style="display:none" id="seatedCheck">892799493806808.9</div>
+</div>
+
+        </div>
+        <div class="elm-nav mt-translate-module" hidden="true">
+            <div class="elm-nav-container mt-translate-container"></div>
+        </div>
+        <div class="elm-header-logo-container">
+            <a href="https://chem.libretexts.org" title="Chemistry LibreTexts" aria-label='Link to home'><img src="https://a.mtstatic.com/@public/production/site_4334/1474925093-logo.png" alt="Chemistry LibreTexts" /></a>
+        </div>
+        
+        <nav class="elm-header-user-nav elm-nav" role="navigation">
+            <div class="elm-nav-container">
+                <ol>
+                    <li class="elm-global-search" data-ga-action="Header search"><a class="mt-icon-site-search mt-toggle-form" href="#" title="Search site">Search site</a>
+<div class="mt-quick-search-container mt-toggle-form-container">
+    <form action="#" onsubmit="return false">
+        <input name="qid" id="mt-qid-skin" type="hidden" value="" />
+        <input name="fpid" id="mt-search-filter-id" type="hidden" value="230" />
+        <input name="fpth" id="mt-search-filter-path" type="hidden" />
+        <input name="path" id="mt-search-path" type="hidden" value="" />
+
+        <label class="mt-label" for="mt-site-search-input">
+            Search
+        </label>
+        <input class="mt-text mt-search search-field" name="q" id="mt-site-search-input" placeholder="How can we help you?" type="search" />
+        <button class="mt-button ui-button-icon mt-icon-site-search-button search-button" type="submit">
+            Search
+        </button>
+    </form>
+</div>
+<div class="elm-search-back"><a class="mt-icon-browser-back" data-ga-label="Browse back" href="#" id="mt-browser-back" title="Go back to previous article">Go back to previous article</a></div>
+</li>
+                    <li class="elm-user-menu"><ol class="mt-user-menu" data-ga-action="Pro menu">
+        <li class="mt-edit-page mt-mobile-hide">
+            <a id="page-options-menu-edit"
+                class="mt-icon-edit-page"
+                href="https://chem.libretexts.org/Workbench/LAMC_Chem_51/01%3A_Chapter_Notes/1.01%3A_Chapter_01?action=edit"
+                data-ga-label="Edit page"
+                title="Click to edit this content">Edit</a>
+        </li>
+        <li class="mt-new-page mt-mobile-hide">
+            <a class="mt-icon-new-page mt-dropdown-link mt-template-select-launcher"
+                href="#"
+                data-ga-label="New page"
+                title="Click to create new content">
+                New
+            </a>
+        </li>
+
+        <li class="mt-page-options mt-mobile-hide">
+            <a class="mt-icon-page-options mt-dropdown-link" href="#" title="Click to see available content options" data-ga-label="Page options menu toggle">
+                Options
+            </a>
+            <ol class="mt-user-menu-container mt-dropdown">
+                    <li class="mt-user-menu-revision-history">
+                        <a class="mt-icon-revision-history" href="https://chem.libretexts.org/Special:RevisionHistory?id=554933" title="Click to view the revision history of this article" data-ga-label="Revision history">
+                            Revision history
+                        </a>
+                    </li>
+                    <li class="mt-user-menu-restrict-access">
+                        <a class="mt-icon-restrict-access" href="/Special:PageRestrictions?id=554933" title="Click to change the view restrictions and user/group permissions" data-ga-label="Restrict access">
+                            Restrict access
+                        </a>
+                    </li>
+                    <li class="mt-user-menu-move-page">
+                        <a class="mt-icon-move-page page-move-launcher" href="#" title="Click to move this article/hierarchy to a new location" data-ga-label="Move page">
+                            Move
+                        </a>
+                    </li>
+                    <li class="mt-user-menu-copy-page">
+                        <a class="mt-icon-copy-page page-copy-launcher" href="#" title="Click to copy this article/hierarchy to a new location" data-ga-label="Copy page">
+                            Copy
+                        </a>
+                    </li>
+                    <li class="mt-user-menu-delete-page">
+                        <a class="mt-icon-delete-page page-delete-launcher" href="#" title="Click to delete this article/hierarchy" data-ga-label="Delete page">
+                            Delete
+                        </a>
+                    </li>
+                        <li class="mt-user-menu-export-page">
+                            <a class="mt-icon-export-page page-export-launcher page-export-launcher" href="#" title="Click to export this article/hierarchy" data-ga-label="Export page">
+                                Export
+                            </a>
+                        </li>
+                        <li class="mt-user-menu-import-here">
+                            <a class="mt-icon-import-here page-import-launcher page-import-launcher" href="#" title="Click to import content to this location" data-ga-label="Import page">
+                                Import here
+                            </a>
+                        </li>
+                
+            </ol>
+        </li>
+        <li class="mt-site-tools mt-mobile-hide">
+        <a class="mt-icon-site-tools mt-dropdown-link" href="#" title="Click to see available site tools" data-ga-label="Site tools menu toggle">
+            Site tools
+        </a>
+        <ol class="mt-user-menu-container mt-dropdown">
+            <li class="mt-user-menu-dashboard">
+                <a class="mt-icon-dashboard" href="/Special:Dashboard" title="Click to go to your site Dashboard" data-ga-label="Dashboard link">
+                    Dashboard
+                </a>
+            </li>
+        </ol>
+    </li>
+    <li class="mt-user-menu-user">
+        <a class="mt-icon-user-menu mt-dropdown-link" href="#" title="" data-ga-label="User menu toggle">
+            [REDACTED]
+        </a>
+        <ol class="mt-user-menu-container mt-dropdown">
+                <li class="mt-user-menu-my-contributions mt-mobile-hide">
+                    <a class="mt-icon-my-contributions" href="https://chem.libretexts.org/Special:Dashboard/ContributionReports/UserContributions?user=[REDACTED]" title="Click to see your contribution history" data-ga-label="User contributions link">
+                        My contributions
+                    </a>
+                </li>
+                <li class="mt-user-menu-preferences">
+                    <a class="mt-icon-user-preferences" href="/Special:Preferences" title="Click to change your user preferences" data-ga-label="User preferences link">
+                        My preferences
+                    </a>
+                </li>
+                <li class="mt-user-menu-my-subscriptions mt-mobile-hide">
+                    <a class="mt-icon-my-subscriptions" href="/Special:Subscriptions" title="Click to manage your notifications" data-ga-label="User subscriptions link">
+                        My subscriptions
+                    </a>
+                </li>
+            <li class="mt-user-menu-signout">
+                <a class="mt-icon-user-sign-out" href="https://chem.libretexts.org/Special:UserLogout?returntotitle=Workbench%2FLAMC_Chem_51%2F01%3A_Chapter_Notes%2F1.01%3A_Chapter_01" title="Click to sign out of this site" data-ga-label="Sign out">
+                    Sign out
+                </a>
+            </li>
+        </ol>
+    </li>
+</ol>
+
+</li>
+                </ol>
+            </div>
+        </nav>
+        <nav class="elm-header-global-nav elm-nav" data-ga-action="Elm Navigation">
+            <div class="elm-nav-container">
+                <button class="elm-hierarchy-trigger mt-hierarchy-trigger ui-button-icon mt-icon-hierarchy-trigger-closed" title="Expand/collapse global hierarchy" data-ga-label="Hierarchy Toggle - Tree View">
+                    Expand/collapse global hierarchy
+                </button>
+                <ol class="mt-breadcrumbs" data-ga-action="Breadcrumbs">
+                        <li>
+                            <a href="https://chem.libretexts.org/" data-ga-label="Breadcrumb category">
+                                <span class="mt-icon-article-category mt-icon-article-home"></span>
+                                    Home
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://chem.libretexts.org/Workbench" data-ga-label="Breadcrumb ">
+                                <span class="mt-icon-article-"></span>
+                                    Workbench
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://chem.libretexts.org/Workbench/LAMC_Chem_51" data-ga-label="Breadcrumb category">
+                                <span class="mt-icon-article-category"></span>
+                                    LAMC Chem 51
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://chem.libretexts.org/Workbench/LAMC_Chem_51/01%3A_Chapter_Notes" data-ga-label="Breadcrumb guide">
+                                <span class="mt-icon-article-guide"></span>
+                                    1: Chapter Notes
+                            </a>
+                        </li>
+                        <li class="mt-breadcrumbs-current-page">
+                            <span class="mt-icon-article-topic"></span>
+                            1.1: Chapter 01
+                        </li>
+                </ol>
+                <button class="mt-icon-hierarchy-mobile-view-trigger ui-button-icon mt-icon-hierarchy-mobile-trigger-closed" title="Expand/collapse global location" data-ga-label="Hierarchy Toggle - Breadcrumb Expand/Collapse">
+                    Expand/collapse global location
+                </button>
+            </div>
+        </nav>
+        <nav class="elm-nav elm-header-hierarchy">
+            <div class="elm-nav-container">
+                <div class="elm-hierarchy mt-hierarchy"></div>
+            </div>
+        </nav>        <div class="elm-nav mt-review-banner" hidden="true"></div>
+
+    </header>
+    <article class="elm-content-container" id="elm-main-content" tabindex="-1">
+        <header>
+            <div id="flash-messages"><div class="dekiFlash"></div></div>
+                <div id="mt-kcs-workflow"></div>
+                <div id="mt-summary"
+     data-page-id="554933"
+     data-page-title="1.1: Chapter 01"
+     data-page-uri="https://chem.libretexts.org/Workbench/LAMC_Chem_51/01%3A_Chapter_Notes/1.01%3A_Chapter_01"
+     data-page-file-name="mindtouch.page#thumbnail"
+     data-overview-max-count="500"
+     data-collapsed="true"
+     data-editable="true"
+     data-show-listing="true">
+    <div class="mt-collapsible-section">
+        <div class="mt-classifications-container">
+            <div id="live-tags-custom" data-canedit="true">
+                    <div class="live-tag-special-section live-tag-special-section-prefix">
+                        <legend for="live-tag-article-select" class="live-tag-label mt-label" id="live-tag-article-label">Article type</legend>
+                        <select class="mt-select-box live-tag-select " data-prefix="article" id="live-tag-article-select">
+                                <option value="article:topic-category">Book or Unit</option>
+                                <option value="article:topic-guide">Chapter</option>
+                                <option value="article:topic" selected="selected">Section or Page</option>
+                                <option value="article:howto">N/A</option>
+                                <option value="article:reference">N/A</option>
+                        </select>
+                        <span class="mt-select-box-arrow"></span>
+                    </div>
+                    <div class="live-tag-special-section live-tag-special-section-prefix">
+                        <legend for="live-tag-stage-select" class="live-tag-label mt-label" id="live-tag-stage-label">Stage</legend>
+                        <select class="mt-select-box live-tag-select " data-prefix="stage" id="live-tag-stage-select">
+                            <option value="not-set">(not set)</option>
+                                <option value="stage:stub">Stub</option>
+                                <option value="stage:draft">Draft</option>
+                                <option value="stage:review">Review</option>
+                                <option value="stage:final">Final</option>
+                                <option value="stage:outdated">Outdated</option>
+                                <option value="stage:obsolete">Obsolete</option>
+                        </select>
+                        <span class="mt-select-box-arrow"></span>
+                    </div>
+                    <div class="live-tag-special-section live-tag-special-section-prefix">
+                        <legend for="live-tag-authorname-select" class="live-tag-label mt-label" id="live-tag-authorname-label">Author</legend>
+                        <select class="mt-select-box live-tag-select recursive" data-prefix="authorname" id="live-tag-authorname-select">
+                            <option value="not-set">(not set)</option>
+                                <option value="authorname:soderbergt">Tim Soderberg</option>
+                                <option value="authorname:cichewiczr">Robert Cichewicz</option>
+                                <option value="authorname:delmar">Delmar Larsen</option>
+                                <option value="authorname:carterr">Robert Carter</option>
+                                <option value="authorname:levingern">Nancy Levinger</option>
+                                <option value="authorname:draganjacm">Mark Draganjac</option>
+                                <option value="authorname:seelyo">Oliver Seely</option>
+                                <option value="authorname:nicholsl">Lisa Nichols</option>
+                                <option value="authorname:wenzelt">Thomas Wenzel</option>
+                                <option value="authorname:openstax">OpenStax</option>
+                                <option value="authorname:flemingp">Patrick Fleming</option>
+                                <option value="authorname:lowers">Stephen Lower</option>
+                                <option value="authorname:belfordr">Robert Belford</option>
+                                <option value="authorname:simonsj">Jack Simons</option>
+                                <option value="authorname:harveyd">David Harvey</option>
+                                <option value="authorname:chemprime">ChemPRIME</option>
+                                <option value="authorname:soulta">Allison Soult</option>
+                                <option value="authorname:clarkj">Jim Clark</option>
+                                <option value="authorname:gordone">Elizabeth Gordon</option>
+                                <option value="authorname:banksr">Richard Banks</option>
+                                <option value="authorname:nixr">Roger Nix</option>
+                                <option value="authorname:zielinskit">Theresa Julia Zielinski</option>
+                                <option value="authorname:vallancec">Claire Vallance</option>
+                                <option value="authorname:curriki1">Curriki</option>
+                                <option value="authorname:smu">Santa Monica College</option>
+                                <option value="authorname:lancashirer">Robert Lancashire</option>
+                                <option value="authorname:ggunawardena">Gamini Gunawardena</option>
+                                <option value="authorname:jgassensmith">Jeremiah Gassensmith</option>
+                                <option value="authorname:tgrubbs">Tandy Grubbs</option>
+                                <option value="authorname:dbennett">Dianne Bennett</option>
+                                <option value="authorname:mtuckerman">Mark Tuckerman</option>
+                                <option value="authorname:pchieh">Chung (Peter) Chieh</option>
+                                <option value="authorname:wreusch">William Reusch</option>
+                                <option value="authorname:chemcases">ChemCases</option>
+                                <option value="authorname:ngreeves">Nick Greeves</option>
+                                <option value="authorname:cschaller">Chris Schaller</option>
+                                <option value="authorname:pseeburger">Paul Seeburger</option>
+                                <option value="authorname:chemcollective">ChemCollective</option>
+                                <option value="authorname:jbirk">James Birk</option>
+                                <option value="authorname:dberger">Dan Berger</option>
+                                <option value="authorname:mlevitus">Marcia Levitus</option>
+                                <option value="authorname:atokmakoff">Andrei Tokmakoff</option>
+                                <option value="authorname:jhebden">Jim Hebden</option>
+                                <option value="authorname:mevans">Michael Evans</option>
+                                <option value="authorname:gvdzwan">Gert van der Zwan</option>
+                                <option value="authorname:jbetancourt">Johnny Betancourt</option>
+                                <option value="authorname:pescekaplan">Larry Kaplan &amp; Amadeo Pesce</option>
+                                <option value="authorname:llucia">Lucian Lucia</option>
+                                <option value="authorname:arivekorir">Cynthia K. Larive &amp; Albert K. Korir</option>
+                                <option value="authorname:gshultz">Ginger Shultz</option>
+                                <option value="authorname:frioux">Frank Rioux</option>
+                                <option value="authorname:kdonaghy">Kelley J. Donaghy</option>
+                                <option value="authorname:jjakubowskih">Henry Jakubowski</option>
+                                <option value="authorname:pshiunu">Paul M. Shiundu</option>
+                                <option value="authorname:asandtorv">Alexander Sandtorv</option>
+                                <option value="authorname:kgraham">Kate Graham</option>
+                                <option value="authorname:abarron">Pavan M. V. Raja &amp; Andrew R. Barron</option>
+                                <option value="authorname:czehnder">Caralyn Zehnder et al.</option>
+                                <option value="authorname:pellgen">Paul Ellgen</option>
+                                <option value="authorname:khaas">Kathryn Haas</option>
+                                <option value="authorname:lmorsch">Layne Morsch</option>
+                                <option value="authorname:tpunniyamurthy">Tharmalingam Punniyamurthy</option>
+                                <option value="authorname:oreactionswiki">Organic Reactions Wiki</option>
+                                <option value="authorname:shrobbronnerlake">Justin Shorb, Caleb Bronner, &amp; William Lake</option>
+                                <option value="authorname:sfranzen">Stefan Franzen</option>
+                                <option value="authorname:adutoi">Anthony Dutoi</option>
+                                <option value="authorname:dkaseman">Derrick Kaseman</option>
+                                <option value="authorname:abarron2">Andrew R. Barron</option>
+                                <option value="authorname:ocl1">Jacqui Drak, Gina Fiorini, Jennie Mayer, Dan Mitchell, Marie Villarba, &amp; Doug Wick</option>
+                                <option value="authorname:acarter">Andrea Allgood Carter</option>
+                                <option value="authorname:rodonnell">Rebekah O'Donnell</option>
+                                <option value="authorname:scortes">Sergio Cortes</option>
+                                <option value="authorname:klandskron">Kai Landskron</option>
+                                <option value="authorname:smanahan">Stanley Manahan</option>
+                                <option value="authorname:kleimanetal">Vinícius Wilian D. Cruzeiro, Xiang Gao, and Valeria D. Kleiman</option>
+                                <option value="authorname:gjeschke">Gunnar Jeschke</option>
+                                <option value="authorname:srodriguezvelazquez">Sorangel Rodriguez-Velazquez</option>
+                                <option value="authorname:anonymous">Anonymous</option>
+                                <option value="authorname:rgsalomon">Robert G. Salomon</option>
+                                <option value="authorname:robertscaserio">John D. Roberts and Marjorie C. Caserio</option>
+                                <option value="authorname:dnocera">Daniel Nocera</option>
+                                <option value="authorname:pyoung">Paul R. Young</option>
+                                <option value="authorname:cmccusker">Catherine McCusker</option>
+                                <option value="authorname:vkleiman">Valeria D. Kleiman</option>
+                                <option value="authorname:cooperklymkowsky">Melanie M. Cooper &amp; Michael W. Klymkowsky</option>
+                                <option value="authorname:blandamerreis">Michael J Blandamer &amp; Joao Carlos R Reis</option>
+                                <option value="authorname:smblinder">S. M. Blinder</option>
+                                <option value="authorname:garbermorales">Jessica Garber-Morales</option>
+                                <option value="authorname:xliu">Xin Liu</option>
+                                <option value="authorname:gcastellan">Gilbert Castellan</option>
+                                <option value="authorname:jcao">Jianshu Cao</option>
+                                <option value="authorname:ck12">CK-12 Foundation</option>
+                                <option value="authorname:mmalik">Muhammad Malik</option>
+                                <option value="authorname:arhangelskiietal">Igor V. Arhangel`skii, Alexander V. Dunaev, Irina V. Makarenko, Nikolay A. Tikhonov, &amp; Andrey V. Tarasov</option>
+                                <option value="authorname:dmiller">Dwayne Miller</option>
+                                <option value="authorname:chem310">Chem 310 Students</option>
+                                <option value="authorname:balakrishna-ghosh">M. S. Balakrishna &amp; Prasenjit Ghosh</option>
+                                <option value="authorname:psnee">Preston Snee</option>
+                                <option value="authorname:hdevoe">Howard DeVoe</option>
+                                <option value="authorname:wikipedia">Wikipedia</option>
+                                <option value="authorname:moes-gestel-beek">Sylvia Moes, Kees van Gestel, &amp; Gerco van Beek</option>
+                                <option value="authorname:moore-zhou-garand">John Moore, Jia Zhou, and Etienne Garand</option>
+                                <option value="authorname:l-sharpe-elles">Lisa Sharpe Elles</option>
+                                <option value="authorname:scott-van-bramer">Scott Van Bramer</option>
+                                <option value="authorname:toxmsdt">ToxMSDT</option>
+                                <option value="authorname:ripoll-cano">Martín Martínez Ripoll  &amp; Félix Hernández Cano</option>
+                                <option value="authorname:asdl">Analytical Sciences Digital Library</option>
+                                <option value="authorname:smirnov-mccarty">Serge L. Smirnov and James McCarty</option>
+                                <option value="authorname:dsadoway">Donald Sadoway</option>
+                                <option value="authorname:jdroberts">John D. Roberts</option>
+                                <option value="authorname:ucd1">UC Davis Chemistry</option>
+                                <option value="authorname:drlatimer">Devin R Latimer</option>
+                                <option value="authorname:kmcmichael">Kirk McMichael</option>
+                                <option value="authorname:binkleybinkley">Roger W. Binkley and Edith R. Binkley</option>
+                                <option value="authorname:rpeverati">Roberto Peverati</option>
+                                <option value="authorname:shorb_cox">Justin Shorb and Charlie Cox</option>
+                                <option value="authorname:rbader">Richard F. W. Bader</option>
+                                <option value="authorname:anahgho-et-al">Leonard Anagho, Patrice Bell, Neville Forlemu, Emily Henary, Rebecca Kalman, Michael Kirberger, Seungjin Lee, Xiaoping Li, Joshua Morris, and Sang Park</option>
+                                <option value="authorname:efrancis">Eden Francis</option>
+                                <option value="authorname:nboaz-opearce">Nicholas Boaz and Orion Pearce</option>
+                                <option value="authorname:de-araujos-etal">Elvin D. de Araujo, Bilal Saqib, Jeffrey W. Keillor, and Patrick T. Gunning</option>
+                                <option value="authorname:rbalaji-rao">R Balaji Rao</option>
+                                <option value="authorname:gjmiller">Gordon J. Miller</option>
+                                <option value="authorname:ta-wei-li">Ta-Wei Li</option>
+                                <option value="authorname:tsaito">Taro Saito</option>
+                                <option value="authorname:droy">Deboleena Roy</option>
+                                <option value="authorname:pshetty">Prabha Shetty</option>
+                                <option value="authorname:jherzfeld">Judith Herzfeld</option>
+                                <option value="authorname:cpearson">Chuck Pearson</option>
+                                <option value="authorname:jmacarthur">Jamie MacArthur</option>
+                                <option value="authorname:aborys">Andryj Borys</option>
+                                <option value="authorname:ggarg">Garima Garg</option>
+                                <option value="authorname:crystallography">IUCr Commission on Crystallographic Nomenclature</option>
+                                <option value="authorname:lmc">Los Medanos College</option>
+                                <option value="authorname:libretexts">LibreTexts</option>
+                                <option value="authorname:spuenzo">Sol Parajon Puenzo</option>
+                                <option value="authorname:mzimmer-deiuliis-agalang">Marco Zimmer-De Iuliis and Anna Galang</option>
+                                <option value="authorname:elvin-de-araujo-et-al">Elvin D. de Araujo, Timothy Wright, Bilal Saqib, Jeffrey W. Keillor, and Patrick T. Gunning</option>
+                                <option value="authorname:astrom">Alexandra Strom</option>
+                                <option value="authorname:ckaslan">Camille Kaslan</option>
+                                <option value="authorname:apradhan">Alaka Pradhan</option>
+                                <option value="authorname:tchan">Theodore Chan</option>
+                                <option value="authorname:sbryan-kfriedrich">Stephanie Bryan and Ken Friedrich</option>
+                                <option value="authorname:flowlerm">Michael Fowler</option>
+                                <option value="authorname:tsborne">Tanesha Osborne</option>
+                                <option value="authorname:jgutow">Jonathan Gutow</option>
+                                <option value="authorname:etrufan-ebuhoutsos-brown">Eszter Trufan and Elene Bouhoutsos-Brown</option>
+                                <option value="authorname:lumen">Lumen Learning</option>
+                                <option value="authorname:pfoley">Patricia Foley</option>
+                                <option value="authorname:saadiakh">Saadia Khan</option>
+                                <option value="authorname:gfritz">Georgia Fritz</option>
+                                <option value="authorname:smcontakes">Stephen M. Contakes</option>
+                                <option value="authorname:kcrabtree">Kyle Crabtree</option>
+                                <option value="authorname:jthorpe">Jessica Thorpe</option>
+                                <option value="authorname:mku">Matthew Ku</option>
+                                <option value="authorname:kdavis">Kathryn Davis</option>
+                                <option value="authorname:sforbes-pmckay">Safiyyah Forbes and Patrick McKay</option>
+                                <option value="authorname:dcritt">Deborah Crittenden</option>
+                                <option value="authorname:maagnew-hagnew">Marisa Alviar-Agnew and Henry Agnew</option>
+                                <option value="authorname:nvoss">Neil R. Voss</option>
+                                <option value="authorname:mjones1">Morris Jones</option>
+                        </select>
+                        <span class="mt-select-box-arrow"></span>
+                    </div>
+                    <div class="live-tag-special-section live-tag-special-section-prefix">
+                        <legend for="live-tag-showtoc-select" class="live-tag-label mt-label" id="live-tag-showtoc-label">Show Page TOC</legend>
+                        <select class="mt-select-box live-tag-select recursive" data-prefix="showtoc" id="live-tag-showtoc-select">
+                            <option value="not-set">(not set)</option>
+                                <option value="showtoc:yes">yes on page</option>
+                                <option value="showtoc:no">no on page</option>
+                        </select>
+                        <span class="mt-select-box-arrow"></span>
+                    </div>
+                    <div class="live-tag-special-section live-tag-special-section-prefix">
+                        <legend for="live-tag-coverpage-select" class="live-tag-label mt-label" id="live-tag-coverpage-label">Cover Page</legend>
+                        <select class="mt-select-box live-tag-select " data-prefix="coverpage" id="live-tag-coverpage-select">
+                            <option value="not-set">(not set)</option>
+                                <option value="coverpage:yes">Set Cover Page/Add to Download Center</option>
+                                <option value="coverpage:toc">Set Cover Page/Not in Download Center</option>
+                                <option value="coverpage:nocommons">Compile but don't publish</option>
+                        </select>
+                        <span class="mt-select-box-arrow"></span>
+                    </div>
+                    <div class="live-tag-special-section live-tag-special-section-prefix">
+                        <legend for="live-tag-license-select" class="live-tag-label mt-label" id="live-tag-license-label">License</legend>
+                        <select class="mt-select-box live-tag-select recursive" data-prefix="license" id="live-tag-license-select">
+                            <option value="not-set">(not set)</option>
+                                <option value="license:publicdomain">Public Domain</option>
+                                <option value="license:ccby">CC BY</option>
+                                <option value="license:ccbysa">CC BY-SA</option>
+                                <option value="license:ccbyncsa">CC BY-NC-SA</option>
+                                <option value="license:ccbynd">CC BY-ND</option>
+                                <option value="license:ccbyncnd">CC BY-NC-ND</option>
+                                <option value="license:gnu">GNU GPL</option>
+                                <option value="license:arr">All Rights Reserved</option>
+                                <option value="license:ccbync">CC BY-NC</option>
+                                <option value="license:gnufdl">GNU FDL</option>
+                                <option value="license:mixed">Mixed Licenses</option>
+                                <option value="license:ck12">CK-12</option>
+                                <option value="license:caltech">Caltech License</option>
+                                <option value="license:collection">Collection</option>
+                        </select>
+                        <span class="mt-select-box-arrow"></span>
+                    </div>
+                    <div class="live-tag-special-section live-tag-special-section-prefix">
+                        <legend for="live-tag-transcluded-select" class="live-tag-label mt-label" id="live-tag-transcluded-label">Transcluded</legend>
+                        <select class="mt-select-box live-tag-select recursive" data-prefix="transcluded" id="live-tag-transcluded-select">
+                            <option value="not-set">(not set)</option>
+                                <option value="transcluded:yes">yes</option>
+                        </select>
+                        <span class="mt-select-box-arrow"></span>
+                    </div>
+                    <div class="live-tag-special-section live-tag-special-section-prefix">
+                        <legend for="live-tag-columns-select" class="live-tag-label mt-label" id="live-tag-columns-label">Number of Print Columns</legend>
+                        <select class="mt-select-box live-tag-select recursive" data-prefix="columns" id="live-tag-columns-select">
+                            <option value="not-set">(not set)</option>
+                                <option value="columns:two">Two</option>
+                                <option value="columns:three">Three</option>
+                        </select>
+                        <span class="mt-select-box-arrow"></span>
+                    </div>
+                    <div class="live-tag-special-section live-tag-special-section-prefix">
+                        <legend for="live-tag-printoptions-select" class="live-tag-label mt-label" id="live-tag-printoptions-label">PrintOptions</legend>
+                        <select class="mt-select-box live-tag-select " data-prefix="printoptions" id="live-tag-printoptions-select">
+                            <option value="not-set">(not set)</option>
+                                <option value="printoptions:no-header">No Header/Footer</option>
+                                <option value="printoptions:no-title">No Title</option>
+                                <option value="printoptions:no-header-title">No Header/Footer/Title</option>
+                        </select>
+                        <span class="mt-select-box-arrow"></span>
+                    </div>
+                    <div class="live-tag-special-section live-tag-special-section-prefix">
+                        <legend for="live-tag-program-select" class="live-tag-label mt-label" id="live-tag-program-label">OER program or Publisher</legend>
+                        <select class="mt-select-box live-tag-select recursive" data-prefix="program" id="live-tag-program-select">
+                            <option value="not-set">(not set)</option>
+                                <option value="program:ztccoc">College of the Canyons - Zero Textbook Cost Program</option>
+                                <option value="program:oeri">ASCCC OERI Program</option>
+                                <option value="program:ck12">CK-12</option>
+                                <option value="program:openstax">OpenStax</option>
+                                <option value="program:galileo">GALILEO</option>
+                                <option value="program:opensuny">OpenSUNY</option>
+                                <option value="program:mitocw">MIT OpenCourseWare</option>
+                                <option value="program:virginiatech">Virginia Tech Libraries' Open Education Initiative</option>
+                                <option value="program:hidden">The Publisher Who Must Not Be Named</option>
+                                <option value="program:ecampusontario">eCampusOntario</option>
+                                <option value="program:wac">WAC Clearinghouse</option>
+                                <option value="program:bcc">BC Campus</option>
+                                <option value="program:lumen">Lumen</option>
+                                <option value="program:openoregon">Open Oregon</option>
+                                <option value="program:openstaxcnx">OpenStax CNX</option>
+                                <option value="program:pdxopen">PDXOpen</option>
+                                <option value="program:clc-innovators">CLC Innovators</option>
+                        </select>
+                        <span class="mt-select-box-arrow"></span>
+                    </div>
+                    <div class="live-tag-special-section live-tag-special-section-prefix">
+                        <legend for="live-tag-studentanalytics-select" class="live-tag-label mt-label" id="live-tag-studentanalytics-label">Student Analytics</legend>
+                        <select class="mt-select-box live-tag-select recursive" data-prefix="studentanalytics" id="live-tag-studentanalytics-select">
+                            <option value="not-set">(not set)</option>
+                                <option value="studentanalytics:yes">yes</option>
+                        </select>
+                        <span class="mt-select-box-arrow"></span>
+                    </div>
+                    <div class="live-tag-special-section live-tag-special-section-prefix">
+                        <legend for="live-tag-autonumheader-select" class="live-tag-label mt-label" id="live-tag-autonumheader-label">Autonumber Section Headings</legend>
+                        <select class="mt-select-box live-tag-select recursive" data-prefix="autonumheader" id="live-tag-autonumheader-select">
+                            <option value="not-set">(not set)</option>
+                                <option value="autonumheader:yes1">title with space delimiters</option>
+                                <option value="autonumheader:yes2">title with colon delimiters</option>
+                                <option value="autonumheader:yes3">title with dash delimiters</option>
+                        </select>
+                        <span class="mt-select-box-arrow"></span>
+                    </div>
+                    <div class="live-tag-special-section live-tag-special-section-prefix">
+                        <legend for="live-tag-licenseversion-select" class="live-tag-label mt-label" id="live-tag-licenseversion-label">License Version</legend>
+                        <select class="mt-select-box live-tag-select recursive" data-prefix="licenseversion" id="live-tag-licenseversion-select">
+                            <option value="not-set">(not set)</option>
+                                <option value="licenseversion:10">1.0</option>
+                                <option value="licenseversion:20">2.0</option>
+                                <option value="licenseversion:25">2.5</option>
+                                <option value="licenseversion:30">3.0</option>
+                                <option value="licenseversion:40">4.0</option>
+                                <option value="licenseversion:13">1.3</option>
+                        </select>
+                        <span class="mt-select-box-arrow"></span>
+                    </div>
+                    <div class="live-tag-special-section live-tag-special-section-prefix">
+                        <legend for="live-tag-cssprint-select" class="live-tag-label mt-label" id="live-tag-cssprint-label">Print CSS</legend>
+                        <select class="mt-select-box live-tag-select recursive" data-prefix="cssprint" id="live-tag-cssprint-select">
+                            <option value="not-set">(not set)</option>
+                                <option value="cssprint:default">Default</option>
+                                <option value="cssprint:dense">Dense</option>
+                        </select>
+                        <span class="mt-select-box-arrow"></span>
+                    </div>
+            </div>
+        </div>
+        <div class="live-tag-section" id="live-tag-normal-tags">
+            <div id="live-tag-input-area">
+                <legend for="live-tag-input">Tags</legend>
+                    <input type="text" id="live-tag-input" placeholder="Add new tag here" title="Add new tag here" />
+                    <button class="mt-icon-add-tag mt-button-icon" id="live-tag-add-button" title="Add">Add tag</button>
+            </div>
+            <div id="live-tag-entries">
+                    <span class="live-tag-message">This page has no custom tags.</span>
+            </div>
+            
+        </div>
+        <div class="mt-dialog-root" id="live-tags-dialog" style="display: none;" data-title="Update tags">
+            <div class="mt-scrolling-dialog-content">
+                <div class="live-tags-popup-status mt-dialog-content">
+                    <div id="live-tags-status-description" class="live-tags-status">
+                        <input id="live-tags-apply-recursive" class="mt-checkbox" type="checkbox" checked>
+                        <label for="live-tags-apply-recursive" style="display: inline-block;">Apply new tags to subpages?</label>
+                   </div>
+                   <div id="live-tags-status-default" class="live-tags-status" style="display: none;">
+                       Finding subpages...
+                   </div>
+                   <div id="live-tags-status-updating" class="live-tags-status" style="display: none;">
+                       Updating:
+                       <br />
+                       <span id="live-tags-status-current-page"></span>
+                   </div>
+               </div>
+           </div>
+           <div class="mt-dialog-button-container">
+               <div class="ui-dialog-buttonset">
+                   <button type="button" id="live-tags-recursive-button" class="ui-button-primary ui-button" role="button">
+                       <span class="ui-button-text">
+                           Update tags
+                       </span>
+                   </button>
+                   <button type="button" id="live-tags-close-button" class="ui-button mt-dialog-cancel" role="button">
+                       <span class="ui-button-text">
+                           Cancel
+                       </span>
+                   </button>
+               </div>
+           </div>
+        </div>
+
+    </div>
+</div>
+
+<h1 id="title" data-title-editor-available="true">
+        <div id="deki-page-title" class="ui-state-noedit"><h1>Local Lab Preview</h1></div>
+        </div>
+</h1>
+
+                        <ol class="elm-meta-data elm-meta-top" data-ga-action="Page actions">
+                            <li class="elm-last-modified"><dl class="mt-last-updated-container">
+    <dt class="mt-last-updated-label">Last updated</dt>
+    <dd>
+        <span class="mt-last-updated" data-timestamp="2026-01-11T23:20:58Z"></span>
+            by [REDACTED]
+    </dd>
+</dl>
+</li>
+                            <li class="elm-page-restriction"><dl class="mt-page-restriction-container mt-restriction-private">
+    <dt class="mt-page-restriction-label">Page restriction</dt>
+    <dd class="mt-page-restriction">Private</dd>
+</dl>
+</li>
+                            <li class ="elm-meta-icons">
+                                <ul>
+                                    <li id="elm-pin-page"></li>
+
+                                    <li class="elm-page-notifications"><div id="deki-page-alerts">
+    <div class="toggle">
+            <a href="#" class="mt-icon-page-notification off" data-ga-label="Subscription widget toggle" title="Page notifications">
+                <span>
+                    Page notifications
+                </span>
+                <span class="status">
+                    Off
+                </span>
+            </a>
+    </div>
+    <form class="options" action="#" onsubmit="return false">
+        <div class="legend">
+                <a data-ga-label="Subscription help link" href="https://expert-help.nice.com/@go/cid/subscriptions" class="mt-f1-success mt-f1-link">
+                    <span class="ui-icon mt-icon-f1-link"></span>
+                </a>
+            Receive email notifications for<br>
+            (live and drafts):
+        </div>
+        <ul class="mt-subscription-options">
+                <li class="self">
+                    <input class="mt-checkbox" data-ga-label="Subscribe to page" type="radio" name="alert" id="deki-page-alerts-self"  value="1" />
+                    <label class="mt-label-checkbox" data-ga-label="Subscribe to page" for="deki-page-alerts-self">This page only</label>
+                </li>
+                <li class="tree">
+                    <input class="mt-checkbox" data-ga-label="Subscribe to tree" type="radio" name="alert" id="deki-page-alerts-tree"  value="2" />
+                    <label class="mt-label-checkbox" data-ga-label="Subscribe to tree" for="deki-page-alerts-tree">This page and all subpages</label>
+                </li>
+                <li class="off">
+                    <input class="mt-checkbox" data-ga-label="Unsubscribe" type="radio" name="alert" id="deki-page-alerts-off"  checked="checked"  value="0" />
+                    <label class="mt-label-checkbox" data-ga-label="Unsubscribe" for="deki-page-alerts-off">Turn OFF notifications for this page</label>
+                </li>
+        </ul>
+    </form>
+</div>
+
+</li>
+                                    <li class="elm-pdf-export"><a data-ga-label="PDF" href="https://chem.libretexts.org/@api/deki/pages/554933/pdf/1.1%253A%2bChapter%2b01.pdf" rel="nofollow" target="_blank" title="Export page as a PDF">
+    <span class="mt-icon-article-pdf"></span>Save as PDF
+</a></li>
+                                    <li class="elm-social-share"></li>
+                                </ul>
+                            </li>
+                        </ol>
+                    
+        </header>
+                <header class="mt-content-header">
+
+<li id="pageNumberHolder" class="pageInfo"><dl class="mt-page-restriction-container"><dt class="mt-page-restriction-label">Page ID</dt><dd>554933</dd></dl></li><link href="https://cdn.libretexts.net/github/LibreTextsMain/Miscellaneous/printYoutube.css" rel="stylesheet" type="text/css" /><link href="https://cdn.libretexts.net/github/ableplayer/build/ableplayer.min.css" rel="stylesheet" type="text/css" />
+
+<link rel="stylesheet" type="text/css" href="https://cdn.libretexts.net/github/LibreTextsMain/NavButtons/libreNavButtons.min.css" /><link rel="stylesheet" type="text/css" href="https://cdn.libretexts.net/github/LibreTextsMain/LicenseControl/licensecontrol.min.css" /><link rel="stylesheet" type="text/css" href="https://cdn.libretexts.net/github/LibreTextsMain/Leo%20Jayachandran/Glossarizer/libretextsGlossarizer.css" /><link rel="stylesheet" type="text/css" href="https://cdn.libretexts.net/github/LibreTextsMain/Aryan Suri/Citation/citation.css" />
+
+<link href="https://fonts.googleapis.com/css?family=Roboto&amp;display=swap" rel="stylesheet" /><link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" /><link href="https://fonts.googleapis.com/css?family=Ma+Shan+Zheng&amp;display=swap" rel="stylesheet" /><link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet" />
+
+<link href="https://pro.fontawesome.com/releases/v5.10.1/css/all.css" rel="stylesheet" />
+
+<div class="Headertext">
+<p>\( \newcommand{\vecs}[1]{\overset { \scriptstyle \rightharpoonup} {\mathbf{#1}}&nbsp;}&nbsp;\)</p>
+
+<p>\( \newcommand{\vecd}[1]{\overset{-\!-\!\rightharpoonup}{\vphantom{a}\smash&nbsp;{#1}}} \)</p>
+
+<p>\( \newcommand{\dsum}{\displaystyle\sum\limits} \)</p>
+
+<p>\( \newcommand{\dint}{\displaystyle\int\limits} \)</p>
+
+<p>\( \newcommand{\dlim}{\displaystyle\lim\limits} \)</p>
+
+<p>\( \newcommand{\id}{\mathrm{id}}\) \( \newcommand{\Span}{\mathrm{span}}\)</p>
+
+<p>( \newcommand{\kernel}{\mathrm{null}\,}\) \( \newcommand{\range}{\mathrm{range}\,}\)</p>
+
+<p>\( \newcommand{\RealPart}{\mathrm{Re}}\) \( \newcommand{\ImaginaryPart}{\mathrm{Im}}\)</p>
+
+<p>\( \newcommand{\Argument}{\mathrm{Arg}}\) \( \newcommand{\norm}[1]{\| #1 \|}\)</p>
+
+<p>\( \newcommand{\inner}[2]{\langle #1, #2 \rangle}\)</p>
+
+<p>\( \newcommand{\Span}{\mathrm{span}}\)</p>
+
+<p>\( \newcommand{\id}{\mathrm{id}}\)</p>
+
+<p>\( \newcommand{\Span}{\mathrm{span}}\)</p>
+
+<p>\( \newcommand{\kernel}{\mathrm{null}\,}\)</p>
+
+<p>\( \newcommand{\range}{\mathrm{range}\,}\)</p>
+
+<p>\( \newcommand{\RealPart}{\mathrm{Re}}\)</p>
+
+<p>\( \newcommand{\ImaginaryPart}{\mathrm{Im}}\)</p>
+
+<p>\( \newcommand{\Argument}{\mathrm{Arg}}\)</p>
+
+<p>\( \newcommand{\norm}[1]{\| #1 \|}\)</p>
+
+<p>\( \newcommand{\inner}[2]{\langle #1, #2 \rangle}\)</p>
+
+<p>\( \newcommand{\Span}{\mathrm{span}}\) \( \newcommand{\AA}{\unicode[.8,0]{x212B}}\)</p>
+
+<p>\( \newcommand{\vectorA}[1]{\vec{#1}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; % arrow\)</p>
+
+<p>\( \newcommand{\vectorAt}[1]{\vec{\text{#1}}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; % arrow\)</p>
+
+<p>\( \newcommand{\vectorB}[1]{\overset { \scriptstyle \rightharpoonup} {\mathbf{#1}}&nbsp;}&nbsp;\)</p>
+
+<p>\( \newcommand{\vectorC}[1]{\textbf{#1}}&nbsp;\)</p>
+
+<p>\( \newcommand{\vectorD}[1]{\overrightarrow{#1}}&nbsp;\)</p>
+
+<p>\( \newcommand{\vectorDt}[1]{\overrightarrow{\text{#1}}}&nbsp;\)</p>
+
+<p>\( \newcommand{\vectE}[1]{\overset{-\!-\!\rightharpoonup}{\vphantom{a}\smash{\mathbf {#1}}}} \)</p>
+
+<p>\( \newcommand{\vecs}[1]{\overset { \scriptstyle \rightharpoonup} {\mathbf{#1}}&nbsp;}&nbsp;\)</p>
+
+<p>\(\newcommand{\longvect}{\overrightarrow}\)</p>
+
+<p>\( \newcommand{\vecd}[1]{\overset{-\!-\!\rightharpoonup}{\vphantom{a}\smash&nbsp;{#1}}} \)</p>
+\(\newcommand{\avec}{\mathbf a}\) \(\newcommand{\bvec}{\mathbf b}\) \(\newcommand{\cvec}{\mathbf c}\) \(\newcommand{\dvec}{\mathbf d}\) \(\newcommand{\dtil}{\widetilde{\mathbf d}}\) \(\newcommand{\evec}{\mathbf e}\) \(\newcommand{\fvec}{\mathbf f}\) \(\newcommand{\nvec}{\mathbf n}\) \(\newcommand{\pvec}{\mathbf p}\) \(\newcommand{\qvec}{\mathbf q}\) \(\newcommand{\svec}{\mathbf s}\) \(\newcommand{\tvec}{\mathbf t}\) \(\newcommand{\uvec}{\mathbf u}\) \(\newcommand{\vvec}{\mathbf v}\) \(\newcommand{\wvec}{\mathbf w}\) \(\newcommand{\xvec}{\mathbf x}\) \(\newcommand{\yvec}{\mathbf y}\) \(\newcommand{\zvec}{\mathbf z}\) \(\newcommand{\rvec}{\mathbf r}\) \(\newcommand{\mvec}{\mathbf m}\) \(\newcommand{\zerovec}{\mathbf 0}\) \(\newcommand{\onevec}{\mathbf 1}\) \(\newcommand{\real}{\mathbb R}\) \(\newcommand{\twovec}[2]{\left[\begin{array}{r}#1 \\ #2 \end{array}\right]}\) \(\newcommand{\ctwovec}[2]{\left[\begin{array}{c}#1 \\ #2 \end{array}\right]}\) \(\newcommand{\threevec}[3]{\left[\begin{array}{r}#1 \\ #2 \\ #3 \end{array}\right]}\) \(\newcommand{\cthreevec}[3]{\left[\begin{array}{c}#1 \\ #2 \\ #3 \end{array}\right]}\) \(\newcommand{\fourvec}[4]{\left[\begin{array}{r}#1 \\ #2 \\ #3 \\ #4 \end{array}\right]}\) \(\newcommand{\cfourvec}[4]{\left[\begin{array}{c}#1 \\ #2 \\ #3 \\ #4 \end{array}\right]}\) \(\newcommand{\fivevec}[5]{\left[\begin{array}{r}#1 \\ #2 \\ #3 \\ #4 \\ #5 \\ \end{array}\right]}\) \(\newcommand{\cfivevec}[5]{\left[\begin{array}{c}#1 \\ #2 \\ #3 \\ #4 \\ #5 \\ \end{array}\right]}\) \(\newcommand{\mattwo}[4]{\left[\begin{array}{rr}#1 \amp #2 \\ #3 \amp #4 \\ \end{array}\right]}\) \(\newcommand{\laspan}[1]{\text{Span}\{#1\}}\) \(\newcommand{\bcal}{\cal B}\) \(\newcommand{\ccal}{\cal C}\) \(\newcommand{\scal}{\cal S}\) \(\newcommand{\wcal}{\cal W}\) \(\newcommand{\ecal}{\cal E}\) \(\newcommand{\coords}[2]{\left\{#1\right\}_{#2}}\) \(\newcommand{\gray}[1]{\color{gray}{#1}}\) \(\newcommand{\lgray}[1]{\color{lightgray}{#1}}\) \(\newcommand{\rank}{\operatorname{rank}}\) \(\newcommand{\row}{\text{Row}}\) \(\newcommand{\col}{\text{Col}}\) \(\renewcommand{\row}{\text{Row}}\) \(\newcommand{\nul}{\text{Nul}}\) \(\newcommand{\var}{\text{Var}}\) \(\newcommand{\corr}{\text{corr}}\) \(\newcommand{\len}[1]{\left|#1\right|}\) \(\newcommand{\bbar}{\overline{\bvec}}\) \(\newcommand{\bhat}{\widehat{\bvec}}\) \(\newcommand{\bperp}{\bvec^\perp}\) \(\newcommand{\xhat}{\widehat{\xvec}}\) \(\newcommand{\vhat}{\widehat{\vvec}}\) \(\newcommand{\uhat}{\widehat{\uvec}}\) \(\newcommand{\what}{\widehat{\wvec}}\) \(\newcommand{\Sighat}{\widehat{\Sigma}}\) \(\newcommand{\lt}{&lt;}\) \(\newcommand{\gt}{&gt;}\) \(\newcommand{\amp}{&amp;}\) \(\definecolor{fillinmathshade}{gray}{0.9}\)</div>
+</header>
+                <aside class="mt-content-side"></aside>
+            <aside id="mt-toc-container" data-title="Table of contents" data-collapsed="true">
+                <nav class="mt-toc-content mt-collapsible-section">
+                    <ol><li><a href="#WHAT_IS_CHEMISTRY.3F" rel="internal">WHAT IS CHEMISTRY?</a><ol><li><a href="#Burning_of_charcoal" rel="internal">Burning of charcoal</a></li><li><a href="#Burning_of_gasoline" rel="internal">Burning of gasoline</a></li><li><a href="#Fermentation_of_grape_juice" rel="internal">Fermentation of grape juice</a></li><li><a href="#Souring_of_wine" rel="internal">Souring of wine</a></li></ol></li><li><a href="#THE_SCIENTIFIC_METHOD" rel="internal">THE SCIENTIFIC METHOD</a><ol><li><a href="#Examples:" rel="internal">Examples:</a></li></ol></li><li><a href="#KEY_MATH_SKILLS_.26_CONCEPTS" rel="internal">KEY MATH SKILLS &amp; CONCEPTS</a><ol><li><a href="#Calculating_Percentages:" rel="internal">Calculating Percentages:</a></li><li><a href="#Solving_Equations:" rel="internal">Solving Equations:</a></li><li><a href="#Examples:_2" rel="internal">Examples:</a></li></ol></li><li><a href="#SCIENTIFIC_NOTATION" rel="internal">SCIENTIFIC NOTATION</a><ol><li><a href="#General_form:" rel="internal">General form:</a></li><li><a href="#Examples:_3" rel="internal">Examples:</a></li><li><a href="#Examples:_4" rel="internal">Examples:</a></li><li><a href="#Follow-up_Problems:" rel="internal">Follow-up Problems:</a></li></ol></li></ol>
+                </nav>
+            </aside>
+            <section class="mt-content-container">
+                <div id="mt-review-workflow"></div>
+                <div id="pageText"><!-- CONTENT_START -->{{CONTENT}}<!-- CONTENT_END --></div>
+                    <footer class="mt-content-footer">
+
+<hr class="autoattribution-divider" /><div class="autoattribution"><p><a target="_blank" class="internal mt-self-link" href="https://chem.libretexts.org/Workbench/LAMC_Chem_51/01%3A_Chapter_Notes/1.01%3A_Chapter_01" rel="internal">1.1: Chapter 01</a> is shared under a <a rel="nofollow" href="" target="_blank">not declared  </a>  license and was authored, remixed, and/or curated by LibreTexts.</p></div>
+
+</footer>
+            </section>
+
+            <footer class="elm-content-footer">
+                    <ol class="elm-meta-data elm-meta-article-navigation">
+                        <li class="elm-back-to-top"><a class="mt-icon-back-to-top" href="#title" id="mt-back-to-top" title="Jump back to top of this article">Back to top</a></li>
+                        <li class="elm-article-pagination"><ul class="mt-article-pagination" data-ga-action="Article pagination bottom">
+    <li class="mt-pagination-previous">
+
+            <a class="mt-icon-previous-article" data-ga-label="Previous page" href="https://chem.libretexts.org/Workbench/LAMC_Chem_51/01%3A_Chapter_Notes" title="1: Chapter Notes"><span>1: Chapter Notes</span></a>
+    </li>
+        <li class="mt-pagination-next">
+                <a class="mt-icon-next-article" data-ga-label="Next page" href="https://chem.libretexts.org/Workbench/LAMC_Chem_51/01%3A_Chapter_Notes/1.02%3A_Chapter_02" title="1.2: Chapter 02"><span>1.2: Chapter 02</span></a>
+        </li>
+</ul>
+</li>
+                    </ol>
+                    <div class="mt-feedback-form" data-path="Workbench/LAMC_Chem_51/01:_Chapter_Notes/1.01:_Chapter_01" data-user-email="[REDACTED]" data-page-title="1.1: Chapter 01" data-site-url="https://chem.libretexts.org/"><fieldset class="ui-dform-fieldset"><legend class="ui-dform-legend">Leave feedback</legend><div class="mt-field"><label class="mt-feedback-improve-label ui-dform-label" for="textarea-feedback">How can we improve this article?</label><textarea autocomplete="off" class="mt-feedback-improve-description ui-dform-textarea" id="textarea-feedback" spellcheck="false"></textarea></div><div class="mt-field"><input class="mt-feedback-consent-checkbox ui-dform-checkbox" data-ga-label="Feedback consent" id="mt-feedback-consent" type="checkbox"></input><label class="mt-feedback-consent-label mt-label-checkbox" data-ga-label="Feedback consent" for="mt-feedback-consent">Yes, you may contact me about this feedback.</label></div><div class="mt-field mt-submit"><button class="mt-feedback-submit mt-disabled ui-button ui-button-primary" data-ga-label="Submit feedback" id="deki-feedback-send">Submit feedback</button></div></fieldset></div></div></div>
+                    </div>
+    <table id="fileAttachTable" class="grid ui-table" data-attach-file-max="1000" data-attach-file-user-tz="-07:00" data-attach-file-page-id="554933" style="width: 100%;">
+    </table>
+
+</section>
+                
+            </footer>
+        
+    </article>
+    <footer class="elm-footer">
+        <nav class="elm-footer-siteinfo-nav elm-nav">
+            <div class="elm-nav-container">
+                <ol>
+                    <li class="elm-footer-copyright">&copy; Copyright 2026 Chemistry LibreTexts</li>
+                    <li class="elm-footer-powered-by"><a href="https://mindtouch.com/demo" class="mt-poweredby product " title="MindTouch" target="_blank">
+   Powered by CXone Expert
+   <span class="mt-registered">&reg;</span>
+</a></li>
+                </ol>
+            </div>
+        </nav>
+        <div class="elm-footer-custom">
+
+<div id="support-widget-container" class="support-widget"></div>
+
+<div class="mt-container-highlight">
+<nav class="elm-nav my-custom-class">
+<div class="elm-nav-container" id="bottomFooter">
+<p>The LibreTexts libraries are&nbsp;<a href="https://www.nice.com/resources/cxone-expert-knowledge-management" rel="external nofollow" target="_blank">Powered by NICE CXone Expert&nbsp;</a>and are supported by the Department of Education Open Textbook Pilot Project, the UC Davis Office of the Provost, the UC Davis Library, the California State University Affordable Learning Solutions Program, and Merlot. We also acknowledge previous National Science Foundation support under grant numbers 1246120, 1525057, and 1413739. <a target="_blank" title="https://libretexts.org/privacy" href="https://libretexts.org/privacy" rel="external noopener nofollow" class="link-https">Privacy Policy</a>. <a target="_blank" title="https://libretexts.org/terms-conditions" href="https://libretexts.org/terms-conditions" rel="external noopener nofollow" class="link-https">Terms &amp; Conditions</a>. <a href="https://commons.libretexts.org/accessibility" target="_blank" rel="external noopener nofollow" class="link-https">Accessibility Statement</a>.&nbsp;For more information contact us at<a href="mailto:info@libretexts.org" target="_blank" rel="external noopener nofollow" class="link-mailto">&nbsp;info@libretexts.org</a>.</p>
+</div>
+</nav>
+</div>
+
+</div>
+    </footer>
+</main>
+<div id="mt-modal-container"></div>
+
+</body>
+</html>

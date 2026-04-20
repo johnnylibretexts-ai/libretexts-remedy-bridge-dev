@@ -7,3 +7,7 @@ dist/
 .DS_Store
 out/
 coverage/
+
+# Authenticated site captures — contain logged-in user's private data,
+# must not ship. Public capture under research/conductor-clone/ is OK.
+research/conductor-clone-auth/
