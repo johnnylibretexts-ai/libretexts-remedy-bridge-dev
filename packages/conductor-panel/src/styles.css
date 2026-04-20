@@ -1,0 +1,74 @@
+:root {
+  --bg: #0f1115;
+  --surface: #171a21;
+  --border: #262a33;
+  --text: #e6e8eb;
+  --muted: #8a8f99;
+  --accent: #6cb6ff;
+  --error: #ff6b6b;
+  --warn: #ffcc66;
+  --info: #6cb6ff;
+  --ok: #7fdc9a;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.5 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+.panel {
+  max-width: 1080px;
+  margin: 24px auto;
+  padding: 0 20px;
+}
+
+.panel h1 { font-size: 18px; margin: 0 0 16px; }
+.panel h1 span { color: var(--muted); font-weight: 400; }
+
+.row { display: flex; gap: 8px; align-items: center; margin-bottom: 16px; }
+.row input[type="text"] {
+  flex: 1; padding: 8px 10px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--text); border-radius: 4px;
+  font-family: var(--mono); font-size: 13px;
+}
+.row select, .row button {
+  padding: 8px 12px; border: 1px solid var(--border); background: var(--surface);
+  color: var(--text); border-radius: 4px; cursor: pointer;
+}
+.row button[disabled] { opacity: 0.5; cursor: wait; }
+.row button.primary { background: #1e3a5f; border-color: var(--accent); }
+.row button.danger  { background: #3a1e1e; border-color: var(--error); }
+
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 6px; padding: 16px; margin-bottom: 16px;
+}
+.card h2 { font-size: 14px; margin: 0 0 8px; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.03em; }
+
+.finding { padding: 10px 0; border-bottom: 1px solid var(--border); }
+.finding:last-child { border-bottom: none; }
+.finding .sev { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 11px; margin-right: 6px; }
+.sev.error   { background: #3a1e1e; color: var(--error); }
+.sev.warning { background: #3a2e1e; color: var(--warn); }
+.sev.info    { background: #1e2a3a; color: var(--info); }
+.finding code { color: var(--muted); font-family: var(--mono); font-size: 12px; }
+
+pre.diff {
+  font-family: var(--mono); font-size: 12px; white-space: pre-wrap;
+  max-height: 360px; overflow: auto; margin: 0; padding: 10px;
+  background: #0a0c10; border-radius: 4px;
+}
+pre.diff .add { color: var(--ok); }
+pre.diff .del { color: var(--error); }
+pre.diff .meta { color: var(--muted); }
+
+.muted { color: var(--muted); }
+.mono  { font-family: var(--mono); }
+.status-ok    { color: var(--ok); }
+.status-warn  { color: var(--warn); }
+.status-error { color: var(--error); }

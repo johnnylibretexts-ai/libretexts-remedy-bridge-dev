@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Table + form remediation fixture</title>
+  </head>
+  <body>
+    <h1>Sample Data</h1>
+
+    <!-- Data table with no <caption>, no <thead>, and no scope on its <th> cells.
+         table-header rule should add a <caption> from the preceding <h2>.
+         table-structure rule should then add scope, <thead>/<tbody>, and id/headers. -->
+    <h2>Quarterly Sales</h2>
+    <table border="1">
+      <tr>
+        <th>Region</th>
+        <th>Q1</th>
+        <th>Q2</th>
+      </tr>
+      <tr>
+        <td>North</td>
+        <td>100</td>
+        <td>120</td>
+      </tr>
+      <tr>
+        <td>South</td>
+        <td>80</td>
+        <td>95</td>
+      </tr>
+    </table>
+
+    <!-- Form field with no label of any kind. form-label rule should insert
+         <label for="..."> immediately before the input. -->
+    <h2>Sign up</h2>
+    <form action="/noop" method="post">
+      First:
+      <input type="text" name="firstName" placeholder="First name" />
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+</html>

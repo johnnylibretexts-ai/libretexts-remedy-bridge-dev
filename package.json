@@ -1,0 +1,18 @@
+{
+  "name": "libretexts-remedy",
+  "version": "0.0.1",
+  "private": true,
+  "description": "LibreTexts accessibility remediation assistant — scans and fixes CXone Expert pages.",
+  "workspaces": [
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "scan": "npm run scan --workspace @libretexts/remedy-cli",
+    "test": "npm run test --workspaces --if-present"
+  },
+  "license": "MIT"
+}

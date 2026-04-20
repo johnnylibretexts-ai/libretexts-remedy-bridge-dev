@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.env
+.env.local
+.remedy/
+*.log
+.DS_Store
+out/
+coverage/

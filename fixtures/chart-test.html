@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Chart & Figure Test Fixture</title>
+</head>
+<body>
+  <h1>Chart & Figure Accessibility Test Fixture</h1>
+
+  <!-- Case 1: A bar-chart-like image with no alt, a chart-hinting filename,
+       and a caption-like paragraph beneath. chart-alt + figure-wrap should both
+       identify this; integration logic decides which runs first. -->
+  <section id="case-bar-chart">
+    <h2>Case 1 — bar chart, missing alt, adjacent caption</h2>
+    <p>
+      The chart shown below summarizes quarterly sales for fiscal year 2024.
+    </p>
+    <img
+      src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Bar_chart_example.svg/800px-Bar_chart_example.svg.png"
+      width="800"
+      height="500">
+    <p class="caption"><em>Figure 1: Quarterly sales by region, FY2024.</em></p>
+  </section>
+
+  <!-- Case 2: Labeled figure/caption pair using an unambiguous
+       "Figure 2:" prefix on the preceding paragraph. figure-wrap should
+       promote this into a proper <figure>/<figcaption>. -->
+  <section id="case-labeled-figure">
+    <h2>Case 2 — labeled figure with "Figure 2:" preceding prose</h2>
+    <p>Figure 2: Schematic of the photosynthesis light reactions.</p>
+    <img
+      src="https://example.libretexts.org/images/photosynthesis-diagram.png"
+      alt=""
+      width="600"
+      height="400">
+  </section>
+
+  <!-- Case 3: Plain <img> with alt="" and a chart-like filename
+       (chart_sales.png). chart-alt should fire (weak/decorative alt on
+       an obvious chart). No adjacent caption, so figure-wrap should NOT. -->
+  <section id="case-plain-chart">
+    <h2>Case 3 — plain img, alt="", chart-like filename</h2>
+    <p>Review the sales trends before continuing.</p>
+    <img src="https://example.libretexts.org/assets/chart_sales.png" alt="">
+  </section>
+
+  <!-- Case 4: Ordinary photograph with missing alt, short URL, small size.
+       Neither chart-alt nor figure-wrap should fire; img-alt.ts owns this. -->
+  <section id="case-photo">
+    <h2>Case 4 — ordinary photo (should NOT trigger chart rules)</h2>
+    <img src="https://example.libretexts.org/assets/portrait.jpg" width="200" height="250">
+  </section>
+</body>
+</html>

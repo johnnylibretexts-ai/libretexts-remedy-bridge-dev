@@ -1,0 +1,169 @@
+# LibreTexts Remedy
+
+Accessibility remediation assistant for LibreTexts CXone Expert pages.
+Scans pages for WCAG 2.1 AA issues and (coming soon) proposes AI-assisted fixes
+with a human-approval gate.
+
+See `/Users/libretexts/.claude/plans/can-you-use-claude-linked-tome.md` for the
+full plan.
+
+## Packages
+
+- **`@libretexts/remedy-core`** — pluggable rule engine + CXone I/O. Framework-agnostic.
+- **`@libretexts/remedy-cli`** — MVP demo target. `remedy scan <url>` / `remedy scan-file <html>`.
+- *(later)* `@libretexts/remedy-conductor-panel` — Conductor-hosted UI.
+- *(later)* `@libretexts/remedy-browser-widget` — in-page assistant for authors.
+
+## Quick start
+
+```bash
+npm install
+npm run build
+
+# Scan a local HTML file — no credentials required
+node packages/cli/dist/index.js scan-file fixtures/chap01-like.html
+
+# Show which environment is configured (tokens masked)
+node packages/cli/dist/index.js env
+```
+
+To scan a live page, copy `.env.example` to `.env` and fill in the
+CXone Expert service-account credentials:
+
+```bash
+cp .env.example .env
+# edit .env
+node packages/cli/dist/index.js scan https://dev.libretexts.org/Sandboxes/johnnyphung/chem51/01%3A_Chapter_Notes/Chap_01
+```
+
+## Safeguards (baked in)
+
+Every write has two independent rollback channels:
+
+1. **On-disk snapshot** (our own, kept forever) — before every `--apply`, the entire
+   before-HTML plus a metadata JSON is written to
+   `.remedy/snapshots/{pageId}/{timestamp}_{hash}.{html,json}`.
+   `remedy revert <page>` reads the newest one (or a specific one pinned by `--snapshot <ts>`)
+   and writes it back as a new CXone revision. The revert itself **also** saves a
+   pre-revert snapshot so the rollback is itself reversible.
+2. **CXone revision history** (platform-native) — every write creates a new revision on
+   dev.libretexts.org that an admin can restore from the page's revision panel. The CXone
+   revision id is captured in the audit log when the API returns it.
+
+Other safeguards:
+
+- **Dry-run is the default.** `fix` and `pipeline` require `--apply` + per-page y/N to write.
+- **Namespace allowlist.** `REMEDY_WRITE_ALLOWLIST` defaults to `^Sandboxes/`. Writes outside the allowlist throw `WriteNotAllowedError` before any HTTP call.
+- **Token masking.** `remedy env` never prints raw secrets.
+- **Audit log** at `.remedy/audit.log` records every apply with before/after hashes, snapshot path, CXone revision id, operator, and ISO timestamp.
+- **Secrets in `.env` only.** `.env` is git-ignored; `.env.example` is the template.
+
+### Reverting a write
+
+```bash
+# See what we have on disk
+node packages/cli/dist/index.js snapshots <page-url-or-id>
+
+# Preview the revert — shows the diff, writes nothing
+node packages/cli/dist/index.js revert <page-url-or-id> --dry-run
+
+# Restore (prompts y/N; saves a pre-revert safety snapshot)
+node packages/cli/dist/index.js revert <page-url-or-id>
+
+# Pin a specific snapshot
+node packages/cli/dist/index.js revert <page-url-or-id> --snapshot 2026-04-20T02:29:35.303Z
+```
+
+## MVP rules implemented
+
+| Rule | WCAG SC | Detects |
+|---|---|---|
+| `img-alt` | 1.1.1 | `<img>` missing alt, or alt that looks like a filename/URL |
+| `heading-order` | 1.3.1 | Skipped heading levels; empty headings |
+| `heading-as-bold` | 1.3.1 | `<p>` containing only `<strong>`/`<b>` (misused heading) |
+| `link-text-descriptive` | 2.4.4 | Bare URLs, "click here", empty link text |
+| `table-header` | 1.3.1 | Data tables missing `<th>` |
+| `duplicate-id` | 4.1.1 | Repeated element ids |
+
+## Fix (preview / apply)
+
+```bash
+# Dry-run (default): writes diff + fixed.html + findings.json under ./out/
+node packages/cli/dist/index.js fix "https://dev.libretexts.org/Sandboxes/johnnyphung/chem51/01%3A_Chapter_Notes/Chap_01"
+
+# Limit to specific rules
+node packages/cli/dist/index.js fix <url> --only img-alt,heading-as-bold
+
+# Apply (opt-in, per-page y/N; refuses non-Sandboxes/ paths by default)
+node packages/cli/dist/index.js fix <url> --apply --message "remediation pass 1"
+```
+
+Fixer capabilities:
+
+| Rule | Fix behavior |
+|---|---|
+| `img-alt` | Calls Gemini vision to generate concise alt text (≤150 chars, WCAG-appropriate). |
+| `heading-as-bold` | Promotes `<p><strong>X</strong></p>` to `<h3>`/`<h4>` based on nearest preceding heading level. |
+| `link-text-descriptive` | Bare-URL case only — rewrites to `<last-path-seg> (hostname)`. Generic phrases left for human. |
+| `table-header` | First row `<td>` → `<th scope="col">`, preserving attributes and children. |
+| `duplicate-id` | Keeps first occurrence; suffixes later ones (`foo`, `foo-2`, `foo-3`). |
+| `heading-order` | Flag-only (manual review required to restructure a document). |
+
+## Pipeline
+
+See [docs/PIPELINE.md](./docs/PIPELINE.md) for the full design (borrows shape from the sibling `project-remedy-server`).
+
+```
+fetch page → deterministic rules → axe-core → math detection
+                           │
+                           ▼
+                      merged findings
+                           │
+                           ▼
+         LLM strategy layer (Tier 1 default)
+           heads → images → links → tables → figures → math → contrast
+                           │
+                           ▼
+                      re-scan gate
+                           │
+                           ▼
+                 diff + fixed.html + report
+                           │
+                           ▼
+                  apply (human-gated)
+```
+
+### LLM providers (pick one)
+
+Switch via `REMEDY_LLM_PROVIDER` in `.env`:
+
+| Provider | Notes |
+|---|---|
+| `openrouter` | Free-tier models available. `OPENROUTER_API_KEY`. |
+| `ollama-cloud` | Subscription. `OLLAMA_API_KEY`. |
+| `ollama-local` | Local Ollama server. No key. |
+| `gemini-compat` | Google's OpenAI-compat endpoint. `GEMINI_API_KEY`. |
+| `custom` | Any OpenAI-compatible endpoint via `REMEDY_LLM_BASE_URL`. |
+
+All providers speak the same `/chat/completions` payload shape, so rules/strategies don't care which one is active.
+
+## Status
+
+- [x] Core library + CLI scan path (offline + live, verified on page 3971).
+- [x] Deterministic rule engine (11 rules: img-alt, heading-order, heading-as-bold, link-text, table-header, duplicate-id, math-accessible, chart-alt, figure-wrap, table-structure, form-label).
+- [x] Per-rule fixers + dry-run diff + LLM-powered alt text.
+- [x] Pipeline design borrowing from `project-remedy-server` (see [PIPELINE.md](./docs/PIPELINE.md)).
+- [x] OpenAI-compatible LLM provider abstraction (OpenRouter / Ollama Cloud / Ollama local / Gemini-compat).
+- [x] `axe-core` integration (jsdom-compatible ruleset).
+- [x] Math rule (MathJax / MathML detection + LaTeX-to-spoken-form describer).
+- [x] Strategy runner (`RemediationStrategyRunner` port; headings / images / links / contrast).
+- [x] Tier-1/Tier-2 escalation + re-scan gate (`runPipeline`).
+- [x] Tier-3 agent loop (inspect / apply_rule_fix / set_attribute / finish).
+- [x] Chart-to-accessible-HTML reconstruction (vision → alt + long description + `<table>` data equivalent).
+- [x] Table remediation (LLM-assisted scope + caption + thead/tbody + header ids).
+- [x] Form-label inference.
+- [x] **Snapshots + revert command** — full rollback for any live write.
+- [x] **CXone revision id capture** in audit log (platform-native recovery).
+- [ ] First live write to `Sandboxes/johnnyphung/remedy-test` (copy Chap_01 there first).
+- [ ] Review jsdom serializer behaviour (`<br />` → `<br>`, entity normalization) before writing production textbooks.
+- [ ] Conductor panel; browser widget.
