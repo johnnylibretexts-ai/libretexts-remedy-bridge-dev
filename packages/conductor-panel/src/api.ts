@@ -44,3 +44,46 @@ export const api = {
   preview: (page: string, tier: 1 | 2 | 3): Promise<PreviewResponse> => post('/api/preview', { page, tier }),
   apply:   (page: string, tier: 1 | 2 | 3): Promise<ApplyResponse>   => post('/api/apply',   { page, tier }),
 };
+
+// --- Local Lab API ---
+
+export interface LocalFixture {
+  name: string;
+  relPath: string;
+  size: number;
+}
+
+export interface LocalStrategyReport {
+  strategyId: string;
+  fixesApplied: string[];
+  errors: string[];
+  llmCalls: number;
+}
+
+export interface LocalRunResponse {
+  fixtureName?: string;
+  beforeHtml: string;
+  afterHtml: string;
+  diff: string;
+  findingsBefore: Finding[];
+  findingsAfter: Finding[];
+  strategyReports: LocalStrategyReport[];
+  bytePreserved: boolean;
+  fallbackReason?: string;
+  splicesApplied?: number;
+  elapsedMs: number;
+}
+
+export const localApi = {
+  async listFixtures(): Promise<{ fixtures: LocalFixture[] }> {
+    const res = await fetch('/api/local/fixtures');
+    if (!res.ok) throw new Error(`listFixtures: ${res.status}`);
+    return res.json();
+  },
+  runFixture(relPath: string, maxLlm?: number): Promise<LocalRunResponse> {
+    return post('/api/local/run', { source: 'fixture', relPath, maxLlm });
+  },
+  runInline(html: string, maxLlm?: number): Promise<LocalRunResponse> {
+    return post('/api/local/run', { source: 'inline', html, maxLlm });
+  },
+};

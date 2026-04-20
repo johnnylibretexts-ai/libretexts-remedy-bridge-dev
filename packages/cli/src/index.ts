@@ -16,6 +16,7 @@ import {
 } from '@libretexts/remedy-core';
 import { formatScanHuman } from './format.js';
 import { scanFile } from './scan-file.js';
+import { pipelineFile } from './pipeline-file.js';
 import { confirm } from './confirm.js';
 
 const program = new Command();
@@ -46,6 +47,28 @@ program
       handleError(err);
     }
   });
+
+program
+  .command('pipeline-file')
+  .description('Run the full remediation pipeline locally against an HTML file. No CXone writes.')
+  .argument('<file>', 'path to an HTML file')
+  .option('-o, --out <dir>', 'output directory (default: .remedy/local/<basename>)')
+  .option('--only <ids>', 'comma-separated rule ids to restrict findings')
+  .option('--max-llm <n>', 'cap LLM calls (0 disables LLM-dependent strategies)')
+  .option('--json', 'machine-readable summary to stdout')
+  .action(
+    async (
+      file: string,
+      opts: { out?: string; only?: string; maxLlm?: string; json?: boolean },
+    ) => {
+      try {
+        const code = await pipelineFile(file, opts);
+        process.exitCode = code;
+      } catch (err) {
+        handleError(err);
+      }
+    },
+  );
 
 program
   .command('scan')

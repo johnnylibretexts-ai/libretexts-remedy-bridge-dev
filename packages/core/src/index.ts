@@ -4,6 +4,7 @@ export * from './guardrails.js';
 export * from './scan.js';
 export * from './fix.js';
 export * from './pipeline.js';
+export * from './local-pipeline.js';
 export * from './tiers.js';
 export * from './revert.js';
 export * from './serialize.js';
