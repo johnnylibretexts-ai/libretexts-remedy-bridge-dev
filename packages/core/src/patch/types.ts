@@ -13,7 +13,9 @@ export interface Splice {
     | 'attr-unset'
     | 'text-replace'
     | 'start-tag-replace'
-    | 'end-tag-replace';
+    | 'end-tag-replace'
+    | 'children-insert'
+    | 'element-wrap';
 }
 
 export type FallbackReason =

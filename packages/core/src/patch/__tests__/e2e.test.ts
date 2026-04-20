@@ -27,11 +27,16 @@ describe('bytePreservePatch — Chap_01 shape', () => {
     expect(r.bytes!.slice(0, cutAt)).toBe(original.slice(0, cutAt));
   });
 
-  it('falls back cleanly when the mutation wraps an element (image-planner-style)', () => {
+  it('byte-preserves via element-wrap when an img is wrapped in a new figure (v2)', () => {
     const original = '<p>hi</p><img src="a.jpg"><p>bye</p>';
     const mutated = '<p>hi</p><figure><img src="a.jpg"></figure><p>bye</p>';
     const r = bytePreservePatch(original, mutated);
-    expect(r.ok).toBe(false);
-    expect(r.reason).toBe('unsupported-mutation');
+    expect(r.ok).toBe(true);
+    expect(r.splices).toHaveLength(1);
+    expect(r.splices[0]!.kind).toBe('element-wrap');
+    // The surrounding <p> siblings are untouched — that's the point.
+    expect(r.bytes!.startsWith('<p>hi</p>')).toBe(true);
+    expect(r.bytes!.endsWith('<p>bye</p>')).toBe(true);
+    expect(r.bytes!).toContain('<figure>');
   });
 });
