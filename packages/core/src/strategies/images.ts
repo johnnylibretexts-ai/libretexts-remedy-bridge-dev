@@ -1,4 +1,3 @@
-import { AltTextGenerator } from '../ai/alt-text.js';
 import { plan as planImage, handlers as imageHandlers } from '../image-planner/index.js';
 import type { PlannerInput } from '../image-planner/index.js';
 import { BaseStrategy, errorMessage } from './base.js';
@@ -7,19 +6,21 @@ import type { InternalStrategyContext, StrategyReport } from './types.js';
 /**
  * ImageStrategy
  *
- * For each `<img>` that needs attention, ask the image planner to classify
- * the image and choose a strategy id. Dispatch to the concrete handler in
- * `imageHandlers`. When no concrete handler exists for the chosen strategy,
- * fall back to a flat alt-text generation via vision (the project's
- * pre-planner behavior) so we don't regress during the handler rollout.
+ * For each `<img>` with a present `alt` attribute, ask the image planner to
+ * classify the image and choose a strategy id. Dispatch to the concrete
+ * handler in `imageHandlers`.
  *
- * The `needsAlt` gate still decides WHICH images are candidates:
- *   - missing `alt` attribute
- *   - generic alt text ("image", "photo", "diagram", …)
- *   - empty alt on an image that looks informational (large, or a URL that
- *     hints at a diagram)
+ * Processing gate (an image is a candidate if ANY of):
+ *   1. Generic alt text ("image", "photo", "diagram", …)
+ *   2. Empty alt on a visually informational image (large, or a URL that
+ *      hints at a diagram)
+ *   3. Empty alt + planner confidently classifies as decorative
+ *      (CSS class, container class, role=presentation, tiny size signals)
  *
- * The planner decides WHAT to do with each candidate.
+ * Images missing the `alt` attribute entirely fall to the img-alt rule layer.
+ *
+ * The planner decides WHAT to do with each candidate; the handler does the
+ * actual DOM mutation.
  */
 export class ImageStrategy extends BaseStrategy {
   readonly id = 'images';
@@ -50,14 +51,13 @@ export class ImageStrategy extends BaseStrategy {
     const imgs = Array.from(doc.querySelectorAll('img')) as HTMLImageElement[];
     if (imgs.length === 0) return;
 
-    let generator: AltTextGenerator | null = null;
     const pageContext = (doc.body?.textContent ?? '').replace(/\s+/g, ' ').trim();
 
     for (const img of imgs) {
       const alt = img.getAttribute('alt');
       const src = img.getAttribute('src') ?? '';
       if (!src) continue;
-      if (!this.needsAlt(img, alt, src)) continue;
+      if (alt === null) continue; // rule layer handles missing alt
 
       const absoluteSrc = absoluteUrl(src, ctx.hostname);
       const input: PlannerInput = {
@@ -68,10 +68,17 @@ export class ImageStrategy extends BaseStrategy {
         height: parseIntOrNull(img.getAttribute('height')) ?? undefined,
         role: img.getAttribute('role'),
         figcaption: findFigcaptionNear(img) ?? undefined,
+        cssClass: img.getAttribute('class') ?? undefined,
+        containerClass: findContainerClass(img) ?? undefined,
         contextExcerpt: pageContext.slice(0, 500),
       };
 
       const decision = planImage(input);
+
+      // Three independent gates; any true → process this image.
+      const needsAltSays = this.needsAlt(img, alt, src);
+      const decorativeOverride = alt === '' && decision.kind === 'decorative';
+      if (!needsAltSays && !decorativeOverride) continue;
 
       // decorative-mark costs no budget; everything else does.
       const needsLlm = decision.strategy !== 'decorative-mark';
@@ -107,14 +114,6 @@ export class ImageStrategy extends BaseStrategy {
           } else if (result.error) {
             report.errors.push(`${this.id}:${decision.strategy} ${result.error}`);
           }
-        } else if (decision.strategy === 'alt-text-vision') {
-          // No concrete handler yet → flat alt-text fallback (pre-planner behavior).
-          if (!generator) generator = new AltTextGenerator({ client: this.getLlm(ctx) });
-          const newAlt = await generator.generate(absoluteSrc, pageContext);
-          img.setAttribute('alt', newAlt);
-          report.fixesApplied.push(
-            `${label} set alt: "${truncate(newAlt, 60)}" src=${truncate(src, 40)}`,
-          );
         } else if (decision.strategy === 'manual-review') {
           report.errors.push(
             `${this.id}:manual-review (conf=${decision.confidence.toFixed(2)}) src=${truncate(src, 40)}`,
@@ -172,6 +171,21 @@ function findFigcaptionNear(img: HTMLElement): string | null {
       const text = cap?.textContent?.trim();
       return text || null;
     }
+    node = node.parentElement;
+  }
+  return null;
+}
+
+/**
+ * First non-empty `class` attribute walking up from the image.
+ * Feeds the planner's container-class signal (banner/header/logo/icon →
+ * chrome intent).
+ */
+function findContainerClass(el: HTMLElement): string | null {
+  let node: HTMLElement | null = el.parentElement;
+  while (node) {
+    const c = node.getAttribute('class');
+    if (c && c.trim()) return c;
     node = node.parentElement;
   }
   return null;

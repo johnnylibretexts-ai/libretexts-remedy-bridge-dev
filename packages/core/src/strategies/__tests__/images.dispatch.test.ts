@@ -41,6 +41,31 @@ describe('ImageStrategy dispatch', () => {
     expect(img.getAttribute('role')).toBe('presentation');
   });
 
+  it('decorative override: empty alt + class="icon" now routes to decorative-mark (previously skipped)', async () => {
+    // Before the reshape: this image passed needsAlt=false (empty alt + not informational-size + no URL match)
+    // so the strategy never saw it. With the decorative override, the planner's CSS-class signal
+    // classifies it decorative and decorative-mark runs.
+    const dom = new JSDOM(
+      '<!doctype html><html><body><img src="/chrome/bullet.png" alt="" class="icon"></body></html>',
+    );
+    const doc = dom.window.document;
+
+    const sentinelLlm = {
+      vision: async () => {
+        throw new Error('LLM must not be called for decorative-mark');
+      },
+    };
+    const strat = new ImageStrategy();
+    const report = await strat.apply(doc as unknown as Document, makeCtx(sentinelLlm));
+
+    expect(report.errors).toEqual([]);
+    expect(report.llmCalls).toBe(0);
+    expect(report.fixesApplied).toHaveLength(1);
+    expect(report.fixesApplied[0]).toMatch(/decorative-mark/);
+    const img = doc.querySelector('img')!;
+    expect(img.getAttribute('role')).toBe('presentation');
+  });
+
   it('routes a captioned flowchart img to flowchart-ol (stubbed vision)', async () => {
     // Use a data: URL so the handler's imageSourceFromUrl fetch doesn't hit the network.
     const dom = new JSDOM(

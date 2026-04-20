@@ -58,6 +58,10 @@ export interface PlannerInput {
   role?: string | null;
   /** Text of an ancestor `<figcaption>`, if present. */
   figcaption?: string;
+  /** Space-separated class attribute on the `<img>` itself. */
+  cssClass?: string;
+  /** Space-separated class attribute on the nearest ancestor element. */
+  containerClass?: string;
   /**
    * A short excerpt of the surrounding body text (prev + next siblings),
    * useful for context-aware alt generation later. Planner-level classifier
@@ -100,7 +104,7 @@ export interface PlannerConfig {
 export function defaultPlannerConfig(): PlannerConfig {
   return {
     minConfidence: 0.55,
-    decorativePxThreshold: 32,
+    decorativePxThreshold: 16,
     informationalPxThreshold: 400,
   };
 }

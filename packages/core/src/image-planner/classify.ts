@@ -71,6 +71,11 @@ const URL_PATTERNS: UrlPattern[] = [
 const CAPTION_FLOWCHART_TERMS = /\b(flow\s*chart|flow\s*diagram|pipeline|workflow|process flow|step-by-step)\b/i;
 const CAPTION_CHART_TERMS = /\b(chart|graph|plot|histogram|bar chart|pie chart|scatter)\b/i;
 
+/** Class-name tokens that mark the image itself as decorative. */
+const CSS_DECORATIVE_PATTERNS = /\b(decorative|icon|bullet|separator|spacer|bg)\b/i;
+/** Container-class tokens that suggest the image sits in chrome (logo, banner...). */
+const CONTAINER_DECORATIVE_PATTERNS = /\b(banner|header|logo|icon)\b/i;
+
 /** Aggregate per-kind scores from individual signals. */
 function tally(signals: ClassificationSignal[]): Map<ImageKind, number> {
   const out = new Map<ImageKind, number>();
@@ -153,6 +158,26 @@ export function classify(
         rationale: p.rationale,
       });
     }
+  }
+
+  // 3b. CSS class on the img itself.
+  if (input.cssClass && CSS_DECORATIVE_PATTERNS.test(input.cssClass)) {
+    signals.push({
+      source: 'css-class:decorative',
+      votes: 'decorative',
+      weight: 0.7,
+      rationale: 'img class token suggests decorative intent',
+    });
+  }
+
+  // 3c. Container class — nearest-ancestor class carries intent.
+  if (input.containerClass && CONTAINER_DECORATIVE_PATTERNS.test(input.containerClass)) {
+    signals.push({
+      source: 'container-class:decorative',
+      votes: 'decorative',
+      weight: 0.5,
+      rationale: 'ancestor container class suggests chrome/logo/banner',
+    });
   }
 
   // 4. Caption-text heuristics.
