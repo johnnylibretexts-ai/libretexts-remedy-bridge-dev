@@ -1,7 +1,7 @@
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { dirname, resolve, basename } from 'node:path';
 import kleur from 'kleur';
-import { scanHtmlFull, buildStats, type ScanResult } from '@libretexts/remedy-core';
+import { scanHtmlFull, buildStats, buildWcagReview, type ScanResult } from '@libretexts/remedy-core';
 import { formatScanHuman } from './format.js';
 
 export interface ScanFileOpts {
@@ -13,15 +13,19 @@ export async function scanFile(filePath: string, opts: ScanFileOpts): Promise<nu
   const absolutePath = resolve(filePath);
   const html = await readFile(absolutePath, 'utf8');
   const findings = await scanHtmlFull(html);
+  const scannedAt = new Date().toISOString();
+  const page = {
+    id: 0,
+    path: absolutePath,
+    title: basename(absolutePath),
+    hostname: 'local-file',
+  };
   const result: ScanResult = {
-    page: {
-      id: 0,
-      path: absolutePath,
-      title: basename(absolutePath),
-      hostname: 'local-file',
-    },
-    scannedAt: new Date().toISOString(),
+    page,
+    scannedAt,
     findings,
+    wcagReview: buildWcagReview({ html, findings, scannedAt, page }),
+    dojExceptions: [],
     stats: buildStats(findings),
   };
 

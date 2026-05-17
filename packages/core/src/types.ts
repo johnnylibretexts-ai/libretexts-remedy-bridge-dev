@@ -23,6 +23,8 @@ export interface ScanResult {
   page: PageRef;
   scannedAt: string;
   findings: Finding[];
+  wcagReview: WcagReview;
+  dojExceptions: DojException[];
   stats: {
     total: number;
     byRule: Record<string, number>;
@@ -56,4 +58,80 @@ export interface Rule {
 export interface FixContext {
   page: PageRef;
   env: NodeJS.ProcessEnv;
+}
+
+export type WcagLevel = 'A' | 'AA';
+
+export type WcagPrinciple = 'Perceivable' | 'Operable' | 'Understandable' | 'Robust';
+
+export type WcagCriterionStatus =
+  | 'pass'
+  | 'fail'
+  | 'not_applicable'
+  | 'manual_review'
+  | 'not_tested';
+
+export type WcagCriterionSource = 'scanner' | 'manual' | 'mixed' | 'not_tested';
+
+export interface WcagCriterionDefinition {
+  id: string;
+  title: string;
+  level: WcagLevel;
+  principle: WcagPrinciple;
+}
+
+export interface WcagEvidence {
+  source: Finding['source'];
+  ruleId: string;
+  findingId: string;
+  severity: Severity;
+  message: string;
+  selector?: string;
+  snippet?: string;
+  fixable: boolean;
+  exceptionId?: string;
+}
+
+export interface WcagCriterionResult extends WcagCriterionDefinition {
+  status: WcagCriterionStatus;
+  applicabilityReason: string;
+  source: WcagCriterionSource;
+  evidence: WcagEvidence[];
+  updatedAt: string;
+}
+
+export interface DojException {
+  id: string;
+  type: string;
+  scope: 'page' | 'evidence';
+  status: 'claimed' | 'verified' | 'rejected';
+  reason: string;
+  evidenceRefs: string[];
+  source: 'scanner' | 'manual' | 'import';
+  updatedAt: string;
+}
+
+export interface WcagReviewSummary {
+  score: number | null;
+  scorePassCount: number;
+  scoreFailCount: number;
+  scoreDenominator: number;
+  passCount: number;
+  failCount: number;
+  manualReviewCount: number;
+  notTestedCount: number;
+  exceptionCount: number;
+  verifiedExceptionCount: number;
+  notApplicableCount: number;
+  complete: boolean;
+}
+
+export interface WcagReview {
+  target: 'DOJ Title II';
+  standard: 'WCAG 2.1 Level A/AA';
+  wcagVersion: '2.1';
+  generatedAt: string;
+  scannedAt: string;
+  criteria: WcagCriterionResult[];
+  summary: WcagReviewSummary;
 }

@@ -25,17 +25,28 @@ export const linkTextRule: Rule = {
   severity: 'warning',
   description: 'Link text must describe the destination; avoid "click here" or bare URLs.',
   fix(doc, finding) {
-    // Only attempt the bare-URL case; generic-phrase and empty-text need human context.
-    if (finding.data?.reason !== 'bare-url') return false;
-    const href = String(finding.data.href);
-    const text = String(finding.data.text);
+    const href = String(finding.data?.href ?? '');
+    const text = String(finding.data?.text ?? '');
+    if (!href) return false;
     const anchors = Array.from(doc.querySelectorAll('a[href]')) as HTMLAnchorElement[];
     const target = anchors.find(
       (a) => (a.getAttribute('href') ?? '') === href && (a.textContent ?? '').trim() === text,
     );
     if (!target) return false;
-    target.textContent = humanizeUrl(href);
-    return true;
+
+    if (finding.data?.reason === 'bare-url') {
+      target.textContent = humanizeUrl(href);
+      return true;
+    }
+
+    if (finding.data?.reason === 'external-unlabeled') {
+      const label = destinationLabel(href);
+      if (!label || !text) return false;
+      target.textContent = `${text} (${label})`;
+      return true;
+    }
+
+    return false;
   },
   detect(doc) {
     const findings: ReturnType<Rule['detect']> = [];
@@ -77,6 +88,15 @@ export const linkTextRule: Rule = {
           data: { href, text, reason: 'generic-phrase' },
         });
       }
+
+      if (isExternalHref(href) && !hasDestinationLabel(a, href)) {
+        findings.push({
+          message: `External link text should identify the third-party destination: "${truncate(text, 80)}" -> ${truncate(href, 80)}`,
+          selector,
+          snippet: a.outerHTML.slice(0, 200),
+          data: { href, text, reason: 'external-unlabeled' },
+        });
+      }
     });
 
     return findings;
@@ -103,6 +123,49 @@ function humanizeUrl(href: string): string {
     return `${pretty} (${host})`;
   } catch {
     return href;
+  }
+}
+
+function isExternalHref(href: string): boolean {
+  if (!/^https?:\/\//i.test(href)) return false;
+  try {
+    const host = new URL(href).hostname.toLowerCase();
+    return !/(^|\.)libretexts\.org$/.test(host)
+      && !/(^|\.)libretexts\.net$/.test(host)
+      && !/(^|\.)libretexts\.com$/.test(host);
+  } catch {
+    return false;
+  }
+}
+
+function hasDestinationLabel(a: Element, href: string): boolean {
+  const label = destinationLabel(href);
+  if (!label) return true;
+  const host = hostname(href);
+  const siteName = label.split('.')[0] ?? label;
+  const text = [
+    a.textContent,
+    a.getAttribute('aria-label'),
+    a.getAttribute('title'),
+  ].filter(Boolean).join(' ').toLowerCase();
+  return text.includes(label.toLowerCase())
+    || text.includes(host.toLowerCase())
+    || text.includes(siteName.toLowerCase());
+}
+
+function destinationLabel(href: string): string | null {
+  const host = hostname(href);
+  if (!host) return null;
+  const parts = host.replace(/^www\./, '').split('.');
+  if (parts.length < 2) return host;
+  return parts.slice(-2).join('.');
+}
+
+function hostname(href: string): string {
+  try {
+    return new URL(href).hostname.replace(/^www\./, '');
+  } catch {
+    return '';
   }
 }
 

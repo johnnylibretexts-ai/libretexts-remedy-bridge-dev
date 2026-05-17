@@ -3,6 +3,7 @@ import type Expert from '@libretexts/cxone-expert-node';
 import { createExpertClient, normalizePageInput, resolvePageRef } from './client.js';
 import { defaultRules } from './rules/index.js';
 import { scanHtmlWithAxe } from './scan-axe.js';
+import { buildWcagReview } from './wcag.js';
 import type { Finding, PageRef, Rule, ScanResult, Severity } from './types.js';
 
 export interface ScanPageOptions {
@@ -123,11 +124,14 @@ export async function scanPage(
   const page: PageRef = await resolvePageRef(expert, pageInput, env);
   const html = await fetchPageHtml(expert, pageInput);
   const findings = await scanHtmlFull(html, { rules, axe: axeEnabled });
+  const scannedAt = new Date().toISOString();
 
   return {
     page,
-    scannedAt: new Date().toISOString(),
+    scannedAt,
     findings,
+    wcagReview: buildWcagReview({ html, findings, scannedAt, page }),
+    dojExceptions: [],
     stats: buildStats(findings),
     html,
   };

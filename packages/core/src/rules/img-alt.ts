@@ -71,6 +71,16 @@ export const imgAltRule: Rule = {
         return;
       }
 
+      if (alt.length > 150) {
+        findings.push({
+          message: `<img> alt text is ${alt.length} characters; keep alt text under 150 characters or move detail into nearby text/caption.`,
+          selector,
+          snippet: img.outerHTML.slice(0, 200),
+          data: { src, alt, reason: 'long-alt', length: alt.length },
+        });
+        return;
+      }
+
       if (looksLikeFilename(alt, src)) {
         findings.push({
           message: `<img> alt text looks like a filename/URL, not a description: "${truncate(alt, 80)}"`,

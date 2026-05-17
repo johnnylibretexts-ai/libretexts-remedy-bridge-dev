@@ -10,6 +10,9 @@ import { chartAltRule } from './chart-alt.js';
 import { figureWrapRule } from './figure-wrap.js';
 import { tableStructureRule } from './table-structure.js';
 import { formLabelRule } from './form-label.js';
+import { tableLabelRule } from './table-label.js';
+import { listStructureRule } from './list-structure.js';
+import { documentLinkRule } from './document-link.js';
 
 export const defaultRules: Rule[] = [
   imgAltRule,
@@ -23,6 +26,9 @@ export const defaultRules: Rule[] = [
   figureWrapRule,
   tableStructureRule,
   formLabelRule,
+  tableLabelRule,
+  listStructureRule,
+  documentLinkRule,
 ];
 
 export {
@@ -37,4 +43,7 @@ export {
   figureWrapRule,
   tableStructureRule,
   formLabelRule,
+  tableLabelRule,
+  listStructureRule,
+  documentLinkRule,
 };

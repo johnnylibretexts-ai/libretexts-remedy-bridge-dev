@@ -12,9 +12,17 @@ import { resolve, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   scanPage,
+  fixPage,
   runPipeline,
   canonicalizeHtml,
   runLocalPipeline,
+  hashContent,
+  conductorScanKeys,
+  buildConductorCriteria,
+  toConductorFindings,
+  buildWcagReview,
+  type DojException,
+  type WcagReview,
 } from '@libretexts/remedy-core';
 
 const PORT = Number(process.env.CONDUCTOR_API_PORT ?? 5175);
@@ -28,6 +36,88 @@ const FIXTURE_ROOT = resolve(REPO_ROOT, 'fixtures/local-lab');
 type Handler = (body: Record<string, unknown>) => Promise<unknown>;
 
 const routes: Record<string, Handler> = {
+  '/v1/cxone/page/scan': async (body) => {
+    const page = requirePageInput(body);
+    const result = await scanPage(page);
+    const findings = toConductorFindings(result.findings);
+    const dojExceptions = optionalDojExceptions(body.doj_exceptions ?? body.dojExceptions);
+    const wcagReview = buildWcagReview({
+      html: result.html,
+      findings: result.findings,
+      scannedAt: result.scannedAt,
+      page: result.page,
+      previousReview: optionalWcagReview(body.wcag_review ?? body.wcagReview),
+      exceptions: dojExceptions,
+    });
+    return {
+      page_id: result.page.id,
+      page_path: result.page.path,
+      page: result.page,
+      page_url: optionalStr(body.page_url),
+      section_title: optionalStr(body.section_title),
+      criteria: buildConductorCriteria(result.findings),
+      evaluated_keys: Array.from(conductorScanKeys),
+      wcag_review: wcagReview,
+      wcagReview,
+      doj_exceptions: dojExceptions,
+      dojExceptions,
+      findings,
+      stats: result.stats,
+      scanned_at: result.scannedAt,
+    };
+  },
+
+  '/v1/cxone/page/preview-fix': async (body) => {
+    const page = requirePageInput(body);
+    const findingIds = optionalStringArray(body.finding_ids ?? body.findingIds, 'finding_ids');
+    const result = await fixPage(page, {
+      mode: 'preview',
+      findingIds,
+    });
+    return {
+      page_id: result.page.id,
+      page_path: result.page.path,
+      hostname: result.page.hostname,
+      preview_hash: hashContent(result.before),
+      before_html: result.before,
+      after_html: result.after,
+      diff: result.diff,
+      attempted_rule_ids: result.attempted,
+      applied_rule_ids: result.applied,
+      noise_only_change: canonicalizeHtml(result.before) === canonicalizeHtml(result.after),
+    };
+  },
+
+  '/v1/cxone/page/apply-fix': async (body) => {
+    const page = requirePageInput(body);
+    const findingIds = optionalStringArray(body.finding_ids ?? body.findingIds, 'finding_ids');
+    const previewHash = requireStr(body.preview_hash ?? body.previewHash, 'preview_hash');
+    const preview = await fixPage(page, {
+      mode: 'preview',
+      findingIds,
+    });
+    const currentHash = hashContent(preview.before);
+    if (currentHash !== previewHash) {
+      throw new HttpError(409, {
+        error: 'stale_preview',
+        message: 'Page content changed since preview; refresh and preview again.',
+      });
+    }
+
+    const result = await fixPage(page, {
+      mode: 'apply',
+      findingIds,
+      revisionSummary: `Remedy: fixed ${findingIds.length} selected finding(s)`,
+    });
+    return {
+      applied: result.written,
+      revision_summary: result.revisionSummary,
+      snapshot_path: undefined,
+      attempted_rule_ids: result.attempted,
+      applied_rule_ids: result.applied,
+    };
+  },
+
   '/api/scan': async (body) => {
     const page = requireStr(body.page, 'page');
     const result = await scanPage(page);
@@ -123,6 +213,10 @@ const server = createServer(async (req, res) => {
     json(res, 200, result);
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
+    if (err instanceof HttpError) {
+      json(res, err.status, err.body);
+      return;
+    }
     json(res, 500, { error: msg });
   }
 });
@@ -156,8 +250,44 @@ function requireStr(v: unknown, name: string): string {
   return v;
 }
 
+function requirePageInput(body: Record<string, unknown>): string | number {
+  const pageUrl = optionalStr(body.page_url) ?? optionalStr(body.sectionURL) ?? optionalStr(body.page);
+  if (pageUrl) return pageUrl;
+  const pageId = body.page_id ?? body.pageID;
+  if (typeof pageId === 'number' && Number.isFinite(pageId)) return pageId;
+  if (typeof pageId === 'string' && pageId.trim()) return pageId;
+  throw new Error('missing field: page_url or page_id');
+}
+
+function optionalStr(v: unknown): string | undefined {
+  return typeof v === 'string' && v.trim() ? v : undefined;
+}
+
+function optionalStringArray(v: unknown, name: string): string[] {
+  if (v === undefined) return [];
+  if (!Array.isArray(v)) throw new Error(`${name} must be an array`);
+  return v.filter((item): item is string => typeof item === 'string' && item.length > 0);
+}
+
+function optionalDojExceptions(v: unknown): DojException[] {
+  return Array.isArray(v) ? (v as DojException[]) : [];
+}
+
+function optionalWcagReview(v: unknown): WcagReview | undefined {
+  return v && typeof v === 'object' ? (v as WcagReview) : undefined;
+}
+
 function requireTier(v: unknown): 1 | 2 | 3 {
   const n = Number(v);
   if (n !== 1 && n !== 2 && n !== 3) throw new Error(`tier must be 1|2|3`);
   return n;
+}
+
+class HttpError extends Error {
+  constructor(
+    readonly status: number,
+    readonly body: Record<string, unknown>,
+  ) {
+    super(typeof body.message === 'string' ? body.message : `HTTP ${status}`);
+  }
 }

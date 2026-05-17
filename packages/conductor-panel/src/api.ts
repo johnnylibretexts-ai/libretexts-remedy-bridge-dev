@@ -1,8 +1,10 @@
-import type { Finding, PageRef } from '@libretexts/remedy-core';
+import type { DojException, Finding, PageRef, WcagReview } from '@libretexts/remedy-core';
 
 export interface ScanResponse {
   page: PageRef;
   findings: Finding[];
+  wcagReview: WcagReview;
+  dojExceptions: DojException[];
   stats: { bySeverity: { error: number; warning: number; info: number } };
   scannedAt: string;
 }

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { api, type PreviewResponse, type ScanResponse } from '../api.js';
 import { FindingsList } from '../components/FindingsList.js';
 import { DiffView } from '../components/DiffView.js';
+import { WcagReviewPanel } from '../components/WcagReviewPanel.js';
 
 type Tier = 1 | 2 | 3;
 
@@ -76,7 +77,12 @@ export function ProductionTab() {
 
       {scan && !preview && (
         <div className="card">
-          <h2>Findings · {scan.page.path} <span className="muted">({scan.page.hostname})</span></h2>
+          <h2>Accessibility review</h2>
+          <WcagReviewPanel
+            page={scan.page}
+            review={scan.wcagReview}
+            exceptions={scan.dojExceptions}
+          />
           <div className="muted" style={{ marginBottom: 8 }}>
             <span className="status-error">{scan.stats.bySeverity.error} errors</span>
             {' · '}
@@ -84,7 +90,10 @@ export function ProductionTab() {
             {' · '}
             {scan.stats.bySeverity.info} info
           </div>
-          <FindingsList findings={scan.findings} />
+          <details>
+            <summary style={{ cursor: 'pointer' }}>scanner findings driving fixes</summary>
+            <FindingsList findings={scan.findings} />
+          </details>
         </div>
       )}
 
