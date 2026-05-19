@@ -13,15 +13,16 @@ function makeImg(html: string): { img: HTMLImageElement; doc: Document } {
 }
 
 /** Stub that records which methods were called and returns canned responses. */
-function stubLlm(opts: { visionReturn?: string; visionThrows?: boolean; chatReturn?: string; chatThrows?: boolean }) {
+function stubLlm(opts: { visionReturn?: string | string[]; visionThrows?: boolean; chatReturn?: string; chatThrows?: boolean }) {
   let visionCalls = 0;
   let chatCalls = 0;
+  const visionReturns = Array.isArray(opts.visionReturn) ? opts.visionReturn : [opts.visionReturn ?? ''];
   return {
     stub: {
       vision: async () => {
         visionCalls += 1;
         if (opts.visionThrows) throw new Error('vision blew up');
-        return opts.visionReturn ?? '';
+        return visionReturns[Math.min(visionCalls - 1, visionReturns.length - 1)] ?? '';
       },
       chat: async () => {
         chatCalls += 1;
@@ -49,7 +50,7 @@ describe('altTextVision', () => {
     // No extra calls beyond vision.
   });
 
-  it('tier A returns empty → tier B chat with DOM context succeeds', async () => {
+  it('empty vision output leaves the image unchanged', async () => {
     const { img, doc } = makeImg(`
       <h2>Cellular respiration overview</h2>
       <p>Following the citric acid cycle, the electron transport chain produces ATP:<img src="/figures/atp-synthesis.jpg"></p>
@@ -57,37 +58,39 @@ describe('altTextVision', () => {
     img.setAttribute('src', `/figures/atp-synthesis.jpg`);
     const llm = stubLlm({ visionReturn: '', chatReturn: 'Diagram of ATP synthesis in the electron transport chain.' });
     const r = await altTextVision(img, { doc, llm: llm.stub, absoluteSrc: DATA_URL });
-    expect(r.ok).toBe(true);
-    expect(r.mutation).toMatch(/context fallback/);
-    expect(img.getAttribute('alt')).toBe('Diagram of ATP synthesis in the electron transport chain.');
+    expect(r.ok).toBe(false);
+    expect(img.getAttribute('alt')).toBe(null);
+    expect(llm.chatCalls).toBe(0);
   });
 
-  it('tier A throws → falls back to tier B chat successfully', async () => {
+  it('vision errors leave the image unchanged', async () => {
     const { img, doc } = makeImg(`<figure><img src="/diagram.jpg"><figcaption>Krebs cycle</figcaption></figure>`);
     const llm = stubLlm({ visionThrows: true, chatReturn: 'Krebs cycle diagram.' });
     const r = await altTextVision(img, { doc, llm: llm.stub, absoluteSrc: DATA_URL });
-    expect(r.ok).toBe(true);
-    expect(img.getAttribute('alt')).toBe('Krebs cycle diagram.');
+    expect(r.ok).toBe(false);
+    expect(img.getAttribute('alt')).toBe(null);
+    expect(llm.chatCalls).toBe(0);
   });
 
-  it('both tiers empty → sets placeholder, still ok:true', async () => {
+  it('does not write a placeholder when vision returns nothing useful', async () => {
     const { img, doc } = makeImg('<img src="/x.jpg">');
     const llm = stubLlm({ visionReturn: '', chatReturn: '' });
     const r = await altTextVision(img, { doc, llm: llm.stub, absoluteSrc: DATA_URL });
-    expect(r.ok).toBe(true);
-    expect(r.mutation).toMatch(/placeholder/);
-    expect(img.getAttribute('alt')).toBe('Image description unavailable');
+    expect(r.ok).toBe(false);
+    expect(img.getAttribute('alt')).toBe(null);
   });
 
-  it('caps vision output at 125 characters with ellipsis', async () => {
+  it('retries overlong vision output instead of truncating with ellipsis', async () => {
     const long = 'A'.repeat(200);
     const { img, doc } = makeImg(`<img src="${DATA_URL}">`);
-    const llm = stubLlm({ visionReturn: long });
+    const llm = stubLlm({ visionReturn: [long, 'A concise diagram of ATP synthesis.'] });
     const r = await altTextVision(img, { doc, llm: llm.stub, absoluteSrc: DATA_URL });
     expect(r.ok).toBe(true);
     const alt = img.getAttribute('alt')!;
     expect(alt.length).toBeLessThanOrEqual(125);
-    expect(alt.endsWith('…')).toBe(true);
+    expect(alt).toBe('A concise diagram of ATP synthesis.');
+    expect(alt.endsWith('…')).toBe(false);
+    expect(llm.visionCalls).toBe(2);
   });
 
   it('strips surrounding quotes from LLM output', async () => {

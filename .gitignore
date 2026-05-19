@@ -8,6 +8,7 @@ dist/
 out/
 coverage/
 
-# Authenticated site captures — contain logged-in user's private data,
-# must not ship. Public capture under research/conductor-clone/ is OK.
+# Site captures can be large and may contain session-adjacent data; keep local
+# unless deliberately curated for a specific investigation.
+research/conductor-clone/
 research/conductor-clone-auth/

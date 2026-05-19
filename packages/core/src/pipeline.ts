@@ -21,21 +21,13 @@ import { createPatch } from 'diff';
 import type Expert from '@libretexts/cxone-expert-node';
 import { LLMClient } from './ai/llm-client.js';
 import { runAgentLoop } from './agent-loop.js';
-import { createExpertClient, normalizePageInput } from './client.js';
-import {
-  appendAudit,
-  assertWriteAllowed,
-  extractRevisionId,
-  hashContent,
-  operatorFromEnv,
-  saveSnapshot,
-} from './guardrails.js';
+import { createExpertClient } from './client.js';
 import { defaultRules } from './rules/index.js';
 import { scanHtmlFull, scanPage } from './scan.js';
 import { isNoiseOnlyChange } from './serialize.js';
-import { bytePreservePatch } from './patch/index.js';
 import { buildTierClient, shouldEscalate } from './tiers.js';
 import type { Finding, FixMode, PageRef, Rule } from './types.js';
+import { writePageRevision } from './write-page.js';
 
 export interface PipelineOptions {
   /** Max tier to run. Default 1. */
@@ -84,8 +76,11 @@ export interface PipelineResult {
   finalHtml: string;
   beforeHtml: string;
   diff: string;
+  appliedRuleIds: string[];
   applied: boolean;
   applyError?: string;
+  revisionSummary?: string;
+  snapshotPath?: string;
 }
 
 export async function runPipeline(
@@ -229,50 +224,29 @@ export async function runPipeline(
 
   // Apply gate (mirrors fix.ts guardrails — we cannot call fixPage in apply
   // mode because it would re-derive the "after" HTML from scratch).
+  const appliedRuleIds = collectAppliedRules(tiersRun);
   let applied = false;
   let applyError: string | undefined;
+  let revisionSummary: string | undefined;
+  let snapshotPath: string | undefined;
   if (mode === 'apply' && currentHtml !== beforeHtml && !isNoiseOnlyChange(beforeHtml, currentHtml)) {
     try {
-      assertWriteAllowed(page.path, env);
-      const revisionSummary =
+      revisionSummary =
         opts.revisionSummary ??
         `remedy-pipeline: ${tiersRun.map((t) => `T${t.tier}:${t.before}→${t.after}`).join(' ')}`;
-      // Pre-write snapshot — always save before-state so we can revert.
-      var snapshot = await saveSnapshot(beforeHtml, {
-        pageId: page.id,
-        pagePath: page.path,
-        hostname: page.hostname,
-        operator: operatorFromEnv(env),
-        rules: collectAppliedRules(tiersRun),
+      const write = await writePageRevision({
+        expert,
+        pageInput,
+        page,
+        beforeHtml,
+        afterHtml: currentHtml,
+        rules: appliedRuleIds,
         revisionSummary,
         source: 'pipeline',
-      }, env);
-      var patch = bytePreservePatch(beforeHtml, currentHtml);
-      var bytesToWrite = patch.bytes ?? currentHtml;
-      var postResponse = await expert.pages.postPageContents(
-        normalizePageInput(pageInput) as number,
-        bytesToWrite,
-        {
-          edittime: 'now',
-          comment: revisionSummary,
-        } as unknown as Parameters<typeof expert.pages.postPageContents>[2],
-      );
-      applied = true;
-      await appendAudit({
-        ts: new Date().toISOString(),
-        page: { id: page.id, path: page.path, hostname: page.hostname },
-        rules: collectAppliedRules(tiersRun),
-        mode,
-        beforeHash: hashContent(beforeHtml),
-        afterHash: hashContent(currentHtml),
-        operator: operatorFromEnv(env),
-        revisionSummary,
-        snapshotPath: snapshot.metaPath,
-        cxoneRevisionId: extractRevisionId(postResponse),
-        bytePreserved: patch.ok,
-        fallbackReason: patch.ok ? undefined : patch.reason,
-        splicesApplied: patch.ok ? patch.splices.length : undefined,
+        env,
       });
+      applied = write.written;
+      snapshotPath = write.snapshotPath;
     } catch (err) {
       applyError = errorMessage(err);
     }
@@ -287,8 +261,11 @@ export async function runPipeline(
     finalHtml: currentHtml,
     beforeHtml,
     diff,
+    appliedRuleIds,
     applied,
     applyError,
+    revisionSummary,
+    snapshotPath,
   };
 }
 

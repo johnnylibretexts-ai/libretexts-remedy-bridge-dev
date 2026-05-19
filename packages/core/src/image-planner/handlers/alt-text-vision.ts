@@ -1,103 +1,50 @@
-import { imageSourceFromUrl } from '../../ai/llm-client.js';
+import { AltTextGenerator } from '../../ai/alt-text.js';
 import type { HandlerFn } from './types.js';
 
 const MAX_ALT = 125;
-const FALLBACK_ALT = 'Image description unavailable';
-
-const VISION_PROMPT = `Generate concise, descriptive alt text for this image. The alt text should:
-1. Describe the essential content and function
-2. Be under ${MAX_ALT} characters
-3. Not begin with "Image of" or "Picture of"
-4. Be suitable for a screen reader
-
-Respond with ONLY the alt text, no quotes.`;
-
-function contextPrompt(parts: string[]): string {
-  return `Generate concise alt text (under ${MAX_ALT} characters) for an image based on this context:
-${parts.join('\n')}
-
-Respond with ONLY the alt text, no quotes.`;
-}
 
 /**
  * Two-tier alt-text generator.
  *
  *   Tier A: vision — fetch the image bytes, ask the vision LLM for a
  *           screen-reader-ready alt string.
- *   Tier B: chat-LLM with structured DOM context — when vision fails or
- *           returns nothing useful, build a prompt from the parent text,
- *           preceding heading, and filename stem, then ask the text LLM.
- *   Fallback: "${FALLBACK_ALT}" so screen readers always have *something*
- *           to announce rather than a bare `alt=""` the planner believed
- *           informational.
+ *           The prompt includes nearby DOM context. If the output is too
+ *           long, retry once with a shorter rewrite prompt.
  *
- * Caps at ${MAX_ALT} characters — the WCAG guideline. Returns ok=true in
- * every path (tier A success, tier B success, placeholder) because the
- * image always ends up with an alt attribute; caller uses llmCall:true
- * to count budget if vision or chat fired.
+ * If the LLM cannot produce acceptable alt text, leave the image unchanged
+ * and return ok=false. Do not truncate with an ellipsis and do not write a
+ * placeholder.
  */
 export const altTextVision: HandlerFn = async (img, ctx) => {
   if (!ctx.llm) {
     return { ok: false, error: 'alt-text-vision requires an LLM client' };
   }
 
-  // Tier A — vision.
   try {
-    const image = await imageSourceFromUrl(ctx.absoluteSrc);
-    const raw = await ctx.llm.vision({
-      image,
-      prompt: VISION_PROMPT,
-      maxTokens: 256,
+    const gen = new AltTextGenerator({
+      client: ctx.llm,
+      maxLength: MAX_ALT,
     });
-    const alt = cleanAlt(raw);
-    if (alt) {
-      img.setAttribute('alt', alt);
-      return {
-        ok: true,
-        mutation: `set alt (vision): "${truncate(alt, 60)}"`,
-        llmCall: true,
-      };
-    }
-  } catch {
-    // fall through to tier B
+    const contextParts = collectContext(img);
+    if (ctx.pageContext?.trim()) contextParts.push(`Page context: ${ctx.pageContext.trim().slice(0, 700)}`);
+    const alt = await gen.generate(ctx.absoluteSrc, {
+      existingAlt: img.getAttribute('alt') ?? undefined,
+      pageContext: contextParts.join('\n'),
+    });
+    img.setAttribute('alt', alt);
+    return {
+      ok: true,
+      mutation: `set alt (vision): "${truncate(alt, 60)}"`,
+      llmCall: true,
+    };
+  } catch (err) {
+    return {
+      ok: false,
+      error: err instanceof Error ? err.message : String(err),
+      llmCall: true,
+    };
   }
-
-  // Tier B — chat-LLM with DOM context clues.
-  const parts = collectContext(img);
-  if (parts.length > 0) {
-    try {
-      const raw = await ctx.llm.chat({
-        messages: [{ role: 'user', content: contextPrompt(parts) }],
-        maxTokens: 80,
-        temperature: 0.3,
-      });
-      const alt = cleanAlt(raw);
-      if (alt) {
-        img.setAttribute('alt', alt);
-        return {
-          ok: true,
-          mutation: `set alt (context fallback): "${truncate(alt, 60)}"`,
-          llmCall: true,
-        };
-      }
-    } catch {
-      // fall through to placeholder
-    }
-  }
-
-  img.setAttribute('alt', FALLBACK_ALT);
-  return {
-    ok: true,
-    mutation: `set alt (placeholder): "${FALLBACK_ALT}"`,
-    llmCall: true,
-  };
 };
-
-function cleanAlt(raw: string): string {
-  const trimmed = raw.trim().replace(/^["']|["']$/g, '').replace(/\s+/g, ' ');
-  if (!trimmed) return '';
-  return trimmed.length > MAX_ALT ? trimmed.slice(0, MAX_ALT - 1).trimEnd() + '…' : trimmed;
-}
 
 function collectContext(img: HTMLElement): string[] {
   const parts: string[] = [];

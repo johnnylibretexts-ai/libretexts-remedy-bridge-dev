@@ -5,18 +5,23 @@
  * @libretexts/remedy-core. Only runs locally for staff use; do not
  * expose to the public internet without auth.
  */
-import 'dotenv/config';
+import { randomUUID } from 'node:crypto';
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
 import { readdir, readFile, stat } from 'node:fs/promises';
 import { resolve, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { config as loadDotenv } from 'dotenv';
 import {
+  createExpertClient,
+  resolvePageRef,
   scanPage,
+  fetchPageHtml,
   fixPage,
   runPipeline,
   canonicalizeHtml,
   runLocalPipeline,
   hashContent,
+  writePageRevision,
   conductorScanKeys,
   buildConductorCriteria,
   toConductorFindings,
@@ -25,13 +30,55 @@ import {
   type WcagReview,
 } from '@libretexts/remedy-core';
 
-const PORT = Number(process.env.CONDUCTOR_API_PORT ?? 5175);
-
 // Repo root = three dirs up from packages/conductor-panel/server/server.ts.
 // Resolve from this file's URL so the server works regardless of cwd.
 const HERE = fileURLToPath(new URL('.', import.meta.url));
 const REPO_ROOT = resolve(HERE, '../../..');
+
+loadDotenv({ path: resolve(REPO_ROOT, '.env') });
+
+const PORT = Number(process.env.CONDUCTOR_API_PORT ?? 5175);
 const FIXTURE_ROOT = resolve(REPO_ROOT, 'fixtures/local-lab');
+const PIPELINE_PREVIEW_TTL_MS = Number(process.env.REMEDY_PIPELINE_PREVIEW_TTL_MS ?? 30 * 60 * 1000);
+
+type FixEngineMode = 'deterministic' | 'pipeline';
+
+interface PipelinePreviewSession {
+  token: string;
+  expiresAt: number;
+  pageId: number;
+  pagePath: string;
+  hostname: string;
+  tier: 1 | 2 | 3;
+  beforeHash: string;
+  beforeHtml: string;
+  afterHtml: string;
+  diff: string;
+  finalFindingsCount: number;
+  appliedRuleIds: string[];
+}
+
+const pipelinePreviewSessions = new Map<string, PipelinePreviewSession>();
+const targetedPreviewSessions = new Map<string, {
+  token: string;
+  expiresAt: number;
+  pageId: number;
+  pagePath: string;
+  hostname: string;
+  beforeHash: string;
+  beforeHtml: string;
+  afterHtml: string;
+  diff: string;
+  attemptedRuleIds: string[];
+  appliedRuleIds: string[];
+  attemptedFindingIds?: string[];
+  appliedFindingIds?: string[];
+  fixErrors?: unknown[];
+  llmCalls?: number;
+  bytePreserved?: boolean;
+  fallbackReason?: string;
+  splicesApplied?: number;
+}>();
 
 type Handler = (body: Record<string, unknown>) => Promise<unknown>;
 
@@ -69,29 +116,238 @@ const routes: Record<string, Handler> = {
 
   '/v1/cxone/page/preview-fix': async (body) => {
     const page = requirePageInput(body);
-    const findingIds = optionalStringArray(body.finding_ids ?? body.findingIds, 'finding_ids');
+    const fixMode = optionalFixMode(body.fix_mode ?? body.fixMode);
+    if (fixMode === 'pipeline') {
+      prunePipelinePreviewSessions();
+      const tier = optionalTier(body.tier) ?? 1;
+      const result = await runPipeline(page, {
+        tier,
+        mode: 'preview',
+      });
+      const token = randomUUID();
+      const previewHash = hashContent(result.beforeHtml);
+      pipelinePreviewSessions.set(token, {
+        token,
+        expiresAt: Date.now() + PIPELINE_PREVIEW_TTL_MS,
+        pageId: result.pageId,
+        pagePath: result.pagePath,
+        hostname: result.hostname,
+        tier,
+        beforeHash: previewHash,
+        beforeHtml: result.beforeHtml,
+        afterHtml: result.finalHtml,
+        diff: result.diff,
+        finalFindingsCount: result.finalFindingsCount,
+        appliedRuleIds: result.appliedRuleIds,
+      });
+      return {
+        fix_mode: 'pipeline',
+        page_wide: true,
+        page_id: result.pageId,
+        page_path: result.pagePath,
+        hostname: result.hostname,
+        tier,
+        preview_hash: previewHash,
+        preview_token: token,
+        previewToken: token,
+        before_html: result.beforeHtml,
+        after_html: result.finalHtml,
+        diff: result.diff,
+        attempted_rule_ids: result.appliedRuleIds,
+        applied_rule_ids: result.appliedRuleIds,
+        tiers_run: result.tiersRun,
+        final_findings_count: result.finalFindingsCount,
+        noise_only_change: canonicalizeHtml(result.beforeHtml) === canonicalizeHtml(result.finalHtml),
+      };
+    }
+
+    const findingIds = optionalStringArray(body.finding_ids ?? body.findingIds ?? body.findingIDs, 'finding_ids');
     const result = await fixPage(page, {
       mode: 'preview',
       findingIds,
     });
+    prunePreviewSessions();
+    const token = randomUUID();
+    const previewHash = hashContent(result.before);
+    targetedPreviewSessions.set(token, {
+      token,
+      expiresAt: Date.now() + PIPELINE_PREVIEW_TTL_MS,
+      pageId: result.page.id,
+      pagePath: result.page.path,
+      hostname: result.page.hostname,
+      beforeHash: previewHash,
+      beforeHtml: result.before,
+      afterHtml: result.after,
+      diff: result.diff,
+      attemptedRuleIds: result.attempted,
+      appliedRuleIds: result.applied,
+      attemptedFindingIds: result.attemptedFindingIds,
+      appliedFindingIds: result.appliedFindingIds,
+      fixErrors: result.fixErrors,
+      llmCalls: result.llmCalls,
+      bytePreserved: result.bytePreserved,
+      fallbackReason: result.fallbackReason,
+      splicesApplied: result.splicesApplied,
+    });
     return {
+      fix_mode: 'deterministic',
+      page_wide: false,
       page_id: result.page.id,
       page_path: result.page.path,
       hostname: result.page.hostname,
-      preview_hash: hashContent(result.before),
+      preview_hash: previewHash,
+      preview_token: token,
+      previewToken: token,
       before_html: result.before,
       after_html: result.after,
       diff: result.diff,
       attempted_rule_ids: result.attempted,
       applied_rule_ids: result.applied,
+      attempted_finding_ids: result.attemptedFindingIds,
+      applied_finding_ids: result.appliedFindingIds,
+      fix_errors: result.fixErrors,
+      llm_calls: result.llmCalls,
       noise_only_change: canonicalizeHtml(result.before) === canonicalizeHtml(result.after),
+      byte_preserved: result.bytePreserved,
+      fallback_reason: result.fallbackReason,
+      splices_applied: result.splicesApplied,
     };
   },
 
   '/v1/cxone/page/apply-fix': async (body) => {
     const page = requirePageInput(body);
-    const findingIds = optionalStringArray(body.finding_ids ?? body.findingIds, 'finding_ids');
+    const fixMode = optionalFixMode(body.fix_mode ?? body.fixMode);
+    if (fixMode === 'pipeline') {
+      prunePipelinePreviewSessions();
+      const previewHash = requireStr(body.preview_hash ?? body.previewHash, 'preview_hash');
+      const previewToken = requireStr(body.preview_token ?? body.previewToken, 'preview_token');
+      const session = pipelinePreviewSessions.get(previewToken);
+      if (!session || session.expiresAt <= Date.now()) {
+        pipelinePreviewSessions.delete(previewToken);
+        throw new HttpError(409, {
+          error: 'expired_preview',
+          message: 'Pipeline preview expired; refresh and preview again.',
+        });
+      }
+      if (session.beforeHash !== previewHash) {
+        throw new HttpError(409, {
+          error: 'stale_preview',
+          message: 'Preview hash does not match the cached pipeline preview; refresh and preview again.',
+        });
+      }
+
+      const env = process.env;
+      const expert = createExpertClient(env);
+      const pageRef = await resolvePageRef(expert, page, env);
+      if (pageRef.id !== session.pageId) {
+        throw new HttpError(409, {
+          error: 'preview_page_mismatch',
+          message: 'Pipeline preview was created for a different page; refresh and preview again.',
+        });
+      }
+      const currentHtml = await fetchPageHtml(expert, page);
+      const currentHash = hashContent(currentHtml);
+      if (currentHash !== previewHash) {
+        throw new HttpError(409, {
+          error: 'stale_preview',
+          message: 'Page content changed since preview; refresh and preview again.',
+        });
+      }
+
+      const revisionSummary = `Remedy pipeline: applied Tier ${session.tier} page-wide preview`;
+      const write = await writePageRevision({
+        expert,
+        pageInput: page,
+        page: pageRef,
+        beforeHtml: currentHtml,
+        afterHtml: session.afterHtml,
+        rules: session.appliedRuleIds,
+        revisionSummary,
+        source: 'pipeline',
+        env,
+      });
+      pipelinePreviewSessions.delete(previewToken);
+      return {
+        fix_mode: 'pipeline',
+        page_wide: true,
+        applied: write.written,
+        revision_summary: write.revisionSummary,
+        snapshot_path: write.snapshotPath,
+        attempted_rule_ids: session.appliedRuleIds,
+        applied_rule_ids: session.appliedRuleIds,
+        final_findings_count: session.finalFindingsCount,
+      };
+    }
+
+    const findingIds = optionalStringArray(body.finding_ids ?? body.findingIds ?? body.findingIDs, 'finding_ids');
     const previewHash = requireStr(body.preview_hash ?? body.previewHash, 'preview_hash');
+    const previewToken = optionalStr(body.preview_token ?? body.previewToken);
+    if (previewToken) {
+      prunePreviewSessions();
+      const session = targetedPreviewSessions.get(previewToken);
+      if (!session || session.expiresAt <= Date.now()) {
+        targetedPreviewSessions.delete(previewToken);
+        throw new HttpError(409, {
+          error: 'expired_preview',
+          message: 'Preview expired; refresh and preview again.',
+        });
+      }
+      if (session.beforeHash !== previewHash) {
+        throw new HttpError(409, {
+          error: 'stale_preview',
+          message: 'Preview hash does not match the cached preview; refresh and preview again.',
+        });
+      }
+
+      const env = process.env;
+      const expert = createExpertClient(env);
+      const pageRef = await resolvePageRef(expert, page, env);
+      if (pageRef.id !== session.pageId) {
+        throw new HttpError(409, {
+          error: 'preview_page_mismatch',
+          message: 'Preview was created for a different page; refresh and preview again.',
+        });
+      }
+      const currentHtml = await fetchPageHtml(expert, page);
+      const currentHash = hashContent(currentHtml);
+      if (currentHash !== previewHash) {
+        throw new HttpError(409, {
+          error: 'stale_preview',
+          message: 'Page content changed since preview; refresh and preview again.',
+        });
+      }
+
+      const revisionSummary = `Remedy: fixed ${session.appliedFindingIds?.length ?? findingIds.length} selected finding(s)`;
+      const write = await writePageRevision({
+        expert,
+        pageInput: page,
+        page: pageRef,
+        beforeHtml: currentHtml,
+        afterHtml: session.afterHtml,
+        rules: session.appliedRuleIds,
+        revisionSummary,
+        source: 'fix',
+        env,
+      });
+      targetedPreviewSessions.delete(previewToken);
+      return {
+        fix_mode: 'deterministic',
+        page_wide: false,
+        applied: write.written,
+        revision_summary: write.revisionSummary,
+        snapshot_path: write.snapshotPath,
+        attempted_rule_ids: session.attemptedRuleIds,
+        applied_rule_ids: session.appliedRuleIds,
+        attempted_finding_ids: session.attemptedFindingIds,
+        applied_finding_ids: session.appliedFindingIds,
+        fix_errors: session.fixErrors,
+        llm_calls: session.llmCalls,
+        byte_preserved: session.bytePreserved,
+        fallback_reason: session.fallbackReason,
+        splices_applied: session.splicesApplied,
+      };
+    }
+
     const preview = await fixPage(page, {
       mode: 'preview',
       findingIds,
@@ -110,11 +366,20 @@ const routes: Record<string, Handler> = {
       revisionSummary: `Remedy: fixed ${findingIds.length} selected finding(s)`,
     });
     return {
+      fix_mode: 'deterministic',
+      page_wide: false,
       applied: result.written,
       revision_summary: result.revisionSummary,
-      snapshot_path: undefined,
+      snapshot_path: result.snapshotPath,
       attempted_rule_ids: result.attempted,
       applied_rule_ids: result.applied,
+      attempted_finding_ids: result.attemptedFindingIds,
+      applied_finding_ids: result.appliedFindingIds,
+      fix_errors: result.fixErrors,
+      llm_calls: result.llmCalls,
+      byte_preserved: result.bytePreserved,
+      fallback_reason: result.fallbackReason,
+      splices_applied: result.splicesApplied,
     };
   },
 
@@ -269,6 +534,12 @@ function optionalStringArray(v: unknown, name: string): string[] {
   return v.filter((item): item is string => typeof item === 'string' && item.length > 0);
 }
 
+function optionalFixMode(v: unknown): FixEngineMode {
+  if (v === undefined || v === null || v === '') return 'deterministic';
+  if (v === 'deterministic' || v === 'pipeline') return v;
+  throw new Error('fix_mode must be deterministic|pipeline');
+}
+
 function optionalDojExceptions(v: unknown): DojException[] {
   return Array.isArray(v) ? (v as DojException[]) : [];
 }
@@ -282,6 +553,22 @@ function requireTier(v: unknown): 1 | 2 | 3 {
   if (n !== 1 && n !== 2 && n !== 3) throw new Error(`tier must be 1|2|3`);
   return n;
 }
+
+function optionalTier(v: unknown): 1 | 2 | 3 | undefined {
+  if (v === undefined || v === null || v === '') return undefined;
+  return requireTier(v);
+}
+
+function prunePreviewSessions(now = Date.now()): void {
+  for (const [token, session] of pipelinePreviewSessions) {
+    if (session.expiresAt <= now) pipelinePreviewSessions.delete(token);
+  }
+  for (const [token, session] of targetedPreviewSessions) {
+    if (session.expiresAt <= now) targetedPreviewSessions.delete(token);
+  }
+}
+
+const prunePipelinePreviewSessions = prunePreviewSessions;
 
 class HttpError extends Error {
   constructor(

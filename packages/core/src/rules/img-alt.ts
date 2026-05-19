@@ -22,15 +22,47 @@ export const imgAltRule: Rule = {
     if (!src) return false;
     const img = findImageBySrc(doc, src);
     if (!img) return false;
+    const pageText = (doc.body?.textContent ?? '').replace(/\s+/g, ' ').trim();
+    if (finding.data?.reason === 'long-alt') {
+      const currentAlt = typeof finding.data.alt === 'string'
+        ? finding.data.alt
+        : img.getAttribute('alt') ?? '';
+      try {
+        const gen = new AltTextGenerator({
+          client: ctx.getLlm?.() ?? ctx.llm,
+          consumeLlmCall: ctx.consumeLlmCall,
+        });
+        const alt = await gen.generate(absoluteUrl(src, ctx.page.hostname), {
+          existingAlt: currentAlt,
+          caption: findFigcaptionNear(img) ?? undefined,
+          pageContext: pageText,
+        });
+        if (!alt || alt === img.getAttribute('alt')) return false;
+        img.setAttribute('alt', alt);
+        return true;
+      } catch (err) {
+        const message = err instanceof Error ? err.message : String(err);
+        ctx.recordFixError?.(`Could not generate replacement alt text: ${message}`);
+        if (process.env.DEBUG) console.error('img-alt long-alt fix failed:', err);
+        return false;
+      }
+    }
     try {
-      const gen = new AltTextGenerator();
-      const pageText = (doc.body?.textContent ?? '').replace(/\s+/g, ' ').trim();
-      const alt = await gen.generate(absoluteUrl(src, ctx.page.hostname), pageText);
+      const gen = new AltTextGenerator({
+        client: ctx.getLlm?.() ?? ctx.llm,
+        consumeLlmCall: ctx.consumeLlmCall,
+      });
+      const alt = await gen.generate(absoluteUrl(src, ctx.page.hostname), {
+        caption: findFigcaptionNear(img) ?? undefined,
+        pageContext: pageText,
+      });
       img.setAttribute('alt', alt);
       return true;
     } catch (err) {
       // Soft failure — return false so the orchestrator logs a "couldn't fix" entry.
       // Detailed error bubbles via DEBUG.
+      const message = err instanceof Error ? err.message : String(err);
+      ctx.recordFixError?.(`Could not generate alt text: ${message}`);
       if (process.env.DEBUG) console.error('img-alt fix failed:', err);
       return false;
     }
@@ -151,8 +183,20 @@ function findImageBySrc(doc: Document, src: string): HTMLImageElement | null {
   return (imgs.find((i) => (i.getAttribute('src') ?? '') === src) ?? null) as HTMLImageElement | null;
 }
 
+function findFigcaptionNear(img: HTMLElement): string | null {
+  let node: HTMLElement | null = img.parentElement;
+  while (node) {
+    if (node.tagName.toLowerCase() === 'figure') {
+      const text = node.querySelector('figcaption')?.textContent?.replace(/\s+/g, ' ').trim();
+      return text || null;
+    }
+    node = node.parentElement;
+  }
+  return null;
+}
+
 function absoluteUrl(src: string, hostname: string): string {
-  if (/^https?:\/\//i.test(src)) return src;
+  if (/^(https?|data|blob):/i.test(src)) return src;
   if (src.startsWith('//')) return `https:${src}`;
   if (src.startsWith('/')) return `https://${hostname}${src}`;
   return `https://${hostname}/${src}`;

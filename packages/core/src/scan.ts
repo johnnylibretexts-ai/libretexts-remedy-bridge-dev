@@ -72,12 +72,12 @@ export function scanHtml(html: string, rules: Rule[] = defaultRules): Finding[] 
     const raw = rule.detect(doc);
     for (const r of raw) {
       findings.push({
+        ...r,
         ruleId: rule.id,
         wcag: rule.wcag,
         severity: rule.severity,
         source: 'remedy',
-        fixable: typeof rule.fix === 'function',
-        ...r,
+        fixable: typeof rule.fix === 'function' && (r.fixable ?? true),
       });
     }
   }

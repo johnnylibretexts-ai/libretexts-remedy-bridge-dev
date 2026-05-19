@@ -34,23 +34,27 @@ export const mathAccessibleRule: Rule = {
       if (hasAccessibleName(el)) return;
       const source = extractSource(el);
       if (isMathPlaceholder(el, source)) return;
+      const renderedSvg = !source ? getRenderedSvg(el) : null;
       findings.push({
         message: source
           ? `Math expression has no aria-label; source available (${source.kind}).`
-          : 'Math expression has no aria-label and no recoverable source (LaTeX/MathML). Manual review needed.',
+          : renderedSvg
+            ? 'Math expression has no aria-label; rendered MathJax SVG is available for vision description.'
+            : 'Math expression has no aria-label and no recoverable source (LaTeX/MathML). Manual review needed.',
         selector: buildSelector(el, idx),
         snippet: el.outerHTML.slice(0, 300),
+        fixable: Boolean(source || renderedSvg),
         data: {
-          sourceKind: source?.kind ?? 'none',
+          sourceKind: source?.kind ?? (renderedSvg ? 'svg' : 'none'),
           source: source?.value,
-          reason: source ? 'missing-aria-label' : 'no-recoverable-source',
+          reason: source ? 'missing-aria-label' : (renderedSvg ? 'rendered-svg' : 'no-recoverable-source'),
         },
       });
     });
     return findings;
   },
 
-  async fix(doc, finding) {
+  async fix(doc, finding, ctx) {
     const nodes = collectMathNodes(doc);
     // Match by selector idx
     const idxMatch = finding.selector?.match(/:nth-of-type\((\d+)\)/);
@@ -61,16 +65,29 @@ export const mathAccessibleRule: Rule = {
     const source = finding.data?.source as string | undefined;
 
     try {
-      const describer = new MathDescriber();
+      const describer = new MathDescriber({
+        client: ctx.getLlm?.() ?? ctx.llm,
+        consumeLlmCall: ctx.consumeLlmCall,
+      });
       let description: string | null = null;
       if (kind === 'latex' && source) description = await describer.fromLatex(source);
       else if (kind === 'mathml' && source) description = await describer.fromMathML(source);
-      // Skip SVG-image fallback here — fetching a rendered MathJax SVG as an image
-      // requires a headless browser; defer to a future strategy.
+      else if (kind === 'svg') {
+        const svg = getRenderedSvg(target);
+        if (!svg) return false;
+        description = await describer.fromSvg(svg);
+      }
       if (!description) return false;
       target.setAttribute('aria-label', description);
+      if (!target.hasAttribute('role')) target.setAttribute('role', 'math');
+      target.querySelectorAll('svg').forEach((svg) => {
+        svg.setAttribute('aria-hidden', 'true');
+        svg.setAttribute('focusable', 'false');
+      });
       return true;
     } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      ctx.recordFixError?.(`Could not generate math aria-label: ${message}`);
       if (process.env.DEBUG) console.error('math-accessible fix failed:', err);
       return false;
     }
@@ -157,6 +174,14 @@ function extractSource(el: Element): MathSource | null {
   if (dm && dm.trim()) return { kind: 'mathml', value: dm };
 
   return null;
+}
+
+function getRenderedSvg(el: Element): string | null {
+  const svg = el.tagName.toLowerCase() === 'svg'
+    ? el
+    : el.querySelector('svg');
+  const outer = svg?.outerHTML?.trim();
+  return outer || null;
 }
 
 function buildSelector(el: Element, idx: number): string {

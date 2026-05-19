@@ -1,3 +1,5 @@
+import type { LLMClient } from './ai/llm-client.js';
+
 export type Severity = 'error' | 'warning' | 'info';
 
 export interface PageRef {
@@ -34,6 +36,12 @@ export interface ScanResult {
 
 export type FixMode = 'preview' | 'apply';
 
+export type PatchFallbackReason =
+  | 'unsupported-mutation'
+  | 'no-source-location'
+  | 'verification-mismatch'
+  | 'parse-error';
+
 export interface FixResult {
   page: PageRef;
   mode: FixMode;
@@ -44,20 +52,43 @@ export interface FixResult {
   diff: string;
   written: boolean;
   revisionSummary?: string;
+  snapshotPath?: string;
+  bytePreserved?: boolean;
+  fallbackReason?: PatchFallbackReason;
+  splicesApplied?: number;
+  attemptedFindingIds?: string[];
+  appliedFindingIds?: string[];
+  fixErrors?: FixError[];
+  llmCalls?: number;
 }
+
+export interface FixError {
+  ruleId: string;
+  findingId?: string;
+  selector?: string;
+  message: string;
+}
+
+export type RuleDetection = Omit<Finding, 'ruleId' | 'wcag' | 'severity' | 'source' | 'fixable'> & {
+  fixable?: boolean;
+};
 
 export interface Rule {
   id: string;
   wcag?: string;
   severity: Severity;
   description: string;
-  detect(doc: Document): Array<Omit<Finding, 'ruleId' | 'wcag' | 'severity' | 'source' | 'fixable'>>;
+  detect(doc: Document): RuleDetection[];
   fix?(doc: Document, finding: Finding, ctx: FixContext): Promise<boolean> | boolean;
 }
 
 export interface FixContext {
   page: PageRef;
   env: NodeJS.ProcessEnv;
+  llm?: LLMClient;
+  getLlm?: () => LLMClient;
+  consumeLlmCall?: () => boolean;
+  recordFixError?: (message: string) => void;
 }
 
 export type WcagLevel = 'A' | 'AA';
