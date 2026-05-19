@@ -10,6 +10,7 @@ coverage/
 docs/
 AGENTS.md
 CLAUDE.md
+mempalace.yaml
 
 # Site captures can be large and may contain session-adjacent data; keep local
 # unless deliberately curated for a specific investigation.
