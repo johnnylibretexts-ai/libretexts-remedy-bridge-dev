@@ -1,9 +1,9 @@
 import type { LLMClient } from '../ai/llm-client.js';
 
 /**
- * Shared types for the strategy layer. See /docs/PIPELINE.md for where this
- * fits. Strategies are the LLM-assisted phase that runs *after* the
- * deterministic rule fixes in fix.ts. They are pure: html → html + reports.
+ * Shared types for the strategy layer. Strategies are the LLM-assisted phase
+ * that runs after deterministic rule fixes in fix.ts. They are pure:
+ * html -> html + reports.
  */
 
 export interface StrategyContext {

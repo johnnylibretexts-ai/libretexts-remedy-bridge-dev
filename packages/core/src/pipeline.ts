@@ -1,11 +1,11 @@
 /**
  * Remediation pipeline orchestrator.
  *
- * See /docs/PIPELINE.md for the big picture. This module wires together:
- *   1. Deterministic scan (scan.ts)           → initial findings
- *   2. Deterministic rule fixes (fix.ts path) → Tier-0 cleanup (optional)
- *   3. LLM strategies (strategies/)           → Tier 1 / Tier 2
- *   4. Agent loop (agent-loop.ts)             → Tier 3
+ * Wires together:
+ *   1. Deterministic scan (scan.ts)           -> initial findings
+ *   2. Deterministic rule fixes (fix.ts path) -> Tier-0 cleanup (optional)
+ *   3. LLM strategies (strategies/)           -> Tier 1 / Tier 2
+ *   4. Agent loop (agent-loop.ts)             -> Tier 3
  *
  * Between each phase we re-scan and compute the findings delta. If the
  * current tier did not reduce findings by at least `escalateThreshold`

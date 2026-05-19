@@ -22,8 +22,8 @@ import type {
  * persist anything and does not call CXone. Wiring into the full pipeline
  * (fix.ts / pipeline.ts) is done elsewhere.
  *
- * The strategy order is deliberate — later strategies may rely on
- * transformations earlier ones made. See /docs/PIPELINE.md.
+ * The strategy order is deliberate: later strategies may rely on
+ * transformations earlier ones made.
  */
 export class StrategyRunner {
   private readonly strategies: Strategy[];

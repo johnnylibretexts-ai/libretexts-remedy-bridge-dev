@@ -1,18 +1,14 @@
 # LibreTexts Remedy
 
 Accessibility remediation assistant for LibreTexts CXone Expert pages.
-Scans pages for WCAG 2.1 AA issues and (coming soon) proposes AI-assisted fixes
-with a human-approval gate.
-
-See `/Users/libretexts/.claude/plans/can-you-use-claude-linked-tome.md` for the
-full plan.
+Scans pages for WCAG 2.1 AA issues, previews AI-assisted fixes, and writes
+approved revisions through guarded CXone APIs.
 
 ## Packages
 
 - **`@libretexts/remedy-core`** — pluggable rule engine + CXone I/O. Framework-agnostic.
 - **`@libretexts/remedy-cli`** — MVP demo target. `remedy scan <url>` / `remedy scan-file <html>`.
-- *(later)* `@libretexts/remedy-conductor-panel` — Conductor-hosted UI.
-- *(later)* `@libretexts/remedy-browser-widget` — in-page assistant for authors.
+- **`@libretexts/remedy-conductor-panel`** — local staff UI and Node bridge for Conductor/Remedy Server integration.
 
 ## Quick start
 
@@ -111,8 +107,6 @@ Fixer capabilities:
 
 ## Pipeline
 
-See [docs/PIPELINE.md](./docs/PIPELINE.md) for the full design (borrows shape from the sibling `project-remedy-server`).
-
 ```
 fetch page → deterministic rules → axe-core → math detection
                            │
@@ -152,7 +146,7 @@ All providers speak the same `/chat/completions` payload shape, so rules/strateg
 - [x] Core library + CLI scan path (offline + live, verified on page 3971).
 - [x] Deterministic rule engine (11 rules: img-alt, heading-order, heading-as-bold, link-text, table-header, duplicate-id, math-accessible, chart-alt, figure-wrap, table-structure, form-label).
 - [x] Per-rule fixers + dry-run diff + LLM-powered alt text.
-- [x] Pipeline design borrowing from `project-remedy-server` (see [PIPELINE.md](./docs/PIPELINE.md)).
+- [x] Tiered remediation pipeline inspired by `project-remedy-server`.
 - [x] OpenAI-compatible LLM provider abstraction (OpenRouter / Ollama Cloud / Ollama local / Gemini-compat).
 - [x] `axe-core` integration (jsdom-compatible ruleset).
 - [x] Math rule (MathJax / MathML detection + LaTeX-to-spoken-form describer).
@@ -166,4 +160,24 @@ All providers speak the same `/chat/completions` payload shape, so rules/strateg
 - [x] **CXone revision id capture** in audit log (platform-native recovery).
 - [ ] First live write to `Sandboxes/johnnyphung/remedy-test` (copy Chap_01 there first).
 - [ ] Review jsdom serializer behaviour (`<br />` → `<br>`, entity normalization) before writing production textbooks.
-- [ ] Conductor panel; browser widget.
+- [x] Local Conductor bridge API for scan, preview, and apply.
+
+## Local Conductor Bridge
+
+The Conductor panel package exposes local CXone routes used by the Python
+Remedy Server proxy:
+
+```text
+POST /v1/cxone/page/scan
+POST /v1/cxone/page/preview-fix
+POST /v1/cxone/page/apply-fix
+```
+
+Run it from the repo root:
+
+```bash
+npm run dev:api --workspace @libretexts/remedy-conductor-panel
+```
+
+The bridge listens on `http://127.0.0.1:5175` by default and consumes the root
+`.env` credentials plus the same `REMEDY_WRITE_ALLOWLIST` guardrail as the CLI.

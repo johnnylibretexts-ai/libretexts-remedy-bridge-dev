@@ -2,7 +2,7 @@
  * Tier escalation helpers for the remediation pipeline.
  *
  * The pipeline runs deterministic fixes first, then LLM-assisted strategies
- * under a "tier" regime borrowed from project-remedy-server's CLAUDE.md §4:
+ * under a tier regime:
  *
  *   Tier 1 — cheap/default model. Fixes most pages.
  *   Tier 2 — stronger model. Tried when Tier 1 didn't move the needle.

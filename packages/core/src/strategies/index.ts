@@ -1,9 +1,9 @@
 /**
  * Strategy layer public entrypoint.
  *
- * See /docs/PIPELINE.md — this is the LLM-assisted phase of the remediation
- * pipeline, running after the deterministic `rules/*` fixes. Ported in shape
- * from the sibling project's `RemediationStrategyRunner`.
+ * LLM-assisted remediation phase that runs after deterministic `rules/*`
+ * fixes. Ported in shape from the sibling project's
+ * `RemediationStrategyRunner`.
  */
 
 export type {

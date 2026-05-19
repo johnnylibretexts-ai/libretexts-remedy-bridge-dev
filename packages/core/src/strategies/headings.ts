@@ -12,8 +12,8 @@ import type { InternalStrategyContext, StrategyReport } from './types.js';
  *      of mismatched depths), ask the LLM to propose a normalized outline.
  *      Falls back to a simple level-walk if LLM isn't available.
  *
- * See /docs/PIPELINE.md — HeadingRemediation slot. Port of
- * `HeadingRemediation` in the sibling project's accessibility_strategies.py.
+ * Port of `HeadingRemediation` in the sibling project's
+ * accessibility_strategies.py.
  */
 export class HeadingStrategy extends BaseStrategy {
   readonly id = 'headings';
