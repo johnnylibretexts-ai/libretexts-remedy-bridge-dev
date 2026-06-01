@@ -18,6 +18,14 @@ export interface ProviderConfig {
   apiKey?: string;
   defaultTextModel?: string;
   defaultVisionModel?: string;
+  /**
+   * Ordered fallback pools (OpenRouter only). When set, requests include a
+   * `models` array so OpenRouter auto-routes to the next model on error /
+   * rate-limit (429). Primary first. Sourced from REMEDY_TEXT_MODELS /
+   * REMEDY_VISION_MODELS. Other providers ignore these.
+   */
+  textModels?: string[];
+  visionModels?: string[];
 }
 
 export interface LLMClientOptions {
@@ -26,6 +34,9 @@ export interface LLMClientOptions {
   apiKey?: string;
   textModel?: string;
   visionModel?: string;
+  /** Ordered OpenRouter fallback pools (primary first). Overrides env lists. */
+  textModels?: string[];
+  visionModels?: string[];
   maxRetries?: number;
   timeoutMs?: number;
   /** Max concurrent in-flight requests from this client. Default 4. */
@@ -87,12 +98,17 @@ export class LLMError extends Error {
 
 const RETRYABLE_STATUSES = new Set([408, 409, 425, 429, 500, 502, 503, 504]);
 
+/** OpenRouter caps the `models` fallback array at 3 entries per request. */
+const OPENROUTER_MAX_MODELS = 3;
+
 const BUILT_IN_PROVIDERS: Record<Exclude<ProviderId, 'custom'>, ProviderConfig> = {
   openrouter: {
     id: 'openrouter',
+    // NB: the old qwen-2.5 :free defaults were retired by OpenRouter (404).
+    // Gemma 4 is current and multimodal (text+vision in one model).
     baseUrl: 'https://openrouter.ai/api/v1',
-    defaultTextModel: 'qwen/qwen-2.5-72b-instruct:free',
-    defaultVisionModel: 'qwen/qwen-2.5-vl-72b-instruct:free',
+    defaultTextModel: 'google/gemma-4-31b-it:free',
+    defaultVisionModel: 'google/gemma-4-31b-it:free',
   },
   'ollama-cloud': {
     id: 'ollama-cloud',
@@ -123,15 +139,38 @@ export function resolveProvider(opts: LLMClientOptions = {}, env: NodeJS.Process
   if (!base.baseUrl) {
     throw new LLMError(`No baseUrl configured for provider "${providerId}".`);
   }
+  const textModels = opts.textModels ?? parseModelList(env.REMEDY_TEXT_MODELS);
+  const visionModels = opts.visionModels ?? parseModelList(env.REMEDY_VISION_MODELS);
   return {
     ...base,
     baseUrl: (opts.baseUrl ?? env.REMEDY_LLM_BASE_URL ?? base.baseUrl).replace(/\/+$/, ''),
     apiKey: opts.apiKey ?? env.REMEDY_LLM_API_KEY ?? providerKey(providerId, env),
+    // Single default tracks the fallback list's primary when a list is set.
     defaultTextModel:
-      opts.textModel ?? env.REMEDY_TEXT_MODEL ?? base.defaultTextModel,
+      opts.textModel ?? env.REMEDY_TEXT_MODEL ?? textModels?.[0] ?? base.defaultTextModel,
     defaultVisionModel:
-      opts.visionModel ?? env.REMEDY_VISION_MODEL ?? base.defaultVisionModel,
+      opts.visionModel ?? env.REMEDY_VISION_MODEL ?? visionModels?.[0] ?? base.defaultVisionModel,
+    textModels,
+    visionModels,
   };
+}
+
+/** Parse a comma/newline-separated model list into a trimmed, de-duped array. */
+function parseModelList(raw: string | undefined): string[] | undefined {
+  if (!raw) return undefined;
+  const list = [...new Set(raw.split(/[,\n]/).map((s) => s.trim()).filter(Boolean))];
+  return list.length ? list : undefined;
+}
+
+/**
+ * Build the OpenRouter `models` fallback array: the actually-chosen model
+ * first, then the configured pool (de-duped). Returns undefined when there's
+ * nothing to fall back to, so single-model requests stay unchanged.
+ */
+function buildModelsArray(primary: string, pool: string[] | undefined): string[] | undefined {
+  if (!pool || pool.length === 0) return undefined;
+  const merged = [...new Set([primary, ...pool])];
+  return merged.length > 1 ? merged : undefined;
 }
 
 function providerKey(id: ProviderId, env: NodeJS.ProcessEnv): string | undefined {
@@ -210,7 +249,7 @@ export class LLMClient {
       stream: false,
     };
     if (req.think) payload.think = true;
-    return this.completion(payload, model);
+    return this.completion(payload, model, this.fallbackWindows(model, this.provider.textModels));
   }
 
   async vision(req: VisionRequest): Promise<string> {
@@ -231,16 +270,47 @@ export class LLMClient {
       max_tokens: req.maxTokens ?? 1024,
       temperature: req.temperature ?? 0.2,
       stream: false,
-    };
-    return this.completion(payload, model);
+    } as Record<string, unknown>;
+    return this.completion(payload, model, this.fallbackWindows(model, this.provider.visionModels));
   }
 
-  private async completion(payload: Record<string, unknown>, model: string): Promise<string> {
+  /**
+   * Compute OpenRouter `models` fallback windows for a request. The full pool
+   * is `[chosenModel, ...configuredPool]` (de-duped, primary first); we slice
+   * it into windows of ≤3 because OpenRouter caps the `models` array at 3.
+   * The completion loop advances one window per retry, so a 5-model pool tries
+   * `[m0,m1,m2]` then `[m3,m4]` — every model gets used. Returns undefined for
+   * non-OpenRouter providers or when there's nothing to fall back to.
+   */
+  private fallbackWindows(primary: string, pool?: string[]): string[][] | undefined {
+    if (this.provider.id !== 'openrouter') return undefined;
+    const full = buildModelsArray(primary, pool);
+    if (!full) return undefined;
+    const windows: string[][] = [];
+    for (let i = 0; i < full.length; i += OPENROUTER_MAX_MODELS) {
+      windows.push(full.slice(i, i + OPENROUTER_MAX_MODELS));
+    }
+    if (this.debug) console.error(`[llm] openrouter fallback chain: ${full.join(' → ')} (${windows.length} window(s) of ≤${OPENROUTER_MAX_MODELS})`);
+    return windows;
+  }
+
+  private async completion(
+    payload: Record<string, unknown>,
+    model: string,
+    windows?: string[][],
+  ): Promise<string> {
     // Cache check — keyed by stable hash of {payload, provider}. Same
     // payload on a different provider rightly misses (different model family).
+    // Keyed on the primary `model` only (computed before any window rotation
+    // mutates the payload), so the key is content-stable regardless of which
+    // fallback actually served the response.
     const cacheKey = this.cache
       ? hashPayload({ provider: this.provider.id, payload })
       : '';
+    // With fallback windows, run enough attempts to cover every window at least
+    // once (each attempt = one OpenRouter `models` request that tries ≤3 models
+    // server-side before erroring through to us).
+    const maxAttempts = windows && windows.length > this.maxRetries ? windows.length : this.maxRetries;
     if (this.cache) {
       const hit = await this.cache.get(cacheKey);
       if (hit) {
@@ -262,7 +332,14 @@ export class LLMClient {
     const release = await this.acquire();
     let lastErr: unknown;
     try {
-      for (let attempt = 1; attempt <= this.maxRetries; attempt++) {
+      for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+        // Rotate to this attempt's fallback window (OpenRouter only). Lead the
+        // payload's `model` with the window head to keep the two consistent.
+        if (windows && windows.length) {
+          const win = windows[(attempt - 1) % windows.length];
+          payload.models = win;
+          payload.model = win[0];
+        }
         const started = Date.now();
         const controller = new AbortController();
         const abortTimer = setTimeout(() => controller.abort(), this.timeoutMs);
@@ -275,11 +352,11 @@ export class LLMClient {
           });
           if (!res.ok) {
             const body = await safeBody(res);
-            if (RETRYABLE_STATUSES.has(res.status) && attempt < this.maxRetries) {
+            if (RETRYABLE_STATUSES.has(res.status) && attempt < maxAttempts) {
               const wait = parseRetryAfter(res.headers.get('retry-after')) ?? backoff(attempt);
               if (this.debug) {
                 console.error(
-                  `[llm] ${this.provider.id} ${res.status} — retrying in ${wait}ms (attempt ${attempt}/${this.maxRetries})`,
+                  `[llm] ${this.provider.id} ${res.status} — retrying in ${wait}ms (attempt ${attempt}/${maxAttempts})`,
                 );
               }
               await delay(wait);
@@ -294,18 +371,21 @@ export class LLMClient {
           const data = (await res.json()) as ChatCompletionResponse;
           const elapsed = Date.now() - started;
           const usage = data.usage ?? ({} as Partial<NonNullable<ChatCompletionResponse['usage']>>);
+          // With a `models` fallback array, OpenRouter may serve a different
+          // model than the primary — record what actually ran.
+          const servedModel = data.model ?? model;
           this.usage.push({
             inputTokens: usage.prompt_tokens ?? 0,
             outputTokens: usage.completion_tokens ?? 0,
             elapsedMs: elapsed,
-            model,
+            model: servedModel,
             provider: this.provider.id,
           });
           const text = extractText(data);
           if (this.cache) {
             await this.cache.set(cacheKey, {
               ts: new Date().toISOString(),
-              model,
+              model: servedModel,
               provider: this.provider.id,
               response: text,
               inputTokens: usage.prompt_tokens,
@@ -316,7 +396,7 @@ export class LLMClient {
         } catch (err) {
           lastErr = err;
           if (err instanceof LLMError && err.status && !RETRYABLE_STATUSES.has(err.status)) throw err;
-          if (attempt < this.maxRetries) {
+          if (attempt < maxAttempts) {
             await delay(backoff(attempt));
             continue;
           }
@@ -325,7 +405,7 @@ export class LLMClient {
         }
       }
       throw new LLMError(
-        `LLM ${this.provider.id} failed after ${this.maxRetries} attempts: ${String(lastErr)}`,
+        `LLM ${this.provider.id} failed after ${maxAttempts} attempts: ${String(lastErr)}`,
       );
     } finally {
       release();
@@ -345,6 +425,8 @@ export class LLMClient {
 }
 
 interface ChatCompletionResponse {
+  /** The model OpenRouter actually served (may differ from primary on fallback). */
+  model?: string;
   choices?: Array<{
     message?: { content?: string | ContentPart[]; reasoning_content?: string };
   }>;
