@@ -11,6 +11,7 @@ export * from './conductor-compat.js';
 export * from './tiers.js';
 export * from './revert.js';
 export * from './serialize.js';
+export * from './image-availability.js';
 export { defaultRules } from './rules/index.js';
 export * from './strategies/index.js';
 export * as imagePlanner from './image-planner/index.js';

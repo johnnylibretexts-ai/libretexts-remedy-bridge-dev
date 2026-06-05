@@ -21,12 +21,23 @@ export const tableLabelRule: Rule = {
       if (isPresentation(table)) return;
       if (!table.querySelector('tr')) return;
       if (hasAccessibleName(doc, table)) return;
+      const headingText = findPrecedingHeadingText(table);
 
       findings.push({
         message: '<table> has no caption or accessible table name.',
         selector: `table:nth-of-type(${index + 1})`,
         snippet: table.outerHTML.slice(0, 300),
-        data: { reason: 'missing-accessible-name', tableIndex: index },
+        fixable: Boolean(headingText),
+        data: {
+          reason: 'missing-accessible-name',
+          tableIndex: index,
+          ...(headingText
+            ? { captionSource: 'preceding-heading' }
+            : {
+                fixBlockedReason: 'missing-table-label-source',
+                fixBlockedMessage: 'No nearby heading is available for a deterministic table caption; this table needs a human-provided label.',
+              }),
+        },
       });
     });
 

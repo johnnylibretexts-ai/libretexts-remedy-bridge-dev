@@ -125,20 +125,50 @@ export function injectChartDescription(
   }
 }
 
+// The data table comes from the (LLM-generated) ChartDescriber output, so it is
+// untrusted and is written back to live CXone pages. A <template> only makes the
+// fragment inert during parsing — it strips nothing — so we sanitize the parsed
+// tree with a strict tag/attribute allowlist before it is inserted. Anything
+// outside the allowlist (script, iframe, a/img, event handlers, style, URLs)
+// causes the whole table to be dropped, degrading to "no data table" rather than
+// injecting markup.
+const ALLOWED_TABLE_TAGS = new Set([
+  'table', 'caption', 'thead', 'tbody', 'tfoot', 'tr', 'th', 'td', 'colgroup', 'col',
+  // Safe inline text formatting that legitimately appears in data cells:
+  'br', 'strong', 'em', 'b', 'i', 'sup', 'sub', 'span', 'code', 'abbr', 'p',
+]);
+const ALLOWED_TABLE_ATTRS = new Set(['scope', 'colspan', 'rowspan', 'headers', 'id', 'class', 'abbr']);
+
 /**
- * Parse a <table>...</table> HTML string into a live Element using the
- * owner document's template parser. Returns null if parsing yields no
- * <table> element. Going through <template> avoids script execution
- * and XSS vectors that direct innerHTML assignment could enable.
+ * Parse a <table>...</table> HTML string into a live, sanitized Element using
+ * the owner document's inert <template> parser. Returns null if parsing yields
+ * no <table>, or if the markup contains any element outside the table allowlist.
  */
 function parseTableHtml(doc: Document, html: string): Element | null {
   const tpl = doc.createElement('template') as HTMLTemplateElement;
-  // HTMLTemplateElement content is an inert DocumentFragment — no script
-  // execution, no resource loads. Source is narrowly pre-validated upstream
-  // to start with `<table ` and end with `</table>`.
   tpl.innerHTML = html;
   const table = tpl.content.querySelector('table');
-  return table ? (table as Element) : null;
+  if (!table) return null;
+  return sanitizeTableTree(table as Element);
+}
+
+/**
+ * Enforce the table tag/attribute allowlist on a parsed table subtree. Returns
+ * null (reject the whole table) if any disallowed element is present; otherwise
+ * strips every attribute not in the structural allowlist (event handlers,
+ * style, href/src, etc.) from the surviving elements.
+ */
+function sanitizeTableTree(table: Element): Element | null {
+  const elements = [table, ...Array.from(table.querySelectorAll('*'))];
+  for (const el of elements) {
+    if (!ALLOWED_TABLE_TAGS.has(el.tagName.toLowerCase())) return null;
+  }
+  for (const el of elements) {
+    for (const attr of Array.from(el.attributes)) {
+      if (!ALLOWED_TABLE_ATTRS.has(attr.name.toLowerCase())) el.removeAttribute(attr.name);
+    }
+  }
+  return table;
 }
 
 function closestFigure(el: Element): Element | null {

@@ -623,9 +623,27 @@ function runSetAttribute({
   value: string;
 }): { ok: boolean; note: string } {
   if (!selector || !attr) return { ok: false, note: 'missing selector or attr' };
-  // Refuse obviously dangerous attributes.
-  if (/^on/i.test(attr) || attr.toLowerCase() === 'srcdoc') {
+  const lname = attr.toLowerCase();
+  // Refuse obviously dangerous attributes: event handlers, srcdoc, and inline
+  // style (which carries url()/expression() injection vectors).
+  if (/^on/i.test(attr) || lname === 'srcdoc' || lname === 'style') {
     return { ok: false, note: `refused to set suspicious attribute '${attr}'` };
+  }
+  // For URL-bearing attributes, reject script/data-URI schemes so a (possibly
+  // prompt-injected) model cannot persist javascript:/vbscript:/data: payloads
+  // to the live page. Accessibility fixes never need these schemes.
+  const URL_ATTRS = new Set([
+    'href', 'src', 'formaction', 'action', 'xlink:href', 'poster', 'background', 'data', 'cite', 'longdesc',
+  ]);
+  if (URL_ATTRS.has(lname) || /-(href|src)$/.test(lname)) {
+    const scheme = value.replace(/[\s\u0000-\u001f]/g, '').toLowerCase();
+    if (
+      scheme.startsWith('javascript:') ||
+      scheme.startsWith('vbscript:') ||
+      (scheme.startsWith('data:') && !scheme.startsWith('data:image/'))
+    ) {
+      return { ok: false, note: `refused dangerous URL value for attribute '${attr}'` };
+    }
   }
   let el: Element | null;
   try {
