@@ -4,6 +4,7 @@ import { createExpertClient, normalizePageInput, resolvePageRef } from './client
 import { defaultRules } from './rules/index.js';
 import { scanHtmlWithAxe } from './scan-axe.js';
 import { buildWcagReview } from './wcag.js';
+import { markUnavailableImageFixes } from './image-availability.js';
 import type { Finding, PageRef, Rule, ScanResult, Severity } from './types.js';
 
 export interface ScanPageOptions {
@@ -123,7 +124,8 @@ export async function scanPage(
 
   const page: PageRef = await resolvePageRef(expert, pageInput, env);
   const html = await fetchPageHtml(expert, pageInput);
-  const findings = await scanHtmlFull(html, { rules, axe: axeEnabled });
+  let findings = await scanHtmlFull(html, { rules, axe: axeEnabled });
+  findings = await markUnavailableImageFixes(findings, page, { env });
   const scannedAt = new Date().toISOString();
 
   return {

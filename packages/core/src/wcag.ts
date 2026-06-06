@@ -292,6 +292,13 @@ function findingToEvidence(finding: Finding, findingId: string): WcagEvidence {
   const exceptionId = typeof finding.data?.exceptionId === 'string'
     ? finding.data.exceptionId
     : undefined;
+  const fixBlockedReason = optionalString(finding.data?.fixBlockedReason);
+  const fixBlockedMessage = optionalString(finding.data?.fixBlockedMessage);
+  const imageUrl = optionalString(finding.data?.imageUrl);
+  const imageStatus = typeof finding.data?.imageStatus === 'number'
+    ? finding.data.imageStatus
+    : undefined;
+  const imageMimeType = optionalString(finding.data?.imageMimeType);
   return {
     source: finding.source,
     ruleId: finding.ruleId,
@@ -302,7 +309,16 @@ function findingToEvidence(finding: Finding, findingId: string): WcagEvidence {
     snippet: finding.snippet,
     fixable: finding.fixable,
     exceptionId,
+    fixBlockedReason,
+    fixBlockedMessage,
+    imageUrl,
+    imageStatus,
+    imageMimeType,
   };
+}
+
+function optionalString(value: unknown): string | undefined {
+  return typeof value === 'string' && value.length > 0 ? value : undefined;
 }
 
 function scannerResultForCriterion(

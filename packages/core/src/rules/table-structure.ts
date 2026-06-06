@@ -214,41 +214,87 @@ function applyHeaderIds(table: Element): boolean {
     changed = true;
   });
 
-  // Build position → id map based on row/col indices.
-  const allRows = Array.from(table.querySelectorAll('tr'));
+  // Build position -> id map based on row/col indices, accounting for
+  // simple colspan/rowspan geometry so a spanned header labels every covered
+  // data column.
+  const placements = buildCellPlacements(table);
   const headerByPos = new Map<string, string>();
-  for (const th of ths) {
-    const id = th.getAttribute('id');
+  for (const placement of placements) {
+    if (placement.cell.tagName.toLowerCase() !== 'th') continue;
+    const id = placement.cell.getAttribute('id');
     if (!id) continue;
-    const parentRow = th.parentElement;
-    if (!parentRow || parentRow.tagName.toLowerCase() !== 'tr') continue;
-    const rowIdx = allRows.indexOf(parentRow as HTMLTableRowElement);
-    const cells = Array.from(parentRow.querySelectorAll(':scope > th, :scope > td'));
-    const colIdx = cells.indexOf(th as HTMLTableCellElement);
-    if (rowIdx < 0 || colIdx < 0) continue;
-    headerByPos.set(`${rowIdx}:${colIdx}`, id);
+    for (let rowIdx = placement.rowStart; rowIdx <= placement.rowEnd; rowIdx += 1) {
+      for (let colIdx = placement.colStart; colIdx <= placement.colEnd; colIdx += 1) {
+        headerByPos.set(`${rowIdx}:${colIdx}`, id);
+      }
+    }
   }
 
   // Link data cells via headers="...". Column header is the th at (0, col);
   // row header is the th at (row, 0) when present.
-  allRows.forEach((tr, rowIdx) => {
-    const cells = Array.from(tr.querySelectorAll(':scope > th, :scope > td'));
-    cells.forEach((cell, colIdx) => {
-      if (cell.tagName.toLowerCase() !== 'td') return;
-      const ids: string[] = [];
+  for (const placement of placements) {
+    const cell = placement.cell;
+    if (cell.tagName.toLowerCase() !== 'td') continue;
+    const ids: string[] = [];
+    for (let colIdx = placement.colStart; colIdx <= placement.colEnd; colIdx += 1) {
       const colHeader = headerByPos.get(`0:${colIdx}`);
-      if (colHeader) ids.push(colHeader);
-      const rowHeader = headerByPos.get(`${rowIdx}:0`);
-      if (rowHeader && rowHeader !== colHeader) ids.push(rowHeader);
-      if (ids.length === 0) return;
-      const joined = ids.join(' ');
-      if (cell.getAttribute('headers') === joined) return;
-      cell.setAttribute('headers', joined);
-      changed = true;
-    });
-  });
+      if (colHeader && !ids.includes(colHeader)) ids.push(colHeader);
+    }
+    const rowHeader = headerByPos.get(`${placement.rowStart}:0`);
+    if (rowHeader && !ids.includes(rowHeader)) ids.push(rowHeader);
+    if (ids.length === 0) continue;
+    const joined = ids.join(' ');
+    if (cell.getAttribute('headers') === joined) continue;
+    cell.setAttribute('headers', joined);
+    changed = true;
+  }
 
   return changed;
+}
+
+interface CellPlacement {
+  cell: Element;
+  rowStart: number;
+  rowEnd: number;
+  colStart: number;
+  colEnd: number;
+}
+
+function buildCellPlacements(table: Element): CellPlacement[] {
+  const rows = Array.from(table.querySelectorAll('tr'));
+  const occupied = new Set<string>();
+  const placements: CellPlacement[] = [];
+
+  rows.forEach((row, rowIdx) => {
+    let colIdx = 0;
+    const cells = Array.from(row.querySelectorAll(':scope > th, :scope > td'));
+    for (const cell of cells) {
+      while (occupied.has(`${rowIdx}:${colIdx}`)) colIdx += 1;
+      const colspan = span(cell.getAttribute('colspan'));
+      const rowspan = span(cell.getAttribute('rowspan'));
+      const placement = {
+        cell,
+        rowStart: rowIdx,
+        rowEnd: rowIdx + rowspan - 1,
+        colStart: colIdx,
+        colEnd: colIdx + colspan - 1,
+      };
+      placements.push(placement);
+      for (let r = placement.rowStart; r <= placement.rowEnd; r += 1) {
+        for (let c = placement.colStart; c <= placement.colEnd; c += 1) {
+          occupied.add(`${r}:${c}`);
+        }
+      }
+      colIdx = placement.colEnd + 1;
+    }
+  });
+
+  return placements;
+}
+
+function span(value: string | null): number {
+  const parsed = Number.parseInt(value ?? '', 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
 }
 
 function textOf(el: Element): string {

@@ -8,7 +8,7 @@
 import { randomUUID } from 'node:crypto';
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
 import { readdir, readFile, stat } from 'node:fs/promises';
-import { resolve, relative } from 'node:path';
+import { resolve, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { config as loadDotenv } from 'dotenv';
 import {
@@ -38,6 +38,11 @@ const REPO_ROOT = resolve(HERE, '../../..');
 loadDotenv({ path: resolve(REPO_ROOT, '.env') });
 
 const PORT = Number(process.env.CONDUCTOR_API_PORT ?? 5175);
+// Bind to loopback by default — this is a local staff tool with no auth, so it
+// must not be reachable off-host. Override CONDUCTOR_API_HOST deliberately
+// (and add auth) before exposing it anywhere else.
+const HOST = process.env.CONDUCTOR_API_HOST ?? '127.0.0.1';
+const MAX_REQUEST_BYTES = Number(process.env.REMEDY_MAX_REQUEST_BYTES ?? 5_000_000);
 const FIXTURE_ROOT = resolve(REPO_ROOT, 'fixtures/local-lab');
 const PIPELINE_PREVIEW_TTL_MS = Number(process.env.REMEDY_PIPELINE_PREVIEW_TTL_MS ?? 30 * 60 * 1000);
 
@@ -441,7 +446,7 @@ const routes: Record<string, Handler> = {
     if (source === 'fixture') {
       const relPath = requireStr(body.relPath, 'relPath');
       const resolved = resolve(REPO_ROOT, relPath);
-      if (!resolved.startsWith(FIXTURE_ROOT)) {
+      if (resolved !== FIXTURE_ROOT && !resolved.startsWith(FIXTURE_ROOT + sep)) {
         throw new Error('fixture path escapes fixture root');
       }
       html = await readFile(resolved, 'utf8');
@@ -462,7 +467,8 @@ const routes: Record<string, Handler> = {
 };
 
 const server = createServer(async (req, res) => {
-  setCors(res);
+  setSecurityHeaders(res);
+  setCors(res, req);
   if (req.method === 'OPTIONS') { res.writeHead(204).end(); return; }
   if (req.method !== 'POST' && req.method !== 'GET') {
     json(res, 405, { error: 'method not allowed' });
@@ -477,23 +483,37 @@ const server = createServer(async (req, res) => {
     const result = await handler(body);
     json(res, 200, result);
   } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err);
     if (err instanceof HttpError) {
       json(res, err.status, err.body);
       return;
     }
-    json(res, 500, { error: msg });
+    // Log full detail server-side; return a generic message so internal error
+    // text (paths, upstream messages, stack-adjacent details) never leaks to
+    // the client.
+    console.error('[conductor-api] request failed:', err);
+    json(res, 500, { error: 'internal server error' });
   }
 });
 
-server.listen(PORT, () => {
-  console.log(`[conductor-api] listening on http://localhost:${PORT}`);
+server.listen(PORT, HOST, () => {
+  console.log(`[conductor-api] listening on http://${HOST}:${PORT}`);
 });
 
 // --- helpers ---
 async function readJson(req: IncomingMessage): Promise<Record<string, unknown>> {
   const chunks: Buffer[] = [];
-  for await (const c of req) chunks.push(Buffer.isBuffer(c) ? c : Buffer.from(c));
+  let total = 0;
+  for await (const c of req) {
+    const chunk = Buffer.isBuffer(c) ? c : Buffer.from(c);
+    total += chunk.length;
+    if (total > MAX_REQUEST_BYTES) {
+      throw new HttpError(413, {
+        error: 'payload_too_large',
+        message: `Request body exceeds ${MAX_REQUEST_BYTES} bytes.`,
+      });
+    }
+    chunks.push(chunk);
+  }
   const text = Buffer.concat(chunks).toString('utf8');
   if (!text) return {};
   return JSON.parse(text);
@@ -504,10 +524,26 @@ function json(res: ServerResponse, status: number, body: unknown) {
   res.end(JSON.stringify(body));
 }
 
-function setCors(res: ServerResponse) {
-  res.setHeader('access-control-allow-origin',  '*');
+const LOCALHOST_ORIGIN = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i;
+
+function setCors(res: ServerResponse, req: IncomingMessage) {
+  // Local staff tool: reflect only localhost origins instead of a blanket
+  // wildcard on an unauthenticated, state-changing API. Requests with no Origin
+  // (curl, server-to-server) are unaffected and still work.
+  const origin = req.headers.origin;
+  if (origin && LOCALHOST_ORIGIN.test(origin)) {
+    res.setHeader('access-control-allow-origin', origin);
+  }
+  res.setHeader('vary', 'Origin');
   res.setHeader('access-control-allow-methods', 'GET, POST, OPTIONS');
   res.setHeader('access-control-allow-headers', 'content-type');
+}
+
+function setSecurityHeaders(res: ServerResponse) {
+  res.setHeader('x-content-type-options', 'nosniff');
+  res.setHeader('x-frame-options', 'DENY');
+  res.setHeader('referrer-policy', 'no-referrer');
+  res.setHeader('cache-control', 'no-store');
 }
 
 function requireStr(v: unknown, name: string): string {

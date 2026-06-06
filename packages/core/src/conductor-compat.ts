@@ -127,8 +127,11 @@ export function conductorCriteriaKeysForFinding(finding: Finding): ConductorScan
 function conductorKindForFinding(finding: Finding): string {
   switch (finding.ruleId) {
     case 'img-alt':
+      if (finding.data?.fixBlockedReason === 'broken-image-url') return 'img-broken-url';
       return imageKind(String(finding.data?.reason ?? ''));
     case 'chart-alt':
+      if (finding.data?.fixBlockedReason === 'broken-image-url') return 'img-broken-url';
+      return 'img-alt-missing';
     case 'figure-wrap':
     case 'math-accessible':
     case 'axe/image-alt':
@@ -180,6 +183,7 @@ function imageCriteriaKeys(reason: string): ConductorScanKey[] {
 }
 
 function imageKind(reason: string): string {
+  if (reason === 'broken-image-url') return 'img-broken-url';
   if (reason === 'suspect-decorative') return 'img-decorative-suspect';
   if (reason === 'long-alt') return 'img-alt-too-long';
   return 'img-alt-missing';

@@ -9,6 +9,7 @@
  */
 
 import { LlmCache, hashPayload, resolveCacheDir } from './llm-cache.js';
+import { assertImageFetchAllowed } from '../net-guard.js';
 
 export type ProviderId = 'openrouter' | 'ollama-cloud' | 'ollama-local' | 'gemini-compat' | 'custom';
 
@@ -462,6 +463,10 @@ async function encodeImage(src: ImageSource): Promise<string> {
 }
 
 async function fetchImageAsBytes(url: string): Promise<{ bytes: Buffer; mimeType: string }> {
+  // SSRF guard: image URLs originate from scraped page content, so refuse to
+  // fetch loopback/private/link-local/metadata targets before the bytes are
+  // ever sent on to the LLM. Throws SsrfBlockedError when disallowed.
+  assertImageFetchAllowed(url);
   const res = await fetch(url);
   if (!res.ok) throw new LLMError(`Fetch image ${url}: ${res.status}`);
   const buf = Buffer.from(await res.arrayBuffer());

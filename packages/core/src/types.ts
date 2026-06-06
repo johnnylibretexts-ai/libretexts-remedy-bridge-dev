@@ -121,6 +121,11 @@ export interface WcagEvidence {
   snippet?: string;
   fixable: boolean;
   exceptionId?: string;
+  fixBlockedReason?: string;
+  fixBlockedMessage?: string;
+  imageUrl?: string;
+  imageStatus?: number;
+  imageMimeType?: string;
 }
 
 export interface WcagCriterionResult extends WcagCriterionDefinition {

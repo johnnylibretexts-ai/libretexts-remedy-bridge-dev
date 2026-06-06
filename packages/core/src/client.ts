@@ -32,7 +32,10 @@ export function createExpertClient(env: NodeJS.ProcessEnv = process.env): Expert
         user: env.SERVER_USER!,
       },
     },
-    debug: Boolean(env.DEBUG),
+    // Gate the third-party SDK's debug logging behind a dedicated flag. The
+    // generic DEBUG switch must not enable SDK request logging, which can print
+    // the signed X-Deki-Token credential to the console.
+    debug: env.REMEDY_SDK_DEBUG === '1' || env.REMEDY_SDK_DEBUG === 'true',
   });
 }
 

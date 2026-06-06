@@ -7,6 +7,7 @@ import { fetchPageHtml, scanHtml } from './scan.js';
 import { isNoiseOnlyChange } from './serialize.js';
 import { bytePreservePatch } from './patch/index.js';
 import { LLMClient } from './ai/llm-client.js';
+import { markUnavailableImageFixes } from './image-availability.js';
 import type { Finding, FixError, FixMode, FixResult, PageRef, Rule } from './types.js';
 import { writePageRevision } from './write-page.js';
 
@@ -43,7 +44,8 @@ export async function fixPage(
 
   const page: PageRef = await resolvePageRef(expert, pageInput, env);
   const before = await fetchPageHtml(expert, pageInput);
-  const findings = scanHtml(before, rules);
+  let findings = scanHtml(before, rules);
+  findings = await markUnavailableImageFixes(findings, page, { env });
 
   const dom = new JSDOM(`<!doctype html><html><body>${before}</body></html>`);
   const doc = dom.window.document;
