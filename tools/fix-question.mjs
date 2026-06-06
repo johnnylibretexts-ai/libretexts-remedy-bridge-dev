@@ -27,6 +27,10 @@ const OUT = process.env.REMEDY_DEMO_OUT ?? os.tmpdir();
 // don't clobber already-set vars). Scanner first (ADAPT creds), then this repo
 // (OpenRouter key + REMEDY_TEXT_MODELS / REMEDY_VISION_MODELS fallback pools).
 function loadEnv(file) {
+  // `file` is not attacker-controlled: callers pass fixed paths derived from the
+  // repo layout and the operator-set ADAPT_SCANNER_DIR env var. This is a local,
+  // staff-run CLI driver — no remote input reaches this read. (Aikido flags the
+  // readFileSync as AIK_ts_generic_path_traversal; safe in this context.)
   if (!fs.existsSync(file)) return;
   for (const line of fs.readFileSync(file, 'utf8').split('\n')) {
     if (/^\s*#/.test(line)) continue;
