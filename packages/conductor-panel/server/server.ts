@@ -6,9 +6,10 @@
  * expose to the public internet without auth.
  */
 import { randomUUID } from 'node:crypto';
+import { createReadStream } from 'node:fs';
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
 import { readdir, readFile, stat } from 'node:fs/promises';
-import { resolve, relative, sep } from 'node:path';
+import { extname, resolve, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { config as loadDotenv } from 'dotenv';
 import {
@@ -44,6 +45,7 @@ const PORT = Number(process.env.CONDUCTOR_API_PORT ?? 5175);
 const HOST = process.env.CONDUCTOR_API_HOST ?? '127.0.0.1';
 const MAX_REQUEST_BYTES = Number(process.env.REMEDY_MAX_REQUEST_BYTES ?? 5_000_000);
 const FIXTURE_ROOT = resolve(REPO_ROOT, 'fixtures/local-lab');
+const STATIC_ROOT = resolve(HERE, '../dist');
 const PIPELINE_PREVIEW_TTL_MS = Number(process.env.REMEDY_PIPELINE_PREVIEW_TTL_MS ?? 30 * 60 * 1000);
 
 type FixEngineMode = 'deterministic' | 'pipeline';
@@ -475,8 +477,16 @@ const server = createServer(async (req, res) => {
     return;
   }
 
-  const handler = routes[req.url ?? ''];
-  if (!handler) { json(res, 404, { error: 'not found' }); return; }
+  const pathname = new URL(req.url ?? '/', 'http://localhost').pathname;
+  const handler = routes[pathname];
+  if (!handler) {
+    if (req.method === 'GET') {
+      await serveStatic(pathname, res);
+      return;
+    }
+    json(res, 404, { error: 'not found' });
+    return;
+  }
 
   try {
     const body = req.method === 'POST' ? await readJson(req) : {};
@@ -522,6 +532,59 @@ async function readJson(req: IncomingMessage): Promise<Record<string, unknown>> 
 function json(res: ServerResponse, status: number, body: unknown) {
   res.writeHead(status, { 'content-type': 'application/json' });
   res.end(JSON.stringify(body));
+}
+
+async function serveStatic(pathname: string, res: ServerResponse): Promise<void> {
+  if (pathname.startsWith('/api/') || pathname.startsWith('/v1/')) {
+    json(res, 404, { error: 'not found' });
+    return;
+  }
+
+  const requested = pathname === '/' ? '/index.html' : pathname;
+  const safePath = resolve(STATIC_ROOT, `.${decodeURIComponent(requested)}`);
+  if (safePath !== STATIC_ROOT && !safePath.startsWith(STATIC_ROOT + sep)) {
+    json(res, 403, { error: 'forbidden' });
+    return;
+  }
+
+  let filePath = safePath;
+  try {
+    const s = await stat(filePath);
+    if (!s.isFile()) throw new Error('not a file');
+  } catch {
+    filePath = resolve(STATIC_ROOT, 'index.html');
+  }
+
+  try {
+    const s = await stat(filePath);
+    if (!s.isFile()) throw new Error('not a file');
+    res.writeHead(200, { 'content-type': contentType(filePath) });
+    createReadStream(filePath).pipe(res);
+  } catch {
+    json(res, 404, { error: 'panel build not found' });
+  }
+}
+
+function contentType(filePath: string): string {
+  switch (extname(filePath)) {
+    case '.css':
+      return 'text/css; charset=utf-8';
+    case '.html':
+      return 'text/html; charset=utf-8';
+    case '.js':
+      return 'text/javascript; charset=utf-8';
+    case '.json':
+      return 'application/json; charset=utf-8';
+    case '.svg':
+      return 'image/svg+xml';
+    case '.png':
+      return 'image/png';
+    case '.jpg':
+    case '.jpeg':
+      return 'image/jpeg';
+    default:
+      return 'application/octet-stream';
+  }
 }
 
 const LOCALHOST_ORIGIN = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i;
