@@ -52,7 +52,7 @@ export async function writePageRevision({
     return { written: false, revisionSummary };
   }
 
-  assertWriteAllowed(page.path, env);
+  assertWriteAllowed(page, env);
 
   const snapshot = await saveSnapshot(beforeHtml, {
     pageId: page.id,

@@ -1,7 +1,12 @@
 import 'dotenv/config';
 import Expert from '@libretexts/cxone-expert-node';
 import type { PageRef } from './types.js';
-import { maskToken } from './guardrails.js';
+import {
+  CXONE_ALLOWED_HOST,
+  isCxoneIntegrationEnabled,
+  maskToken,
+  validateCxoneConfiguration,
+} from './guardrails.js';
 
 export interface ClientEnv {
   SERVER_DOMAIN?: string;
@@ -17,10 +22,26 @@ export class MissingEnvError extends Error {
   }
 }
 
+export class CxoneIntegrationDisabledError extends Error {
+  constructor() {
+    super('CXone integration is disabled.');
+    this.name = 'CxoneIntegrationDisabledError';
+  }
+}
+
+export class InvalidCxoneConfigurationError extends Error {
+  constructor() {
+    super('CXone integration configuration is invalid.');
+    this.name = 'InvalidCxoneConfigurationError';
+  }
+}
+
 export function createExpertClient(env: NodeJS.ProcessEnv = process.env): Expert {
+  if (!isCxoneIntegrationEnabled(env)) throw new CxoneIntegrationDisabledError();
   const required: Array<keyof ClientEnv> = ['SERVER_DOMAIN', 'SERVER_KEY', 'SERVER_SECRET', 'SERVER_USER'];
   const missing = required.filter((k) => !env[k]);
   if (missing.length > 0) throw new MissingEnvError(missing);
+  if (!validateCxoneConfiguration(env).valid) throw new InvalidCxoneConfigurationError();
 
   return new Expert({
     tld: env.SERVER_DOMAIN!,
@@ -53,12 +74,26 @@ export function describeClient(env: NodeJS.ProcessEnv = process.env): string {
  *
  * The SDK's parsePageId handles number-or-path and takes care of double-URL-encoding.
  */
-export function normalizePageInput(input: string | number): string | number {
+export function normalizePageInput(
+  input: string | number,
+  env: NodeJS.ProcessEnv = process.env,
+): string | number {
   if (typeof input === 'number') return input;
   const trimmed = input.trim();
   if (/^\d+$/.test(trimmed)) return Number(trimmed);
   if (/^https?:\/\//i.test(trimmed)) {
     const url = new URL(trimmed);
+    if (
+      url.protocol !== 'https:' ||
+      /^https:\/\/[^/]*:\d+(?:\/|$)/i.test(trimmed) ||
+      url.hostname.toLowerCase().replace(/\.$/, '') !== CXONE_ALLOWED_HOST ||
+      url.port ||
+      url.username ||
+      url.password ||
+      (env.SERVER_DOMAIN ?? '').trim().toLowerCase() !== CXONE_ALLOWED_HOST
+    ) {
+      throw new InvalidCxoneConfigurationError();
+    }
     // Strip leading slash; SDK wants the raw path.
     return decodeURIComponent(url.pathname.replace(/^\/+/, ''));
   }
@@ -70,7 +105,7 @@ export async function resolvePageRef(
   input: string | number,
   env: NodeJS.ProcessEnv = process.env,
 ): Promise<PageRef> {
-  const id = normalizePageInput(input);
+  const id = normalizePageInput(input, env);
   const info = await expert.pages.getPageInfo(id as number);
   // The SDK returns slightly different shapes depending on accept-format; defensively pull id/path.
   // biome-ignore lint: SDK response shape is loosely typed.

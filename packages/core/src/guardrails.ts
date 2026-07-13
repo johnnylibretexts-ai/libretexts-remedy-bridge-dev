@@ -2,30 +2,84 @@ import { createHash } from 'node:crypto';
 import { appendFile, mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 
+export const CXONE_ALLOWED_HOST = 'dev.libretexts.org';
+export const CXONE_ALLOWED_ROOT = 'Sandboxes/johnnyphung';
+export const CXONE_CANONICAL_ALLOWLIST = '^Sandboxes/johnnyphung(?:/|$)';
+
 export class WriteNotAllowedError extends Error {
-  constructor(path: string, allowlist: RegExp[]) {
-    super(
-      `Write refused: page path "${path}" does not match REMEDY_WRITE_ALLOWLIST ` +
-      `(${allowlist.map((r) => r.source).join(', ')}).`,
-    );
+  constructor(_hostname: string, _path: string) {
+    super(`Write refused: target is outside the configured CXone owner sandbox.`);
     this.name = 'WriteNotAllowedError';
   }
 }
 
-export function loadAllowlist(env: NodeJS.ProcessEnv = process.env): RegExp[] {
-  const raw = env.REMEDY_WRITE_ALLOWLIST ?? '^Sandboxes/';
-  return raw
-    .split(',')
-    .map((s) => s.trim())
-    .filter(Boolean)
-    .map((s) => new RegExp(s));
+export interface CxoneConfigurationState {
+  valid: boolean;
+  errors: string[];
+  host: string;
+  root: string;
 }
 
-export function assertWriteAllowed(path: string, env: NodeJS.ProcessEnv = process.env): void {
-  const allowlist = loadAllowlist(env);
-  const normalized = path.replace(/^\/+/, '');
-  if (!allowlist.some((re) => re.test(normalized))) {
-    throw new WriteNotAllowedError(normalized, allowlist);
+export function isCxoneIntegrationEnabled(env: NodeJS.ProcessEnv = process.env): boolean {
+  return /^(1|true|yes|on)$/i.test((env.CXONE_INTEGRATION_ENABLED ?? '').trim());
+}
+
+export function validateCxoneConfiguration(env: NodeJS.ProcessEnv = process.env): CxoneConfigurationState {
+  const host = (env.CXONE_ALLOWED_HOST ?? env.SERVER_DOMAIN ?? CXONE_ALLOWED_HOST).trim().toLowerCase();
+  const errors: string[] = [];
+  let root = '';
+  try {
+    root = normalizeSandboxPath(env.CXONE_ALLOWED_ROOT ?? CXONE_ALLOWED_ROOT);
+  } catch {
+    errors.push('invalid_allowed_root');
+  }
+  if (host !== CXONE_ALLOWED_HOST) errors.push('invalid_allowed_host');
+  if (root && root !== CXONE_ALLOWED_ROOT) errors.push('invalid_allowed_root');
+  if ((env.SERVER_DOMAIN ?? '').trim().toLowerCase() !== CXONE_ALLOWED_HOST) {
+    errors.push('invalid_server_domain');
+  }
+  const legacyAllowlist = env.REMEDY_WRITE_ALLOWLIST?.trim();
+  if (legacyAllowlist && legacyAllowlist !== CXONE_CANONICAL_ALLOWLIST) {
+    errors.push('invalid_legacy_allowlist');
+  }
+  for (const key of ['SERVER_KEY', 'SERVER_SECRET', 'SERVER_USER'] as const) {
+    if (!(env[key] ?? '').trim()) errors.push(`missing_${key.toLowerCase()}`);
+  }
+  return { valid: errors.length === 0, errors, host, root };
+}
+
+export function normalizeSandboxPath(path: string): string {
+  let decoded: string;
+  try {
+    decoded = decodeURIComponent(path.trim());
+  } catch {
+    throw new WriteNotAllowedError('', '');
+  }
+  const normalized = decoded.replace(/^\/+/, '').replace(/\/+$/, '');
+  if (
+    !normalized ||
+    normalized.includes('\\') ||
+    normalized.includes('\0') ||
+    normalized.split('/').some((part) => part === '.' || part === '..' || part === '')
+  ) {
+    throw new WriteNotAllowedError('', normalized);
+  }
+  return normalized;
+}
+
+export function assertWriteAllowed(
+  page: { hostname: string; path: string },
+  env: NodeJS.ProcessEnv = process.env,
+): void {
+  const config = validateCxoneConfiguration(env);
+  const hostname = page.hostname.trim().toLowerCase().replace(/\.$/, '');
+  const normalized = normalizeSandboxPath(page.path);
+  if (
+    !config.valid ||
+    hostname !== CXONE_ALLOWED_HOST ||
+    (normalized !== CXONE_ALLOWED_ROOT && !normalized.startsWith(`${CXONE_ALLOWED_ROOT}/`))
+  ) {
+    throw new WriteNotAllowedError(hostname, normalized);
   }
 }
 

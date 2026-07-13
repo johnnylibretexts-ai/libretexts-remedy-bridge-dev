@@ -133,7 +133,7 @@ export async function revertPage(
     };
   }
 
-  assertWriteAllowed(page.path, env);
+  assertWriteAllowed(page, env);
 
   // Save an ADDITIONAL snapshot of the current state before reverting —
   // the revert is itself a write, and we want it reversible.
@@ -151,7 +151,7 @@ export async function revertPage(
     opts.revisionSummary ?? `remedy revert: restore snapshot ${chosen.ts} (${chosen.hash})`;
 
   const postResponse = await expert.pages.postPageContents(
-    normalizePageInput(pageInput) as number,
+    normalizePageInput(pageInput, env) as number,
     chosen.html,
     {
       edittime: 'now',
