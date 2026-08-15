@@ -10,6 +10,25 @@ approved revisions through guarded CXone APIs.
 - **`@libretexts/remedy-cli`** — MVP demo target. `remedy scan <url>` / `remedy scan-file <html>`.
 - **`@libretexts/remedy-conductor-panel`** — local staff UI and Node bridge for Conductor/Remedy Server integration.
 
+## Where this sits in the stack
+
+This repository is one of three that make up Remedy:
+
+| Repository | Role |
+|---|---|
+| `libretexts-remedy-server` | the engine — all checking and remediation behind `/v1/*` |
+| **`libretexts-remedy-bridge`** | this repo — CXone Expert page I/O and guarded writes |
+| `adapt-a11y-scanner` | headless ADAPT question rendering (not needed for CXone pages) |
+
+**To deploy them together, follow `deploy/stack/README.md` in the
+`libretexts-remedy-server` repository** — that is the only compose file that
+wires the full stack. The quick start below runs this bridge on its own, which
+is enough for local development and for scanning a single page.
+
+> Older names for this repository appear in commit history and in a few code
+> comments: `libretexts_remedy` and `libre-remedy`. `libretexts_remedy` is also
+> the name of the shared Docker network, which is an unrelated collision.
+
 ## Quick start
 
 ```bash
