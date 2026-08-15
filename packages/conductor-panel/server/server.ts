@@ -27,6 +27,10 @@ import {
   buildConductorCriteria,
   toConductorFindings,
   buildWcagReview,
+  CXONE_ALLOWED_HOST,
+  CXONE_ALLOWED_ROOT,
+  isCxoneIntegrationEnabled,
+  validateCxoneConfiguration,
   type DojException,
   type WcagReview,
 } from '@libretexts/remedy-core';
@@ -90,6 +94,17 @@ const targetedPreviewSessions = new Map<string, {
 type Handler = (body: Record<string, unknown>) => Promise<unknown>;
 
 const routes: Record<string, Handler> = {
+  '/healthz': async () => {
+    const enabled = isCxoneIntegrationEnabled(process.env);
+    const config = enabled ? validateCxoneConfiguration(process.env) : { valid: true };
+    return {
+      ok: enabled ? config.valid : true,
+      state: enabled ? (config.valid ? 'ready' : 'misconfigured') : 'disabled',
+      enabled,
+      write_scope: { host: CXONE_ALLOWED_HOST, root: CXONE_ALLOWED_ROOT },
+      ...(enabled && !config.valid ? { error: 'cxone_configuration_invalid' } : {}),
+    };
+  },
   '/v1/cxone/page/scan': async (body) => {
     const page = requirePageInput(body);
     const result = await scanPage(page);
@@ -489,6 +504,13 @@ const server = createServer(async (req, res) => {
   }
 
   try {
+    if (isCxoneRoute(pathname) && !isCxoneIntegrationEnabled(process.env)) {
+      json(res, 503, {
+        error: 'cxone_integration_disabled',
+        message: 'CXone integration is disabled on this environment.',
+      });
+      return;
+    }
     const body = req.method === 'POST' ? await readJson(req) : {};
     const result = await handler(body);
     json(res, 200, result);
@@ -500,7 +522,7 @@ const server = createServer(async (req, res) => {
     // Log full detail server-side; return a generic message so internal error
     // text (paths, upstream messages, stack-adjacent details) never leaks to
     // the client.
-    console.error('[conductor-api] request failed:', err);
+    console.error('[conductor-api] request failed:', err instanceof Error ? err.name : 'UnknownError');
     json(res, 500, { error: 'internal server error' });
   }
 });
@@ -508,6 +530,10 @@ const server = createServer(async (req, res) => {
 server.listen(PORT, HOST, () => {
   console.log(`[conductor-api] listening on http://${HOST}:${PORT}`);
 });
+
+function isCxoneRoute(pathname: string): boolean {
+  return pathname.startsWith('/v1/cxone/') || pathname === '/api/scan' || pathname === '/api/preview' || pathname === '/api/apply';
+}
 
 // --- helpers ---
 async function readJson(req: IncomingMessage): Promise<Record<string, unknown>> {

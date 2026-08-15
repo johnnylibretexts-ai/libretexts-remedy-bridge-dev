@@ -49,7 +49,7 @@ Every write has two independent rollback channels:
 Other safeguards:
 
 - **Dry-run is the default.** `fix` and `pipeline` require `--apply` + per-page y/N to write.
-- **Namespace allowlist.** `REMEDY_WRITE_ALLOWLIST` defaults to `^Sandboxes/`. Writes outside the allowlist throw `WriteNotAllowedError` before any HTTP call.
+- **Owner-only boundary.** CXone is disabled unless `CXONE_INTEGRATION_ENABLED=true`. Enabled writes require host `dev.libretexts.org` and path `Sandboxes/johnnyphung` (or a descendant); a broader `REMEDY_WRITE_ALLOWLIST` is rejected as misconfiguration before any HTTP write.
 - **Token masking.** `remedy env` never prints raw secrets.
 - **Audit log** at `.remedy/audit.log` records every apply with before/after hashes, snapshot path, CXone revision id, operator, and ISO timestamp.
 - **Secrets in `.env` only.** `.env` is git-ignored; `.env.example` is the template.
@@ -180,4 +180,5 @@ npm run dev:api --workspace @libretexts/remedy-conductor-panel
 ```
 
 The bridge listens on `http://127.0.0.1:5175` by default and consumes the root
-`.env` credentials plus the same `REMEDY_WRITE_ALLOWLIST` guardrail as the CLI.
+`.env` credentials. `GET /healthz` reports an independent `disabled`, `ready`,
+or `misconfigured` CXone state without making the bridge process unhealthy.
