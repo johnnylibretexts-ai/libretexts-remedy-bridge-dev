@@ -463,6 +463,10 @@ const routes: Record<string, Handler> = {
     if (source === 'fixture') {
       const relPath = requireStr(body.relPath, 'relPath');
       const resolved = resolve(REPO_ROOT, relPath);
+      // Path-traversal guard (flagged by Aikido AIK_ts_generic_path_traversal):
+      // confine reads to FIXTURE_ROOT. `resolve` collapses any ../ in relPath, so
+      // a traversal attempt lands outside FIXTURE_ROOT and is rejected here. The
+      // `+ sep` on the prefix check defeats the sibling bypass (…/local-lab-evil).
       if (resolved !== FIXTURE_ROOT && !resolved.startsWith(FIXTURE_ROOT + sep)) {
         throw new Error('fixture path escapes fixture root');
       }
