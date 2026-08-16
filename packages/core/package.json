@@ -2,6 +2,7 @@
   "name": "@libretexts/remedy-core",
   "version": "0.0.1",
   "private": true,
+  "license": "MIT",
   "description": "Accessibility scan + fix library for LibreTexts CXone Expert pages.",
   "type": "module",
   "main": "dist/index.js",

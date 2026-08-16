@@ -2,6 +2,7 @@
   "name": "@libretexts/remedy-conductor-panel",
   "version": "0.0.1",
   "private": true,
+  "license": "MIT",
   "description": "Staff UI for LibreTexts Remedy — scan, preview, apply.",
   "type": "module",
   "scripts": {

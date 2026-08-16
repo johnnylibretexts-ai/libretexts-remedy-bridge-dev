@@ -2,6 +2,7 @@
   "name": "@libretexts/remedy-cli",
   "version": "0.0.1",
   "private": true,
+  "license": "MIT",
   "description": "CLI for the LibreTexts remediation assistant.",
   "type": "module",
   "bin": {
