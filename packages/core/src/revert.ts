@@ -32,6 +32,8 @@ export interface RevertOptions {
   snapshotPath?: string;
   /** Dry-run — don't write, return the diff candidate only. Default false. */
   dryRun?: boolean;
+  /** Reject a restore if the live page changed since the reviewed preview. */
+  expectedCurrentHash?: string;
   /** Custom revision summary written to CXone. */
   revisionSummary?: string;
 }
@@ -78,6 +80,9 @@ export async function revertPage(
 
   if (opts.snapshotPath) {
     const { html, meta } = await readSnapshot(opts.snapshotPath);
+    if (meta.pageId !== page.id || meta.hostname !== page.hostname || meta.pagePath !== page.path || hashContent(html) !== meta.hash) {
+      throw new Error('Snapshot does not match this page or failed integrity validation');
+    }
     chosen = {
       metaPath: opts.snapshotPath.replace(/\.html$/, '.json'),
       htmlPath: opts.snapshotPath.replace(/\.json$/, '.html'),
@@ -101,13 +106,20 @@ export async function revertPage(
         `Available: ${snapshots.map((s) => s.meta.ts).join(', ')}`,
       );
     }
-    const { html } = await readSnapshot(pick);
+    const { html, meta } = await readSnapshot(pick);
+    if (meta.pageId !== page.id || meta.hostname !== page.hostname || meta.pagePath !== page.path || hashContent(html) !== meta.hash) {
+      throw new Error('Snapshot does not match this page or failed integrity validation');
+    }
     chosen = { ...pick, ts: pick.meta.ts, hash: pick.meta.hash, html };
   }
 
   // Fetch current live HTML — needed for a pre-revert safety snapshot and for
   // deciding whether a write is actually necessary.
   const currentHtml = await fetchPageHtml(expert, pageInput);
+
+  if (opts.expectedCurrentHash && hashContent(currentHtml) !== opts.expectedCurrentHash) {
+    throw new Error('Page changed since restore preview; preview again');
+  }
 
   if (currentHtml === chosen.html) {
     return {

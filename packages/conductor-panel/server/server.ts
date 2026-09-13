@@ -5,6 +5,7 @@
  * @libretexts/remedy-core. Only runs locally for staff use; do not
  * expose to the public internet without auth.
  */
+import { createPatch } from 'diff';
 import { randomUUID } from 'node:crypto';
 import { createReadStream } from 'node:fs';
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
@@ -13,6 +14,9 @@ import { extname, resolve, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { config as loadDotenv } from 'dotenv';
 import {
+  reviseAltText,
+  listPageSnapshots,
+  revertPage,
   createExpertClient,
   resolvePageRef,
   scanPage,
@@ -69,6 +73,8 @@ interface PipelinePreviewSession {
   appliedRuleIds: string[];
 }
 
+const restoreSessions = new Map<string, { pageId: number; snapshotTs: string; hash: string; expiresAt: number }>();
+
 const pipelinePreviewSessions = new Map<string, PipelinePreviewSession>();
 const targetedPreviewSessions = new Map<string, {
   token: string;
@@ -89,6 +95,7 @@ const targetedPreviewSessions = new Map<string, {
   bytePreserved?: boolean;
   fallbackReason?: string;
   splicesApplied?: number;
+  editableImages?: Array<{ src: string; findingId: string }>;
 }>();
 
 type Handler = (body: Record<string, unknown>) => Promise<unknown>;
@@ -134,6 +141,40 @@ const routes: Record<string, Handler> = {
       stats: result.stats,
       scanned_at: result.scannedAt,
     };
+  },
+
+  '/v1/cxone/page/snapshots': async body => {
+    const entries = await listPageSnapshots(requirePageInput(body));
+    return { snapshots: entries.map(s => ({ timestamp: s.meta.ts, hash: s.meta.hash,
+      summary: s.meta.revisionSummary, source: s.meta.source, bytes: s.meta.bytes })) };
+  },
+  '/v1/cxone/page/restore-preview': async body => {
+    const snapshotTs = requireStr(body.snapshot_timestamp, 'snapshot_timestamp');
+    const result = await revertPage(requirePageInput(body), { snapshotTs, dryRun: true });
+    for (const [key, session] of restoreSessions) if (session.expiresAt <= Date.now()) restoreSessions.delete(key);
+    const token = randomUUID(), hash = hashContent(result.currentHtml);
+    restoreSessions.set(token, { pageId: result.pageId, snapshotTs, hash, expiresAt: Date.now() + PIPELINE_PREVIEW_TTL_MS });
+    return { preview_token: token, preview_hash: hash, snapshot_timestamp: snapshotTs,
+      before_html: result.currentHtml, after_html: result.revertedToHtml,
+      unchanged: result.currentHtml === result.revertedToHtml };
+  },
+  '/v1/cxone/page/restore': async body => {
+    const token = requireStr(body.preview_token, 'preview_token');
+    const session = restoreSessions.get(token);
+    if (!session || session.expiresAt <= Date.now()) throw new HttpError(409, { error: 'expired_preview', message: 'Restore preview expired; preview again.' });
+    const page = requirePageInput(body);
+    const pageRef = await resolvePageRef(createExpertClient(), page, process.env);
+    if (pageRef.id !== session.pageId || body.preview_hash !== session.hash) throw new HttpError(409, { error: 'stale_preview', message: 'Restore preview does not match this page.' });
+    // Consume before the write so a double-click cannot replay a restoration.
+    restoreSessions.delete(token);
+    try {
+      const result = await revertPage(page, { snapshotTs: session.snapshotTs, expectedCurrentHash: session.hash });
+      return { restored: result.written, snapshot_timestamp: session.snapshotTs,
+        snapshot_path: result.preRevertSnapshotPath, restored_hash: hashContent(result.revertedToHtml) };
+    } catch (err) {
+      if (err instanceof Error && err.message.includes('Page changed')) throw new HttpError(409, { error: 'stale_preview', message: err.message });
+      throw err;
+    }
   },
 
   '/v1/cxone/page/preview-fix': async (body) => {
@@ -210,6 +251,7 @@ const routes: Record<string, Handler> = {
       bytePreserved: result.bytePreserved,
       fallbackReason: result.fallbackReason,
       splicesApplied: result.splicesApplied,
+      editableImages: toConductorFindings(result.findings).filter(f => findingIds.includes(f.id) && f.ruleId === 'img-alt' && f.data?.src).map(f => ({ src: String(f.data!.src), findingId: f.id })),
     });
     return {
       fix_mode: 'deterministic',
@@ -234,6 +276,28 @@ const routes: Record<string, Handler> = {
       fallback_reason: result.fallbackReason,
       splices_applied: result.splicesApplied,
     };
+  },
+
+  '/v1/cxone/page/revise-preview': async body => {
+    const oldToken = requireStr(body.preview_token, 'preview_token');
+    const session = targetedPreviewSessions.get(oldToken);
+    if (!session || session.expiresAt <= Date.now()) throw new HttpError(409, { error: 'expired_preview', message: 'Fix preview expired; generate it again.' });
+    const page = await resolvePageRef(createExpertClient(), requirePageInput(body), process.env);
+    if (page.id !== session.pageId) throw new HttpError(409, { error: 'preview_page_mismatch', message: 'Preview belongs to a different page.' });
+    const edits = body.alt_edits as Array<{ src: string; text: string }>;
+    let after: string;
+    try { after = reviseAltText(session.afterHtml, edits, (session.editableImages || []).map(i => i.src)); }
+    catch (err) { throw new HttpError(400, { error: 'invalid_description', message: err instanceof Error ? err.message : 'Invalid description' }); }
+    const token = randomUUID();
+    const reviewedIds = (session.editableImages || []).filter(i => edits.some(e => e.src === i.src)).map(i => i.findingId);
+    const diff = createPatch(session.pagePath, session.beforeHtml, after, 'before', 'after', { context: 3 });
+    const revised = { ...session, token, afterHtml: after, diff,
+      appliedRuleIds: [...new Set([...session.appliedRuleIds, 'img-alt'])],
+      appliedFindingIds: [...new Set([...(session.appliedFindingIds || []), ...reviewedIds])],
+      fixErrors: (session.fixErrors || []).filter((e: any) => !reviewedIds.includes(e.findingId)) };
+    targetedPreviewSessions.delete(oldToken); targetedPreviewSessions.set(token, revised);
+    return { preview_token: token, preview_hash: session.beforeHash, before_html: session.beforeHtml, after_html: after,
+      diff, fix_errors: revised.fixErrors, applied_finding_ids: revised.appliedFindingIds, llm_calls: session.llmCalls };
   },
 
   '/v1/cxone/page/apply-fix': async (body) => {

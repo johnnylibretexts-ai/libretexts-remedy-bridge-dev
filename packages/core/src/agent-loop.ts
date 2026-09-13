@@ -19,16 +19,12 @@
  *   - set_attribute(selector, attr, value) — low-level DOM edit.
  *   - finish(status)           — end the loop.
  *
- * Transport: OpenAI function-calling. ChatRequest in our LLMClient does
- * not carry tools today, so this module talks to the same
- * /chat/completions endpoint directly, reusing the client's provider
- * config (baseUrl + apiKey). If the provider returns no tool_calls we
- * fall back to parsing a JSON-per-turn envelope from the assistant
- * content, to stay useful with local models that don't support function
- * calling yet.
+ * Transport: shared LLMClient tool turns, including provider fallback, timeout,
+ * reasoning parameters and usage. JSON envelopes remain supported for models
+ * that answer with text instead of native function calls.
  */
 import { JSDOM } from 'jsdom';
-import { LLMClient } from './ai/llm-client.js';
+import { LLMClient, type ChatMessage, type AssistantMessage } from './ai/llm-client.js';
 import { defaultRules } from './rules/index.js';
 import { scanHtmlFull } from './scan.js';
 import type { Finding, PageRef, Rule } from './types.js';
@@ -157,7 +153,6 @@ export async function runAgentLoop(opts: AgentLoopOptions): Promise<AgentLoopRes
   const maxIterations = opts.maxIterations ?? 8;
   const rules = opts.rules ?? defaultRules;
   const env = opts.env ?? process.env;
-  const debug = opts.debug ?? Boolean(env.DEBUG);
   const ruleById = new Map(rules.map((r) => [r.id, r]));
 
   let dom = new JSDOM(`<!doctype html><html><body>${opts.html}</body></html>`);
@@ -168,7 +163,6 @@ export async function runAgentLoop(opts: AgentLoopOptions): Promise<AgentLoopRes
   let noProgressStreak = 0;
   let lastMutationSignature: string | null = null;
 
-  const clientProvider = (opts.client as unknown as { provider: ProviderLike }).provider;
 
   for (let turn = 1; turn <= maxIterations; turn++) {
     if (currentFindings.length === 0) {
@@ -196,12 +190,7 @@ export async function runAgentLoop(opts: AgentLoopOptions): Promise<AgentLoopRes
 
     let assistant: AssistantMessage;
     try {
-      assistant = await callChatCompletions({
-        provider: clientProvider,
-        messages,
-        tools: TOOLS,
-        debug,
-      });
+      assistant = await opts.client.chatTools({ messages, tools: TOOLS, maxTokens: 1024, temperature: 0.1 });
     } catch (err) {
       iterations.push({
         turn,
@@ -372,7 +361,10 @@ export async function runAgentLoop(opts: AgentLoopOptions): Promise<AgentLoopRes
     }
 
     // Trim recentMessages to keep context bounded.
-    while (recentMessages.length > 16) recentMessages.shift();
+    while (recentMessages.length > 16) {
+      recentMessages.shift();
+      while (recentMessages[0]?.role === 'tool') recentMessages.shift();
+    }
   }
 
   return { finalHtml: currentHtml, iterations };
@@ -380,91 +372,10 @@ export async function runAgentLoop(opts: AgentLoopOptions): Promise<AgentLoopRes
 
 // ---------- helpers ----------
 
-interface ProviderLike {
-  id: string;
-  baseUrl: string;
-  apiKey?: string;
-  defaultTextModel?: string;
-}
-
 interface ToolCall {
   id: string;
   name: string;
   args: Record<string, unknown>;
-}
-
-interface AssistantMessage {
-  role: 'assistant';
-  content: string | null;
-  tool_calls?: Array<{
-    id: string;
-    type?: string;
-    function: { name: string; arguments: string };
-  }>;
-}
-
-interface ChatMessage {
-  role: 'system' | 'user' | 'assistant' | 'tool';
-  content: string;
-  tool_call_id?: string;
-  tool_calls?: AssistantMessage['tool_calls'];
-  name?: string;
-}
-
-async function callChatCompletions({
-  provider,
-  messages,
-  tools,
-  debug,
-}: {
-  provider: ProviderLike;
-  messages: ChatMessage[];
-  tools: typeof TOOLS;
-  debug: boolean;
-}): Promise<AssistantMessage> {
-  if (!provider || !provider.baseUrl) {
-    throw new Error('agent-loop: client provider has no baseUrl');
-  }
-  const url = `${provider.baseUrl.replace(/\/+$/, '')}/chat/completions`;
-  const body = {
-    model: provider.defaultTextModel,
-    messages,
-    tools,
-    tool_choice: 'auto',
-    temperature: 0.1,
-    max_tokens: 1024,
-    stream: false,
-  };
-  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
-  if (provider.apiKey) headers['Authorization'] = `Bearer ${provider.apiKey}`;
-  if (provider.id === 'openrouter') {
-    headers['HTTP-Referer'] =
-      process.env.REMEDY_OPENROUTER_REFERER ?? 'https://github.com/libretexts';
-    headers['X-Title'] = process.env.REMEDY_OPENROUTER_APP ?? 'libretexts-remedy';
-  }
-
-  const res = await fetch(url, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) {
-    const text = await safeText(res);
-    throw new Error(`agent-loop: ${res.status} ${text.slice(0, 300)}`);
-  }
-  const data = (await res.json()) as {
-    choices?: Array<{ message?: AssistantMessage }>;
-  };
-  const msg = data.choices?.[0]?.message;
-  if (!msg) {
-    if (debug) console.error('agent-loop: empty choices payload', data);
-    return { role: 'assistant', content: '' };
-  }
-  return {
-    role: 'assistant',
-    content: typeof msg.content === 'string' ? msg.content : null,
-    tool_calls: msg.tool_calls,
-  };
 }
 
 function extractToolCalls(assistant: AssistantMessage): ToolCall[] {
@@ -663,6 +574,7 @@ function assistantMessageRecord(msg: AssistantMessage, toolCalls: ToolCall[]): C
   const record: ChatMessage = {
     role: 'assistant',
     content: typeof msg.content === 'string' ? msg.content : '',
+    ...(msg.responseItems ? { responseItems: msg.responseItems } : {}),
   };
   if (msg.tool_calls && msg.tool_calls.length > 0) {
     record.tool_calls = msg.tool_calls;
@@ -684,14 +596,6 @@ function toolResponse(toolCallId: string, payload: unknown): ChatMessage {
     tool_call_id: toolCallId,
     content: JSON.stringify(payload),
   };
-}
-
-async function safeText(res: Response): Promise<string> {
-  try {
-    return await res.text();
-  } catch {
-    return '';
-  }
 }
 
 function errorMessage(err: unknown): string {
