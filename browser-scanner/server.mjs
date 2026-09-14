@@ -18,9 +18,10 @@ export async function scan(raw) {
     if (!addresses.length || addresses.some(a => !publicIPv4(a.address))) throw Error('Non-public resource host.');
     rules.push(`MAP ${host} ${addresses[0].address}`);
   }
-  const browser = await chromium.launch({ chromiumSandbox: true, args: [`--host-resolver-rules=${rules.join(',')},MAP * ~NOTFOUND`] });
+  const browser = await chromium.launch({ chromiumSandbox: true, args: ['--force-webrtc-ip-handling-policy=disable_non_proxied_udp', `--host-resolver-rules=${rules.join(',')},MAP * ~NOTFOUND`] });
   const context = await browser.newContext({ viewport: { width: 1280, height: 900 }, userAgent: 'LibreTexts-Remedy-Accessibility/1.0', serviceWorkers: 'block', acceptDownloads: false });
-  const blocked = new Set(), blockedWrites = new Set(), failed = new Set(), assets = new Map(), pending = [];
+  const blocked = new Set(), blockedWrites = new Set(), blockedSockets = new Set(), failed = new Set(), assets = new Map(), pending = [];
+  await context.routeWebSocket('**/*', socket => {blockedSockets.add(socket.url());socket.close();});
   await context.route('**/*', route => {
     const req = route.request();
     if (!['GET','HEAD'].includes(req.method())) { blockedWrites.add(req.url().split('?')[0]); return route.abort(); }
@@ -29,11 +30,11 @@ export async function scan(raw) {
   });
   const page = await context.newPage();
   const deadline = setTimeout(()=>{void context.close().catch(()=>{});},110000);
-  page.on('requestfailed', req => { if (['document','script','stylesheet','font','image'].includes(req.resourceType())) failed.add(req.url().split('?')[0]); });
+  page.on('requestfailed', req => { if (['GET','HEAD'].includes(req.method()) && ['document','script','stylesheet','font','image','xhr','fetch'].includes(req.resourceType())) failed.add(req.url().split('?')[0]); });
   page.on('response', response => {
     const type = response.request().resourceType();
     if (['script','stylesheet','image','font'].includes(type)) pending.push(response.body().then(b=>assets.set(response.url(),hash(b))).catch(()=>failed.add(response.url())));
-    if (response.status() >= 400 && ['document','script','stylesheet','font','image'].includes(type)) failed.add(response.url().split('?')[0]);
+    if (response.status() >= 400 && ['GET','HEAD'].includes(response.request().method()) && ['document','script','stylesheet','font','image','xhr','fetch'].includes(type)) failed.add(response.url().split('?')[0]);
   });
   try {
     const response = await page.goto(url, { waitUntil: 'load', timeout: 45000 });
@@ -74,7 +75,7 @@ export async function scan(raw) {
         checks:[...n.any,...n.all,...n.none].map(c=>({id:c.id,message:c.message})) })) });
     return { state: blocked.size || failed.size || readinessErrors.length ? 'incomplete' : 'complete', scannedAt:new Date().toISOString(),
       url, userAgent:'LibreTexts-Remedy-Accessibility/1.0', scope:'full-reader-page', viewport:{width:1280,height:900}, browser:browser.version(), axeVersion:axe.version,
-      renderedHash, platformHash, math, readinessErrors, blockedWrites:[...blockedWrites], blockedResources:[...blocked], failedResources:[...failed],
+      renderedHash, platformHash, math, readinessErrors, blockedWrites:[...blockedWrites], blockedSockets:[...blockedSockets], blockedResources:[...blocked], failedResources:[...failed],
       violations:results.violations.map(compact), incomplete:results.incomplete.map(compact),
       passedRules:results.passes.map(r=>r.id), inapplicableRules:results.inapplicable.map(r=>r.id),
       humanChecksRequired:['Mathematical meaning and navigation with screen reader','No duplicate math announcements','Keyboard and complete processes','Reflow, zoom and text spacing','Visual and linguistic review'] };
