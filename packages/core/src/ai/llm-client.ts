@@ -621,12 +621,15 @@ export async function imageSourceFromUrl(url: string): Promise<ImageSource> {
   // Some providers (e.g. gemini-compat, ollama-local) do better with inline bytes.
   // Fetch once and embed; URL providers don't lose anything.
   const { bytes, mimeType } = await fetchImageAsBytes(url);
-  if (!['image/png', 'image/jpeg', 'image/webp'].includes(mimeType.toLowerCase())) {
-    const decoded = sharp(bytes, { limitInputPixels: 40_000_000 });
-    const meta = await decoded.metadata();
-    if ((meta.pages || 1) > 1) throw new LLMError('Animated or multipage images require manual review', 422);
-    return { kind: 'bytes', bytes: await decoded.png().toBuffer(), mimeType: 'image/png' };
+  const decoded = sharp(bytes, { limitInputPixels: 40_000_000 });
+  const meta = await decoded.metadata();
+  if ((meta.pages || 1) > 1) throw new LLMError('Animated or multipage images require manual review', 422);
+  // Transparent textbook line art is normally displayed on a white page.
+  // Providers may render transparent pixels black, hiding black atom labels.
+  if (meta.hasAlpha || !['image/png', 'image/jpeg', 'image/webp'].includes(mimeType.toLowerCase())) {
+    return { kind: 'bytes', bytes: await decoded.flatten({ background: '#ffffff' }).png().toBuffer(), mimeType: 'image/png' };
   }
+
   return { kind: 'bytes', bytes, mimeType };
 }
 

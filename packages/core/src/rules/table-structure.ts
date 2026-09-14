@@ -196,7 +196,7 @@ function applyHeaderIds(table: Element): boolean {
   if (ths.length === 0) return false;
 
   let changed = false;
-  const used = new Set<string>();
+  const used = new Set(Array.from(table.ownerDocument.querySelectorAll('[id]')).map(el => el.id));
   // Collect already-used ids so we don't stomp.
   for (const th of ths) {
     const existing = th.getAttribute('id');
@@ -218,31 +218,21 @@ function applyHeaderIds(table: Element): boolean {
   // simple colspan/rowspan geometry so a spanned header labels every covered
   // data column.
   const placements = buildCellPlacements(table);
-  const headerByPos = new Map<string, string>();
-  for (const placement of placements) {
-    if (placement.cell.tagName.toLowerCase() !== 'th') continue;
-    const id = placement.cell.getAttribute('id');
-    if (!id) continue;
-    for (let rowIdx = placement.rowStart; rowIdx <= placement.rowEnd; rowIdx += 1) {
-      for (let colIdx = placement.colStart; colIdx <= placement.colEnd; colIdx += 1) {
-        headerByPos.set(`${rowIdx}:${colIdx}`, id);
-      }
-    }
-  }
-
-  // Link data cells via headers="...". Column header is the th at (0, col);
-  // row header is the th at (row, 0) when present.
+  const headers = placements.filter(p => p.cell.tagName.toLowerCase() === 'th');
   for (const placement of placements) {
     const cell = placement.cell;
     if (cell.tagName.toLowerCase() !== 'td') continue;
     const ids: string[] = [];
-    for (let colIdx = placement.colStart; colIdx <= placement.colEnd; colIdx += 1) {
-      const colHeader = headerByPos.get(`0:${colIdx}`);
-      if (colHeader && !ids.includes(colHeader)) ids.push(colHeader);
+    for (const header of headers) {
+      const scope = header.cell.getAttribute('scope');
+      const columnMatch = (scope === 'col' || scope === 'colgroup') && header.rowStart <= placement.rowStart
+        && header.colStart <= placement.colEnd && header.colEnd >= placement.colStart;
+      const rowMatch = (scope === 'row' || scope === 'rowgroup') && header.colStart <= placement.colStart
+        && header.rowStart <= placement.rowEnd && header.rowEnd >= placement.rowStart;
+      const id = header.cell.id;
+      if ((columnMatch || rowMatch) && id && !ids.includes(id)) ids.push(id);
     }
-    const rowHeader = headerByPos.get(`${placement.rowStart}:0`);
-    if (rowHeader && !ids.includes(rowHeader)) ids.push(rowHeader);
-    if (ids.length === 0) continue;
+    if (!ids.length) continue;
     const joined = ids.join(' ');
     if (cell.getAttribute('headers') === joined) continue;
     cell.setAttribute('headers', joined);

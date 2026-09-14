@@ -15,6 +15,8 @@ import { fileURLToPath } from 'node:url';
 import { config as loadDotenv } from 'dotenv';
 import {
   reviseAltText,
+  reviewableImages,
+  describeComplexImage,
   listPageSnapshots,
   revertPage,
   createExpertClient,
@@ -179,6 +181,31 @@ const routes: Record<string, Handler> = {
 
   '/v1/cxone/page/preview-fix': async (body) => {
     const page = requirePageInput(body);
+    if (body.describe_image !== undefined) {
+      const token = requireStr(body.preview_token, 'preview_token');
+      const src = requireStr(body.describe_image, 'describe_image');
+      const session = targetedPreviewSessions.get(token);
+      if (!session || session.expiresAt <= Date.now()) throw new HttpError(409, {error:'expired_preview', message:'Generate an image review preview first.'});
+      const ref = await resolvePageRef(createExpertClient(), page, process.env);
+      if (ref.id !== session.pageId || !session.editableImages?.some(i => i.src === src)) throw new HttpError(400, {error:'invalid_image',message:'Image must belong to this page preview.'});
+      const suggestion = await describeComplexImage(src, ref.hostname, session.beforeHtml);
+      return { suggestion };
+    }
+    if (body.review_images === true) {
+      const expert = createExpertClient();
+      const ref = await resolvePageRef(expert, page, process.env);
+      const html = await fetchPageHtml(expert, page);
+      const images = reviewableImages(html);
+      prunePreviewSessions();
+      const token = randomUUID(), hash = hashContent(html);
+      targetedPreviewSessions.set(token, { token, expiresAt: Date.now() + PIPELINE_PREVIEW_TTL_MS,
+        pageId: ref.id, pagePath: ref.path, hostname: ref.hostname, beforeHash: hash,
+        beforeHtml: html, afterHtml: html, diff: '', attemptedRuleIds: [], appliedRuleIds: [],
+        appliedFindingIds: [], llmCalls: 0, bytePreserved: true,
+        editableImages: images.map(i => ({src: i.data.src, findingId: i.id})) });
+      return { preview_token: token, preview_hash: hash, before_html: html, after_html: html,
+        review_images: images, fix_errors: [], llm_calls: 0 };
+    }
     const fixMode = optionalFixMode(body.fix_mode ?? body.fixMode);
     if (fixMode === 'pipeline') {
       prunePipelinePreviewSessions();
@@ -297,7 +324,7 @@ const routes: Record<string, Handler> = {
       fixErrors: (session.fixErrors || []).filter((e: any) => !reviewedIds.includes(e.findingId)) };
     targetedPreviewSessions.delete(oldToken); targetedPreviewSessions.set(token, revised);
     return { preview_token: token, preview_hash: session.beforeHash, before_html: session.beforeHtml, after_html: after,
-      diff, fix_errors: revised.fixErrors, applied_finding_ids: revised.appliedFindingIds, llm_calls: session.llmCalls };
+      diff, review_images: (session.editableImages || []).map(i => ({id: i.findingId, ruleId: 'img-alt', data: {src: i.src}})), fix_errors: revised.fixErrors, applied_finding_ids: revised.appliedFindingIds, llm_calls: session.llmCalls };
   },
 
   '/v1/cxone/page/apply-fix': async (body) => {

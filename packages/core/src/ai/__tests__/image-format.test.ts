@@ -20,3 +20,11 @@ it('rejects animated GIF instead of silently describing one frame', async () => 
   vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(animated, { headers: { 'content-type': 'image/gif' } })));
   await expect(imageSourceFromUrl('https://bio.libretexts.org/diagram.gif')).rejects.toThrow('manual review');
 });
+it('places transparent black line art on white without losing opaque black pixels', async () => {
+  const png = await sharp(Buffer.from([0,0,0,0, 0,0,0,255]),{raw:{width:2,height:1,channels:4}}).png().toBuffer();
+  vi.stubGlobal('fetch',vi.fn().mockResolvedValue(new Response(png,{headers:{'content-type':'image/png'}})));
+  const image=await imageSourceFromUrl('https://bio.libretexts.org/chemistry.png');
+  if(image.kind!=='bytes')throw Error('Expected bytes');
+  const {data,info}=await sharp(image.bytes).raw().toBuffer({resolveWithObject:true});
+  expect(info.channels).toBe(3);expect([...data]).toEqual([255,255,255,0,0,0]);
+});

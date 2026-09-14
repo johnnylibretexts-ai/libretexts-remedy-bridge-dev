@@ -63,7 +63,7 @@ const SYSTEM_PROMPT = `You are an HTML accessibility remediation agent. Your goa
 current findings list to zero without introducing regressions.
 
 Rules:
-- Call exactly one mutating tool per turn (apply_rule_fix or set_attribute).
+- Call exactly one mutating tool per turn (apply_rule_fix, set_heading_level or set_attribute).
 - Read the updated findings list after each mutation before deciding the next move.
 - If a mutation did not help, do not repeat it — try a different rule or a
   targeted set_attribute on the failing element's selector.
@@ -76,6 +76,7 @@ Tools available:
 - apply_rule_fix(ruleId): Run that rule's fix() against the current DOM.
 - set_attribute(selector, attr, value): Low-level edit on the first matching
   element. Use for narrow fixes (e.g. adding aria-label to a single <img>).
+- set_heading_level(selector, level): Change an existing heading to h1–h6, preserving its content and attributes. Use for skipped heading levels.
 - finish(status, reason): End the loop.
 
 Respond with an OpenAI-format tool_calls array. If you cannot emit tool_calls
@@ -132,6 +133,18 @@ const TOOLS = [
   {
     type: 'function' as const,
     function: {
+      name: 'set_heading_level',
+      description: 'Change exactly one existing heading level while preserving its content and attributes. Mutating; rescans automatically.',
+      parameters: {
+        type: 'object',
+        properties: { selector: { type: 'string' }, level: { type: 'integer', minimum: 1, maximum: 6 } },
+        required: ['selector', 'level'], additionalProperties: false,
+      },
+    },
+  },
+  {
+    type: 'function' as const,
+    function: {
       name: 'finish',
       description: 'End the loop.',
       parameters: {
@@ -147,7 +160,7 @@ const TOOLS = [
   },
 ];
 
-const MUTATING_TOOLS = new Set(['apply_rule_fix', 'set_attribute']);
+const MUTATING_TOOLS = new Set(['apply_rule_fix', 'set_attribute', 'set_heading_level']);
 
 export async function runAgentLoop(opts: AgentLoopOptions): Promise<AgentLoopResult> {
   const maxIterations = opts.maxIterations ?? 8;
@@ -299,6 +312,8 @@ export async function runAgentLoop(opts: AgentLoopOptions): Promise<AgentLoopRes
             page: opts.page,
             env,
           });
+        } else if (name === 'set_heading_level') {
+          mutationResult = runSetHeadingLevel(dom.window.document, String(args?.selector ?? ''), args?.level);
         } else {
           // set_attribute
           mutationResult = runSetAttribute({
@@ -520,6 +535,19 @@ async function runApplyRuleFix({
     note: `applied ${applied}/${targets.length} ${ruleId} fix(es)`,
     appliedRule: ruleId,
   };
+}
+
+function runSetHeadingLevel(doc: Document, selector: string, level: unknown): { ok: boolean; note: string } {
+  if (typeof level !== 'number' || !Number.isInteger(level) || level < 1 || level > 6) return { ok: false, note: 'Heading level must be an integer from 1 to 6.' };
+  let matches: NodeListOf<Element>;
+  try { matches = doc.querySelectorAll(selector); } catch { return { ok: false, note: 'Invalid heading selector.' }; }
+  if (matches.length !== 1 || !/^H[1-6]$/.test(matches[0].tagName)) return { ok: false, note: 'Select exactly one existing heading.' };
+  const old = matches[0];
+  const heading = doc.createElement(`h${level}`);
+  for (const attribute of Array.from(old.attributes)) heading.setAttribute(attribute.name, attribute.value);
+  while (old.firstChild) heading.appendChild(old.firstChild);
+  old.replaceWith(heading);
+  return { ok: true, note: `Changed ${selector} to h${level}, preserving content and attributes.` };
 }
 
 function runSetAttribute({
