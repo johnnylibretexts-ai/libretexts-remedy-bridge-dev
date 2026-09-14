@@ -7,7 +7,7 @@ const expert=createExpertClient();
 for(const url of urls){
  const page=await resolvePageRef(expert,url,process.env),before=await fetchPageHtml(expert,url);
  const response=await fetch(url,{signal:AbortSignal.timeout(45000)});
- if(!response.ok)throw Error(`Reader HTTP ${response.status()}`);
+ if(!response.ok)throw Error(`Reader HTTP ${response.status}`);
  const proposal=deduplicateMathJaxInitializer(before,await response.text());
  const result={pageId:page.id,path:page.path,changed:proposal.changed,reason:proposal.reason,beforeHash:hashContent(before),afterHash:hashContent(proposal.html)};
  if(apply&&proposal.changed){
