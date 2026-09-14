@@ -102,23 +102,11 @@ export function buildWcagReview(opts: BuildWcagReviewOptions): WcagReview {
   const scannedAt = opts.scannedAt ?? new Date().toISOString();
   const facts = analyzeHtml(opts.html, opts.page);
   const evidenceByCriterion = buildEvidenceByCriterion(opts.findings);
-  const previousById = new Map((opts.previousReview?.criteria ?? []).map((item) => [item.id, item]));
 
   const criteria: WcagCriterionResult[] = wcag21AASuccessCriteria.map((criterion) => {
     const evidence = evidenceByCriterion.get(criterion.id) ?? [];
-    const previous = previousById.get(criterion.id);
     const scannerResult = scannerResultForCriterion(criterion.id, facts, evidence);
 
-    if (previous?.source === 'manual') {
-      return {
-        ...criterion,
-        status: previous.status,
-        applicabilityReason: previous.applicabilityReason,
-        source: evidence.length > 0 ? 'mixed' : 'manual',
-        evidence,
-        updatedAt: previous.updatedAt,
-      };
-    }
 
     return {
       ...criterion,
@@ -300,6 +288,8 @@ function findingToEvidence(finding: Finding, findingId: string): WcagEvidence {
     : undefined;
   const imageMimeType = optionalString(finding.data?.imageMimeType);
   return {
+    scope: optionalString(finding.data?.scope),
+    owner: optionalString(finding.data?.owner),
     source: finding.source,
     ruleId: finding.ruleId,
     findingId,
