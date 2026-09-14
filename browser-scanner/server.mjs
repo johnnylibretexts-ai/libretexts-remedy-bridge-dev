@@ -66,6 +66,7 @@ export async function scan(raw) {
     brokenImages.forEach(url=>failed.add(url));
     await page.addScriptTag({ content: axe.source });
     const results = await page.evaluate(async () => window.axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a','wcag2aa','wcag21a','wcag21aa'] } }));
+    const sourceCoverage = await page.evaluate(async () => window.axe.run(document, {runOnly:{type:'rule',values:['table-duplicate-name']}}));
     await Promise.allSettled(pending);
     const renderedHash = hash(await content.innerHTML());
     const shell = await page.evaluate(() => { const root = document.documentElement.cloneNode(true); root.querySelector('section.mt-content-container')?.replaceChildren(); return root.outerHTML; });
@@ -76,8 +77,9 @@ export async function scan(raw) {
     return { state: blocked.size || failed.size || readinessErrors.length ? 'incomplete' : 'complete', scannedAt:new Date().toISOString(),
       url, userAgent:'LibreTexts-Remedy-Accessibility/1.0', scope:'full-reader-page', viewport:{width:1280,height:900}, browser:browser.version(), axeVersion:axe.version,
       renderedHash, platformHash, math, readinessErrors, blockedWrites:[...blockedWrites], blockedSockets:[...blockedSockets], blockedResources:[...blocked], failedResources:[...failed],
-      violations:results.violations.map(compact), incomplete:results.incomplete.map(compact),
-      passedRules:results.passes.map(r=>r.id), inapplicableRules:results.inapplicable.map(r=>r.id),
+      violations:results.violations.map(compact), incomplete:[...results.incomplete,...sourceCoverage.incomplete,...sourceCoverage.violations].map(compact),
+      sourceRuleChecks:{rule:'table-duplicate-name',violations:sourceCoverage.violations.map(compact),incomplete:sourceCoverage.incomplete.map(compact)},
+      passedRules:[...results.passes,...sourceCoverage.passes].map(r=>r.id), inapplicableRules:[...results.inapplicable,...sourceCoverage.inapplicable].map(r=>r.id),
       humanChecksRequired:['Mathematical meaning and navigation with screen reader','No duplicate math announcements','Keyboard and complete processes','Reflow, zoom and text spacing','Visual and linguistic review'] };
   } catch (e) { return {state:'error',scannedAt:new Date().toISOString(),url,error:e.message,mathDiagnostics:await page.evaluate(()=>({version:window.MathJax?.version,pending:window.MathJax?.Hub?.queue?.pending,running:window.MathJax?.Hub?.queue?.running,queueLength:window.MathJax?.Hub?.queue?.queue?.length,fonts:document.fonts.status,mathCount:document.querySelectorAll('math,mjx-container,.MathJax').length})).catch(()=>null),blockedResources:[...blocked],failedResources:[...failed]}; }
   finally { clearTimeout(deadline); await context.close(); await browser.close(); }

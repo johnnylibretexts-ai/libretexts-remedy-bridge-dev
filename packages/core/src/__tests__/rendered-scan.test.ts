@@ -6,7 +6,7 @@ const source:Finding[]=[{ruleId:'axe/aria-valid-attr',severity:'info',message:'A
 it('retains source failures and only supersedes confirmed browser-covered execution errors',()=>{
  const r=mergeRenderedFindings(source,{state:'complete',passedRules:['aria-valid-attr']});
  expect(r.resolvedSourceChecks).toHaveLength(1);expect(r.findings).toEqual([source[1]]);
- expect(mergeRenderedFindings(source,{state:'incomplete',passedRules:['aria-valid-attr']}).findings).toEqual(source);
+ expect(mergeRenderedFindings(source,{state:'incomplete',passedRules:['aria-valid-attr']}).resolvedSourceChecks).toHaveLength(0);
  expect(mergeRenderedFindings(source,{state:'error'}).findings).toEqual(source);
 });
 it('maps browser-only failures to WCAG without making them automatically writable',()=>{
@@ -18,4 +18,11 @@ it('old manual passes cannot mask a new scanner failure',()=>{
  const previous=buildWcagReview({html:'<p>x</p>',findings:[]});
  Object.assign(previous.criteria[0],{source:'manual',status:'pass'});
  expect(buildWcagReview({html:'<img>',findings:[source[1]],previousReview:previous}).criteria[0].status).toBe('fail');
+});
+
+it('records covered execution errors separately while incomplete reader readiness remains a blocker',()=>{
+ const r=mergeRenderedFindings(source,{state:'incomplete',math:{ready:true},passedRules:['aria-valid-attr'],failedResources:['https://example.org/missing.js']});
+ expect(r.resolvedSourceChecks).toEqual([source[0]]);
+ expect(r.findings.some(f=>f.ruleId==='rendered/page-readiness' && f.severity==='info')).toBe(true);
+ expect(r.findings).toContainEqual(source[1]);
 });
