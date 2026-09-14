@@ -14,16 +14,12 @@ export const tableHeaderRule: Rule = {
   description: 'Data tables must declare header cells with <th>.',
   fix(doc, finding) {
     const tables = Array.from(doc.querySelectorAll('table'));
-    // Find the first table without <th>
-    const target = tables.find((t) => {
-      if (t.getAttribute('role') === 'presentation' || t.getAttribute('role') === 'none') return false;
-      if (t.querySelector('th')) return false;
-      return t.querySelector('tr') !== null;
-    });
+    const index = Number(finding.data?.tableIndex);
+    const target = Number.isInteger(index) ? tables[index] : undefined;
     if (!target) return false;
 
     const firstRow = target.querySelector('tr');
-    if (!firstRow) return false;
+    if (!firstRow || !hasExplicitHeaderRow(target)) return false;
     const tds = Array.from(firstRow.querySelectorAll('td'));
     if (tds.length === 0) return false;
 
@@ -63,10 +59,11 @@ export const tableHeaderRule: Rule = {
       if (hasTh) return;
 
       findings.push({
+        fixable: hasExplicitHeaderRow(t),
         message: `<table> has ${rows.length} row(s) but no <th> header cells`,
         selector: `table:nth-of-type(${idx + 1})`,
         snippet: t.outerHTML.slice(0, 300),
-        data: { rows: rows.length, reason: 'no-th' },
+        data: { rows: rows.length, tableIndex: idx, reason: 'no-th', ...(!hasExplicitHeaderRow(t) ? { fixBlockedReason: 'header-meaning-required', fixBlockedMessage: 'The first row may contain data. A reviewer must identify or supply the table headers.' } : {}) },
       });
     });
 
@@ -99,4 +96,10 @@ function findPrecedingHeadingText(table: Element): string | null {
     node = node.previousSibling;
   }
   return null;
+}
+
+function hasExplicitHeaderRow(table: Element): boolean {
+  const row = table.querySelector('tr');
+  const cells = row ? Array.from(row.children) : [];
+  return cells.length > 0 && (!!row?.closest('thead') || cells.every(cell => cell.getAttribute('role') === 'columnheader'));
 }

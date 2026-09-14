@@ -17,4 +17,4 @@ export * from './strategies/index.js';
 export * as imagePlanner from './image-planner/index.js';
 export * as patch from './patch/index.js';
 
-export { reviseAltText } from './review-alt.js';
+export { reviseAltText, reviewableImages, describeComplexImage } from './review-alt.js';

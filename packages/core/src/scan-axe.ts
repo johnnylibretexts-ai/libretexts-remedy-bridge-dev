@@ -126,21 +126,22 @@ export async function scanHtmlWithAxe(opts: AxeScanOptions): Promise<Finding[]> 
   const findings: Finding[] = [];
   for (const v of results.violations) {
     for (const node of v.nodes) {
-      findings.push(mapViolation(v, node, 'error'));
+      findings.push(mapAxeFinding(v, node, 'error'));
     }
   }
   for (const v of results.incomplete) {
     // Skip incomplete results that are purely jsdom-limitation noise.
     if (JSDOM_LIMITED_RULES.has(v.id)) continue;
     for (const node of v.nodes) {
-      findings.push(mapViolation(v, node, 'info'));
+      findings.push(mapAxeFinding(v, node, 'info'));
     }
   }
   return findings;
 }
 
-function mapViolation(v: AxeViolation, node: AxeNode, defaultSeverity: Severity): Finding {
-  const sev: Severity =
+export function mapAxeFinding(v: AxeViolation, node: AxeNode, defaultSeverity: Severity): Finding {
+  // An incomplete check is not a confirmed violation, regardless of impact.
+  const sev: Severity = defaultSeverity === 'info' ? 'info' :
     v.impact === 'critical' || v.impact === 'serious'
       ? 'error'
       : v.impact === 'moderate'

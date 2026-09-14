@@ -13,7 +13,7 @@ it('Tier 3 uses shared fallback, native tools, reasoning parameters and usage', 
   expect(result.iterations[0].toolCalled).toBe('finish');
   expect(fetcher).toHaveBeenCalledTimes(2);
   const payload = JSON.parse(fetcher.mock.calls[1][1].body);
-  expect(payload.tools).toHaveLength(4); expect(payload.reasoning.effort).toBe('high');
+  expect(payload.tools).toHaveLength(5); expect(payload.reasoning.effort).toBe('high');
   expect(fetcher.mock.calls[1][0]).toBe('https://api.openai.com/v1/responses');
   expect(payload.store).toBe(false);
   expect(payload.max_output_tokens).toBe(9216); expect(payload.temperature).toBeUndefined();
