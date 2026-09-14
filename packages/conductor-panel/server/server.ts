@@ -124,6 +124,9 @@ const routes: Record<string, Handler> = {
     const rendered = body.rendered === true
       ? { ...await scanRenderedPage(`https://${result.page.hostname}/${result.page.path.replace(/^\//, '')}`), sourceHash }
       : (previous?.sourceHash === sourceHash ? previous.rendered : undefined);
+    if (body.rendered === true && rendered && hashContent(await fetchPageHtml(createExpertClient(), page)) !== sourceHash) {
+      Object.assign(rendered, {state:'error',error:'Page content changed during the browser scan. Rescan before reviewing.'});
+    }
     const merged = rendered ? mergeRenderedFindings(result.findings, rendered) : { findings: result.findings, resolvedSourceChecks: [] };
     const findings = toConductorFindings(merged.findings);
     const dojExceptions = optionalDojExceptions(body.doj_exceptions ?? body.dojExceptions);
@@ -142,14 +145,16 @@ const routes: Record<string, Handler> = {
       page: result.page,
       page_url: optionalStr(body.page_url),
       section_title: optionalStr(body.section_title),
-      criteria: buildConductorCriteria(result.findings),
+      criteria: buildConductorCriteria(merged.findings),
       evaluated_keys: Array.from(conductorScanKeys),
       wcag_review: wcagReview,
       wcagReview,
       doj_exceptions: dojExceptions,
       dojExceptions,
       findings,
-      stats: result.stats,
+      stats: {total:merged.findings.length,
+        byRule:merged.findings.reduce((out:Record<string,number>,f)=>{out[f.ruleId]=(out[f.ruleId] || 0)+1;return out;},{}),
+        bySeverity:merged.findings.reduce((out:Record<string,number>,f)=>{out[f.severity]++;return out;},{error:0,warning:0,info:0})},
       scanned_at: result.scannedAt,
     };
   },

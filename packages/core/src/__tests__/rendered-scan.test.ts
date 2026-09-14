@@ -2,7 +2,7 @@ import {it,expect} from 'vitest';
 import {mergeRenderedFindings} from '../rendered-scan.js';
 import {buildWcagReview} from '../wcag.js';
 import type {Finding} from '../types.js';
-const source:Finding[]=[{ruleId:'axe/aria-valid-attr',severity:'info',message:'An error occurred in this incomplete check',source:'cxone-health',fixable:false},{ruleId:'img-alt',severity:'error',message:'Missing alt',source:'remedy',fixable:true}];
+const source:Finding[]=[{ruleId:'axe/aria-valid-attr',severity:'info',message:'Axe encountered an error; test the page manually',source:'cxone-health',fixable:false},{ruleId:'img-alt',severity:'error',message:'Missing alt',source:'remedy',fixable:true}];
 it('retains source failures and only supersedes confirmed browser-covered execution errors',()=>{
  const r=mergeRenderedFindings(source,{state:'complete',passedRules:['aria-valid-attr']});
  expect(r.resolvedSourceChecks).toHaveLength(1);expect(r.findings).toEqual([source[1]]);

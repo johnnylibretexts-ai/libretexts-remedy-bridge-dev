@@ -13,6 +13,7 @@ export async function scanRenderedPage(url: string): Promise<RenderedScan> {
     const response = await fetch(`${base.replace(/\/$/,'')}/scan`, {method:'POST',
       headers:{'Content-Type':'application/json',Authorization:`Bearer ${token}`}, body:JSON.stringify({url}), signal:AbortSignal.timeout(120000)});
     const data = await response.json() as RenderedScan;
+    if (data.state === 'error') return data;
     if (!response.ok) return {state:'error',error:data.error || 'Rendered scan failed.'};
     if (!['complete','incomplete'].includes(data.state) || !Array.isArray(data.violations) || !Array.isArray(data.incomplete) || !data.renderedHash || !data.platformHash) return {state:'error',error:'Invalid rendered scan response.'};
     return data;
@@ -22,7 +23,7 @@ export function mergeRenderedFindings(source: Finding[], rendered: RenderedScan)
   const resolved = new Set(rendered.state === 'complete' ? [...rendered.passedRules || [], ...rendered.inapplicableRules || []] : []);
   // Only supersede scanner execution errors, never genuine source findings or manual judgments.
   const isResolved = (f: Finding) => f.severity === 'info' && f.ruleId.startsWith('axe/') &&
-    resolved.has(f.ruleId.slice(4)) && /error|could not|incomplete/i.test(f.message);
+    resolved.has(f.ruleId.slice(4)) && /Axe encountered an error/i.test(f.message);
   const findings = source.filter(f=>!isResolved(f));
   for (const [group,severity] of [['violations','warning'],['incomplete','info']] as const) {
     for (const rule of rendered[group] || []) for (const node of rule.nodes || []) {

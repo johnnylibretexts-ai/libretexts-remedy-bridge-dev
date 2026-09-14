@@ -5,7 +5,7 @@ import { chromium } from 'playwright';
 import axe from 'axe-core';
 import { pageURL, allowedRequest, publicIPv4 } from './policy.mjs';
 const hash = value => createHash('sha256').update(value).digest('hex');
-const hosts = new Set((process.env.RENDER_ALLOWED_HOSTS || 'dev.libretexts.org,cdn.libretexts.net,cdn.jsdelivr.net,cdnjs.cloudflare.com,fonts.googleapis.com,fonts.gstatic.com,use.fontawesome.com').split(',').map(s=>s.trim()));
+const hosts = new Set((process.env.RENDER_ALLOWED_HOSTS || 'dev.libretexts.org,cdn.libretexts.net,cdn.jsdelivr.net,cdnjs.cloudflare.com,fonts.googleapis.com,fonts.gstatic.com,use.fontawesome.com,bio.libretexts.org,files.mtstatic.com,commons.libretexts.org,test.libretexts.org,www.myopenmath.com,hypothes.is,cdn.hypothes.is,static.cloudflareinsights.com,staging-chatbot.libretexts.org,staging.traffic.libretexts.org').split(',').map(s=>s.trim()));
 const token = process.env.RENDER_SCANNER_TOKEN;
 if (!token) throw Error('RENDER_SCANNER_TOKEN required');
 let busy = false;
@@ -19,10 +19,11 @@ export async function scan(raw) {
     rules.push(`MAP ${host} ${addresses[0].address}`);
   }
   const browser = await chromium.launch({ chromiumSandbox: true, args: [`--host-resolver-rules=${rules.join(',')},MAP * ~NOTFOUND`] });
-  const context = await browser.newContext({ viewport: { width: 1280, height: 900 }, serviceWorkers: 'block', acceptDownloads: false });
-  const blocked = new Set(), failed = new Set(), assets = new Map(), pending = [];
+  const context = await browser.newContext({ viewport: { width: 1280, height: 900 }, userAgent: 'LibreTexts-Remedy-Accessibility/1.0', serviceWorkers: 'block', acceptDownloads: false });
+  const blocked = new Set(), blockedWrites = new Set(), failed = new Set(), assets = new Map(), pending = [];
   await context.route('**/*', route => {
     const req = route.request();
+    if (!['GET','HEAD'].includes(req.method())) { blockedWrites.add(req.url().split('?')[0]); return route.abort(); }
     if (!allowedRequest(req.url(), hosts, req.method())) { blocked.add(req.url().split('?')[0]); return route.abort(); }
     return route.continue();
   });
@@ -30,15 +31,16 @@ export async function scan(raw) {
   page.on('requestfailed', req => { if (['document','script','stylesheet','font','image'].includes(req.resourceType())) failed.add(req.url().split('?')[0]); });
   page.on('response', response => {
     const type = response.request().resourceType();
-    if (['script','stylesheet'].includes(type)) pending.push(response.body().then(b=>assets.set(response.url(),hash(b))).catch(()=>failed.add(response.url())));
+    if (['script','stylesheet','image','font'].includes(type)) pending.push(response.body().then(b=>assets.set(response.url(),hash(b))).catch(()=>failed.add(response.url())));
     if (response.status() >= 400 && ['document','script','stylesheet','font','image'].includes(type)) failed.add(response.url().split('?')[0]);
   });
   try {
     const response = await page.goto(url, { waitUntil: 'load', timeout: 45000 });
-    if (!response?.ok() || decodeURIComponent(new URL(pageURL(page.url())).pathname) !== decodeURIComponent(new URL(url).pathname)) throw Error('Reader page unavailable or redirected.');
-    const content = page.locator('#mt-content-container');
-    if (!await content.count() || (await content.innerText()).trim().length < 20 || await page.locator('input[type=password]').count()) throw Error('Reader content not available without authentication.');
+    if (!response?.ok() || decodeURIComponent(new URL(pageURL(page.url())).pathname) !== decodeURIComponent(new URL(url).pathname)) throw Error(`Reader page unavailable or redirected (HTTP ${response?.status()}, path ${new URL(page.url()).pathname}; ${(await page.locator('body').innerText()).slice(0,600)}).`);
+    const content = page.locator('section.mt-content-container');
+    if (!await content.count() || (await content.innerText()).trim().length < 20) throw Error('Reader content not available without authentication.');
     // MathJax v2 queue and v3/v4 startup promise. Timeout is an incomplete scan, never a pass.
+    const readinessErrors = [];
     const math = await Promise.race([page.evaluate(async () => {
       const m = window.MathJax;
       if (m?.Hub?.Queue) await new Promise(resolve => m.Hub.Queue(resolve));
@@ -50,22 +52,24 @@ export async function scan(raw) {
       if (document.querySelector('.MathJax_Error, mjx-merror, [data-mjx-error]')) throw Error('MathJax reported a rendering error.');
       return { version: m?.version || null, mathCount: rendered.length,
         mathSamples: [...document.querySelectorAll('math')].slice(0,10).map(x=>x.outerHTML.slice(0,3000)) };
-    }), new Promise((_,reject)=>setTimeout(()=>reject(Error('MathJax readiness timeout.')),30000))]);
+    }), new Promise((_,reject)=>setTimeout(()=>reject(Error('MathJax readiness timeout.')),30000))]).catch(e=>{readinessErrors.push(e.message);return {ready:false};});
     await page.addScriptTag({ content: axe.source });
     const results = await page.evaluate(async () => window.axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a','wcag2aa','wcag21a','wcag21aa'] } }));
     await Promise.allSettled(pending);
     const renderedHash = hash(await content.innerHTML());
-    const platformHash = hash(JSON.stringify([...assets.entries()].sort()));
+    const shell = await page.evaluate(() => { const root = document.documentElement.cloneNode(true); root.querySelector('section.mt-content-container')?.replaceChildren(); return root.outerHTML; });
+    const platformHash = hash(JSON.stringify([shell, [...assets.entries()].sort()]));
     const compact = r => ({ id:r.id, impact:r.impact, description:r.description, helpUrl:r.helpUrl, tags:r.tags,
       nodes:r.nodes.map(n=>({ target:n.target, html:n.html, failureSummary:n.failureSummary,
         checks:[...n.any,...n.all,...n.none].map(c=>({id:c.id,message:c.message})) })) });
-    return { state: blocked.size || failed.size ? 'incomplete' : 'complete', scannedAt:new Date().toISOString(),
-      url, scope:'full-reader-page', viewport:{width:1280,height:900}, browser:browser.version(), axeVersion:axe.version,
-      renderedHash, platformHash, math, blockedResources:[...blocked], failedResources:[...failed],
+    return { state: blocked.size || failed.size || readinessErrors.length ? 'incomplete' : 'complete', scannedAt:new Date().toISOString(),
+      url, userAgent:'LibreTexts-Remedy-Accessibility/1.0', scope:'full-reader-page', viewport:{width:1280,height:900}, browser:browser.version(), axeVersion:axe.version,
+      renderedHash, platformHash, math, readinessErrors, blockedWrites:[...blockedWrites], blockedResources:[...blocked], failedResources:[...failed],
       violations:results.violations.map(compact), incomplete:results.incomplete.map(compact),
       passedRules:results.passes.map(r=>r.id), inapplicableRules:results.inapplicable.map(r=>r.id),
       humanChecksRequired:['Mathematical meaning and navigation with screen reader','No duplicate math announcements','Keyboard and complete processes','Reflow, zoom and text spacing','Visual and linguistic review'] };
-  } finally { await context.close(); await browser.close(); }
+  } catch (e) { return {state:'error',scannedAt:new Date().toISOString(),url,error:e.message,mathDiagnostics:await page.evaluate(()=>({version:window.MathJax?.version,pending:window.MathJax?.Hub?.queue?.pending,running:window.MathJax?.Hub?.queue?.running,queueLength:window.MathJax?.Hub?.queue?.queue?.length,fonts:document.fonts.status,mathCount:document.querySelectorAll('math,mjx-container,.MathJax').length})).catch(()=>null),blockedResources:[...blocked],failedResources:[...failed]}; }
+  finally { await context.close(); await browser.close(); }
 }
 createServer(async (req,res) => {
   res.setHeader('Content-Type','application/json');

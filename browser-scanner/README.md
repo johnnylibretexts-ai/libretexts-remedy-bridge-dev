@@ -11,3 +11,11 @@ Bridge's existing `/v1/cxone/page/scan` accepts `rendered: true`; the gateway fo
 Browser scans are evidence, not certification. Screen-reader math semantics, exploration, duplicate speech, keyboard operation, complete processes, visual and linguistic review still require human testing. Resource hashes conservatively invalidate reviews when relevant rendering changes. Future page changes cannot be detected until rescanning; Conductor requires scans within 24 hours for current sign-off.
 
 Validation: `npm ci && npm test` in this directory; Bridge integration tests run in the core workspace. The seccomp profile is from Microsoft Playwright v1.63.0 (`utils/docker/seccomp_profile.json`).
+
+## Duplicate initialization
+
+Copied pages can contain a MathJax initializer in addition to the reader's platform initializer. A live-page fixture comparison reproduced a pending MathJax 4 startup promise with two loaders and successful startup with one. `node tools/repair-mathjax-initializer.mjs <sandbox-page-url>` previews a guarded cleanup; add `--apply` to write with a restore snapshot. It requires exactly one authored loader and two matching rendered loaders, allowing only the known copied 0.85/platform 1 scale difference. Custom configuration is retained for manual review. Equation markup and CSS are preserved byte-for-byte; this does not verify mathematical meaning or speech quality.
+
+The worker identifies itself as `LibreTexts-Remedy-Accessibility/1.0`; some reader deployments reject the default HeadlessChrome user agent. The actual CXone article selector is `section.mt-content-container`; the header's optional login form does not imply that the article requires authentication. MathJax timeouts retain partial axe evidence and explicit readiness errors. Blocked write/telemetry requests are recorded separately from blocked read resources; write-based processes still require reviewer tests. Render fingerprints include the reader shell and loaded image/font/script/CSS assets.
+
+Run native MathML regression tests inside the worker container with `RUN_BROWSER_TESTS=1 npm test`. They exercise fractions, exponents and hidden MathML while confirming real invalid ARIA still fails.
