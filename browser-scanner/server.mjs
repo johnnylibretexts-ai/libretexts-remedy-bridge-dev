@@ -28,6 +28,7 @@ export async function scan(raw) {
     return route.continue();
   });
   const page = await context.newPage();
+  const deadline = setTimeout(()=>{void context.close().catch(()=>{});},110000);
   page.on('requestfailed', req => { if (['document','script','stylesheet','font','image'].includes(req.resourceType())) failed.add(req.url().split('?')[0]); });
   page.on('response', response => {
     const type = response.request().resourceType();
@@ -50,9 +51,18 @@ export async function scan(raw) {
       const rendered = document.querySelectorAll('math, mjx-container, .MathJax');
       if (raw.length && !rendered.length) throw Error('MathJax did not render math.');
       if (document.querySelector('.MathJax_Error, mjx-merror, [data-mjx-error]')) throw Error('MathJax reported a rendering error.');
-      return { version: m?.version || null, mathCount: rendered.length,
+      return { ready:true, initializerCount:document.querySelectorAll('script#mathjax-script').length, version: m?.version || null, mathCount: rendered.length,
         mathSamples: [...document.querySelectorAll('math')].slice(0,10).map(x=>x.outerHTML.slice(0,3000)) };
     }), new Promise((_,reject)=>setTimeout(()=>reject(Error('MathJax readiness timeout.')),30000))]).catch(e=>{readinessErrors.push(e.message);return {ready:false};});
+    // Exercise native lazy loading without changing authored attributes or styles.
+    await page.evaluate(async()=>{
+      const max=Math.min(document.documentElement.scrollHeight,100000);
+      for(let y=0;y<max;y+=800){window.scrollTo(0,y);await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));}
+      window.scrollTo(0,0);
+      await Promise.all([...document.images].filter(i=>i.currentSrc || i.src).map(i=>i.decode().catch(()=>{})));
+    });
+    const brokenImages=await page.evaluate(()=>[...document.images].filter(i=>(i.currentSrc || i.src)&&(!i.complete || !i.naturalWidth)).map(i=>i.currentSrc || i.src));
+    brokenImages.forEach(url=>failed.add(url));
     await page.addScriptTag({ content: axe.source });
     const results = await page.evaluate(async () => window.axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a','wcag2aa','wcag21a','wcag21aa'] } }));
     await Promise.allSettled(pending);
@@ -69,7 +79,7 @@ export async function scan(raw) {
       passedRules:results.passes.map(r=>r.id), inapplicableRules:results.inapplicable.map(r=>r.id),
       humanChecksRequired:['Mathematical meaning and navigation with screen reader','No duplicate math announcements','Keyboard and complete processes','Reflow, zoom and text spacing','Visual and linguistic review'] };
   } catch (e) { return {state:'error',scannedAt:new Date().toISOString(),url,error:e.message,mathDiagnostics:await page.evaluate(()=>({version:window.MathJax?.version,pending:window.MathJax?.Hub?.queue?.pending,running:window.MathJax?.Hub?.queue?.running,queueLength:window.MathJax?.Hub?.queue?.queue?.length,fonts:document.fonts.status,mathCount:document.querySelectorAll('math,mjx-container,.MathJax').length})).catch(()=>null),blockedResources:[...blocked],failedResources:[...failed]}; }
-  finally { await context.close(); await browser.close(); }
+  finally { clearTimeout(deadline); await context.close(); await browser.close(); }
 }
 createServer(async (req,res) => {
   res.setHeader('Content-Type','application/json');
