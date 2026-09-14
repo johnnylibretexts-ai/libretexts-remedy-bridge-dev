@@ -4,6 +4,7 @@ import { lookup } from 'node:dns/promises';
 import { chromium } from 'playwright';
 import axe from 'axe-core';
 import { pageURL, allowedRequest, publicIPv4 } from './policy.mjs';
+import { captureResourceResponse } from './resource-evidence.mjs';
 const hash = value => createHash('sha256').update(value).digest('hex');
 const hosts = new Set((process.env.RENDER_ALLOWED_HOSTS || 'dev.libretexts.org,cdn.libretexts.net,cdn.jsdelivr.net,cdnjs.cloudflare.com,fonts.googleapis.com,fonts.gstatic.com,use.fontawesome.com,bio.libretexts.org,files.mtstatic.com,commons.libretexts.org,test.libretexts.org,www.myopenmath.com,hypothes.is,cdn.hypothes.is,static.cloudflareinsights.com,staging-chatbot.libretexts.org,staging.traffic.libretexts.org').split(',').map(s=>s.trim()));
 const token = process.env.RENDER_SCANNER_TOKEN;
@@ -31,11 +32,7 @@ export async function scan(raw) {
   const page = await context.newPage();
   const deadline = setTimeout(()=>{void context.close().catch(()=>{});},110000);
   page.on('requestfailed', req => { if (['GET','HEAD'].includes(req.method()) && ['document','script','stylesheet','font','image','xhr','fetch'].includes(req.resourceType())) failed.add(req.url().split('?')[0]); });
-  page.on('response', response => {
-    const type = response.request().resourceType();
-    if (['script','stylesheet','image','font'].includes(type)) pending.push(response.body().then(b=>assets.set(response.url(),hash(b))).catch(()=>failed.add(response.url())));
-    if (response.status() >= 400 && ['GET','HEAD'].includes(response.request().method()) && ['document','script','stylesheet','font','image','xhr','fetch'].includes(type)) failed.add(response.url().split('?')[0]);
-  });
+  page.on('response', response => pending.push(captureResourceResponse(response, assets, failed)));
   try {
     const response = await page.goto(url, { waitUntil: 'load', timeout: 45000 });
     if (!response?.ok() || decodeURIComponent(new URL(pageURL(page.url())).pathname) !== decodeURIComponent(new URL(url).pathname)) throw Error(`Reader page unavailable or redirected (HTTP ${response?.status()}, path ${new URL(page.url()).pathname}; ${(await page.locator('body').innerText()).slice(0,600)}).`);
