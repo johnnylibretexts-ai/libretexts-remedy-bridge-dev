@@ -10,6 +10,7 @@
     "node": ">=22.0.0"
   },
   "scripts": {
+    "postinstall": "node tools/patch-cxone-utf8.mjs",
     "build": "npm run build --workspace @libretexts/remedy-core && npm run build --workspaces --if-present",
     "scan": "npm run scan --workspace @libretexts/remedy-cli",
     "test": "npm run test --workspaces --if-present"
