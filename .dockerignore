@@ -7,3 +7,4 @@ coverage
 out
 *.log
 research
+browser-scanner/node_modules

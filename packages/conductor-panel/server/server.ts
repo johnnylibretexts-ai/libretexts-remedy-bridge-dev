@@ -22,6 +22,8 @@ import {
   createExpertClient,
   resolvePageRef,
   scanPage,
+  scanRenderedPage,
+  mergeRenderedFindings,
   fetchPageHtml,
   fixPage,
   runPipeline,
@@ -117,16 +119,23 @@ const routes: Record<string, Handler> = {
   '/v1/cxone/page/scan': async (body) => {
     const page = requirePageInput(body);
     const result = await scanPage(page);
-    const findings = toConductorFindings(result.findings);
+    const sourceHash = hashContent(result.html);
+    const previous = optionalWcagReview(body.wcag_review ?? body.wcagReview) as any;
+    const rendered = body.rendered === true
+      ? { ...await scanRenderedPage(`https://${result.page.hostname}/${result.page.path.replace(/^\//, '')}`), sourceHash }
+      : (previous?.sourceHash === sourceHash ? previous.rendered : undefined);
+    const merged = rendered ? mergeRenderedFindings(result.findings, rendered) : { findings: result.findings, resolvedSourceChecks: [] };
+    const findings = toConductorFindings(merged.findings);
     const dojExceptions = optionalDojExceptions(body.doj_exceptions ?? body.dojExceptions);
     const wcagReview = buildWcagReview({
       html: result.html,
-      findings: result.findings,
+      findings: merged.findings,
       scannedAt: result.scannedAt,
       page: result.page,
       previousReview: optionalWcagReview(body.wcag_review ?? body.wcagReview),
       exceptions: dojExceptions,
     });
+    Object.assign(wcagReview, { sourceHash, rendered, resolvedSourceChecks: merged.resolvedSourceChecks });
     return {
       page_id: result.page.id,
       page_path: result.page.path,

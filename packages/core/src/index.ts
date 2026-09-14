@@ -18,3 +18,4 @@ export * as imagePlanner from './image-planner/index.js';
 export * as patch from './patch/index.js';
 
 export { reviseAltText, reviewableImages, describeComplexImage } from './review-alt.js';
+export { scanRenderedPage, mergeRenderedFindings } from './rendered-scan.js';

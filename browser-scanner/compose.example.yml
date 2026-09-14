@@ -1,0 +1,17 @@
+services:
+  remedy-browser-scanner:
+    build: .
+    init: true
+    restart: unless-stopped
+    env_file: browser-scanner.env
+    security_opt:
+      - seccomp=./seccomp_profile.json
+    shm_size: 1gb
+    mem_limit: 2g
+    cpus: 1.5
+    pids_limit: 256
+    networks: [remedy]
+networks:
+  remedy:
+    external: true
+    name: libretexts_remedy

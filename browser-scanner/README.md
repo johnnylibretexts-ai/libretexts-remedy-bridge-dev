@@ -1,0 +1,13 @@
+# Rendered reader-page scanner
+
+This separate Playwright/Chromium service evaluates the full public reader page with axe-core WCAG 2.1 A/AA tags. It does not contain CXone write credentials or inference keys. The browser runs as `pwuser` with the Chromium sandbox; the included Playwright seccomp profile permits user namespaces. Use the private Docker network only; do not publish port 5180.
+
+Copy `compose.example.yml` to the deployment compose file. Create a mode-600 `browser-scanner.env` containing a generated `RENDER_SCANNER_TOKEN`. Set that same token and `RENDER_SCANNER_URL=http://remedy-browser-scanner:5180` in the Bridge environment. `RENDER_ALLOWED_HOSTS` is an explicit comma-separated resource-host allowlist. Every allowed host is resolved to a public IPv4 address and pinned for each browser lifetime; all other DNS names and non-GET/HEAD requests are blocked. Resource blocking is reported as incomplete evidence, not silently ignored.
+
+`POST /scan` accepts `{ "url": "https://dev.libretexts.org/Sandboxes/johnnyphung/..." }` with Bearer authentication. Requests outside the sandbox are rejected. Only one scan runs at a time (429 while busy). MathJax v2 queues and v3/v4 startup promises are awaited. Missing reader content, redirects outside the page, MathJax errors and timeouts fail closed. The result records browser/axe versions, viewport, source-independent rendered content and script/CSS hashes, load errors, axe violations/incomplete results and rule coverage.
+
+Bridge's existing `/v1/cxone/page/scan` accepts `rendered: true`; the gateway forwards this field. A source-only scan preserves browser evidence only when the source hash is unchanged. Browser evidence supersedes a source axe execution error only if the browser completed and explicitly passed that rule (or found it inapplicable). Original execution errors remain in `resolvedSourceChecks`. Confirmed source failures remain open.
+
+Browser scans are evidence, not certification. Screen-reader math semantics, exploration, duplicate speech, keyboard operation, complete processes, visual and linguistic review still require human testing. Resource hashes conservatively invalidate reviews when relevant rendering changes. Future page changes cannot be detected until rescanning; Conductor requires scans within 24 hours for current sign-off.
+
+Validation: `npm ci && npm test` in this directory; Bridge integration tests run in the core workspace. The seccomp profile is from Microsoft Playwright v1.63.0 (`utils/docker/seccomp_profile.json`).

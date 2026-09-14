@@ -112,6 +112,8 @@ export interface WcagCriterionDefinition {
 }
 
 export interface WcagEvidence {
+  scope?: string;
+  owner?: string;
   source: Finding['source'];
   ruleId: string;
   findingId: string;
