@@ -11,9 +11,13 @@ import {
   listPageSnapshots,
   revertPage,
   describeClient,
+  createExpertClient,
+  restoreTagsFromManifest,
   MissingEnvError,
   WriteNotAllowedError,
 } from '@libretexts/remedy-core';
+import type { TagRestoreManifest } from '@libretexts/remedy-core';
+import { readFile } from 'node:fs/promises';
 import { formatScanHuman } from './format.js';
 import { scanFile } from './scan-file.js';
 import { pipelineFile } from './pipeline-file.js';
@@ -403,6 +407,65 @@ program
         } else {
           console.log(kleur.yellow('Apply produced no write (empty delta).'));
         }
+      } catch (err) {
+        handleError(err);
+      }
+    },
+  );
+
+program
+  .command('tags-restore')
+  .description(
+    'Restore license/attribution page tags from a manifest (built by tools/build-biology-tag-manifest.mjs). Merges: never removes an existing tag.',
+  )
+  .requiredOption('--manifest <file>', 'manifest JSON with per-page restore lists')
+  .option('--page <id>', 'only touch this sandbox page id (one-page trial)', (v) => Number(v))
+  .option('--dry-run', 'show the per-page tag diff; do not write')
+  .option('--i-have-confirmed', 'skip the interactive y/N prompt')
+  .option('--message <msg>', 'revision summary recorded in the audit log', 'REM-02: restore license and attribution tags')
+  .option('-o, --out <file>', 'write the per-page results JSON to this file')
+  .action(
+    async (opts: { manifest: string; page?: number; dryRun?: boolean; iHaveConfirmed?: boolean; message: string; out?: string }) => {
+      try {
+        const manifest = JSON.parse(await readFile(opts.manifest, 'utf8')) as TagRestoreManifest;
+        const expert = createExpertClient();
+        const inScope = opts.page === undefined ? manifest.pages : manifest.pages.filter((p) => p.sandboxPageId === opts.page);
+        const eligible = inScope.filter((p) => p.crosscheck !== 'mismatch');
+        console.log(kleur.bold(`${inScope.length} page(s) in scope, ${eligible.length} eligible (cross-check ok)`));
+
+        // Always plan first so the operator sees the diff before any write.
+        const plan = await restoreTagsFromManifest(manifest, { expert, dryRun: true, onlyPageId: opts.page });
+        let toWrite = 0;
+        for (const r of plan) {
+          const added = r.result?.added ?? [];
+          const tag = r.status === 'skipped-crosscheck' ? kleur.red('SKIP') : added.length ? kleur.yellow(`+${added.length}`) : kleur.dim('ok');
+          console.log(`  ${tag.padEnd(14)} ${r.sandboxPageId}  ${r.sandboxPath}` + (added.length ? kleur.dim(`  ${added.join(' ')}`) : ''));
+          if (r.status === 'planned' && added.length) toWrite++;
+        }
+        if (opts.dryRun) {
+          console.log(kleur.cyan(`Dry-run only. ${toWrite} page(s) would be written.`));
+          if (opts.out) await writeFile(opts.out, JSON.stringify(plan, null, 2) + '\n', 'utf8');
+          return;
+        }
+        if (toWrite === 0) {
+          console.log(kleur.green('✓ Nothing to write.'));
+          return;
+        }
+        if (!opts.iHaveConfirmed) {
+          const ok = await confirm(`Write tags to ${toWrite} page(s) on ${describeClient()}?`, 'n');
+          if (!ok) {
+            console.log(kleur.yellow('Aborted.'));
+            return;
+          }
+        }
+        const results = await restoreTagsFromManifest(manifest, { expert, onlyPageId: opts.page, revisionSummary: opts.message });
+        const counts: Record<string, number> = {};
+        for (const r of results) counts[r.status] = (counts[r.status] ?? 0) + 1;
+        for (const r of results) {
+          if (r.status === 'error') console.log(kleur.red(`  ✖ ${r.sandboxPageId}  ${r.error}`));
+        }
+        console.log(kleur.green(`✓ done: ${JSON.stringify(counts)}`));
+        if (opts.out) await writeFile(opts.out, JSON.stringify(results, null, 2) + '\n', 'utf8');
       } catch (err) {
         handleError(err);
       }

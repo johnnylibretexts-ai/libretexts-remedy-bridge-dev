@@ -1,0 +1,2384 @@
+{
+  "generatedAt": "2026-09-15T06:12:21.748Z",
+  "sourceBook": "https://bio.libretexts.org/",
+  "pages": [
+    {
+      "sandboxPageId": 4213,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/01:_The_Chemical_Basis_of_Life",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/01:_The_Chemical_Basis_of_Life",
+      "sourcePageId": 3735,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic-guide",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "biology",
+          "electronegativity",
+          "atoms",
+          "showtoc:no",
+          "chemistry",
+          "chemical bonds",
+          "compounds",
+          "hydrogen bonds",
+          "mixtures",
+          "elements",
+          "noncovalent bonding"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4218,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/01:_The_Chemical_Basis_of_Life/1.01:_Mixtures_and_Compounds",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/01:_The_Chemical_Basis_of_Life/1.01:_Mixtures_and_Compounds",
+      "sourcePageId": 3741,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "electrophoresis",
+          "chromatography",
+          "showtoc:no",
+          "compounds",
+          "solubility",
+          "mixtures",
+          "heterogeneous",
+          "homogeneous",
+          "properties",
+          "separation",
+          "dialysis"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4219,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/01:_The_Chemical_Basis_of_Life/1.02:_Elements_and_Atoms",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/01:_The_Chemical_Basis_of_Life/1.02:_Elements_and_Atoms",
+      "sourcePageId": 3742,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "biology",
+          "periodic table",
+          "atoms",
+          "showtoc:no",
+          "chemistry",
+          "hydrogen",
+          "nitrogen",
+          "carbon",
+          "elements",
+          "uranium",
+          "electrons"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4220,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/01:_The_Chemical_Basis_of_Life/1.03:_Electronegativity_and_types_of_Chemical_Bonds",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/01:_The_Chemical_Basis_of_Life/1.03:_Electronegativity_and_types_of_Chemical_Bonds",
+      "sourcePageId": 3743,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "covalent bond",
+          "electronegativity",
+          "ionic bond",
+          "periodic table",
+          "atoms",
+          "polar covalent bond",
+          "showtoc:no",
+          "chemical bonds",
+          "hydrogen bonds",
+          "molecules",
+          "electrons"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4221,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/01:_The_Chemical_Basis_of_Life/1.04:_Noncovalent_Bonding",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/01:_The_Chemical_Basis_of_Life/1.04:_Noncovalent_Bonding",
+      "sourcePageId": 3744,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "DNA",
+          "polypeptides",
+          "proteins",
+          "enzymes",
+          "antibodies",
+          "showtoc:no",
+          "hydrogen",
+          "noncovalent",
+          "bonding",
+          "macromolecular",
+          "amino"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4222,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/01:_The_Chemical_Basis_of_Life/1.05:_Hydrogen_Bonds",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/01:_The_Chemical_Basis_of_Life/1.05:_Hydrogen_Bonds",
+      "sourcePageId": 3745,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "DNA",
+          "evaporation",
+          "temperature",
+          "showtoc:no",
+          "water",
+          "sweat",
+          "molecules",
+          "hydrogenbonds",
+          "polar",
+          "attraction",
+          "heatofvaporization"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4223,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/01:_The_Chemical_Basis_of_Life/1.06:_Acids_and_Bases",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/01:_The_Chemical_Basis_of_Life/1.06:_Acids_and_Bases",
+      "sourcePageId": 3746,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "ammonia",
+          "showtoc:no",
+          "acids",
+          "bases",
+          "proton donor",
+          "proton acceptor",
+          "hydrogen chloride",
+          "hydrochloric acid",
+          "hydronium ion",
+          "carboxyl group",
+          "acetic acid"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4224,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/01:_The_Chemical_Basis_of_Life/1.07:_Molecular_Weight_and_the_Mole",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/01:_The_Chemical_Basis_of_Life/1.07:_Molecular_Weight_and_the_Mole",
+      "sourcePageId": 3747,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "molarity",
+          "molecular weight",
+          "showtoc:no",
+          "chemistry",
+          "glucose",
+          "solution",
+          "sucrose",
+          "dalton",
+          "honeybees",
+          "grams",
+          "Avogadro's number"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4225,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/01:_The_Chemical_Basis_of_Life/1.08:_pH",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/01:_The_Chemical_Basis_of_Life/1.08:_pH",
+      "sourcePageId": 3748,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "proteins",
+          "enzymes",
+          "showtoc:no",
+          "acidity",
+          "pH",
+          "alkalinity",
+          "hydrogen ions",
+          "protons",
+          "aspartic acid",
+          "glutamic acid",
+          "lysine"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4214,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/02:_The_Molecules_of_Life",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/02:_The_Molecules_of_Life",
+      "sourcePageId": 3736,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic-guide",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "proteins",
+          "cholesterol",
+          "carbohydrates",
+          "phospholipids",
+          "showtoc:no",
+          "fats",
+          "hydrocarbons",
+          "organic_molecules",
+          "aliphatic_hydrocarbons",
+          "aromatic_hydrocarbons",
+          "amino_acids"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4226,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/02:_The_Molecules_of_Life/2.01:_Organic_Molecules",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/02:_The_Molecules_of_Life/2.01:_Organic_Molecules",
+      "sourcePageId": 3779,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "alcohols",
+          "showtoc:no",
+          "ethers",
+          "aldehydes",
+          "amino",
+          "functionalgroups",
+          "hydroxyl",
+          "carboxyl",
+          "carbonyl",
+          "organicmolecules",
+          "carboxylicacids"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4227,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/02:_The_Molecules_of_Life/2.02:_Hydrocarbons",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/02:_The_Molecules_of_Life/2.02:_Hydrocarbons",
+      "sourcePageId": 3780,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "amino acids",
+          "fatty acids",
+          "showtoc:no",
+          "Methane",
+          "hydrogen",
+          "carbon",
+          "organic molecules",
+          "hydrocarbons",
+          "aliphatic hydrocarbons",
+          "aromatic hydrocarbons",
+          "ethane"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4228,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/02:_The_Molecules_of_Life/2.03:_Fats",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/02:_The_Molecules_of_Life/2.03:_Fats",
+      "sourcePageId": 3781,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "triglyceride",
+          "showtoc:no",
+          "glycerol",
+          "fatmolecules",
+          "fattyacids",
+          "unsaturatedfats",
+          "monounsaturated",
+          "polyunsaturated",
+          "saturatedfats",
+          "transfattyacids",
+          "omega3fattyacids"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4229,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/02:_The_Molecules_of_Life/2.04:_Phospholipids",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/02:_The_Molecules_of_Life/2.04:_Phospholipids",
+      "sourcePageId": 3782,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "hydrophobic",
+          "cephalin",
+          "phospholipids",
+          "hydrophilic",
+          "phosphate group",
+          "fatty acids",
+          "showtoc:no",
+          "phospholipid bilayer",
+          "cell membranes",
+          "nitrogen-containing molecules",
+          "phosphatidyl ethanolamine"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4230,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/02:_The_Molecules_of_Life/2.05:_Cholesterol",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/02:_The_Molecules_of_Life/2.05:_Cholesterol",
+      "sourcePageId": 3783,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "cholesterol",
+          "steroid",
+          "atherosclerosis",
+          "showtoc:no",
+          "health",
+          "membranes",
+          "bile acids",
+          "hormones",
+          "LDL",
+          "HDL",
+          "heart disease"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4231,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/02:_The_Molecules_of_Life/2.06:_Carbohydrates",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/02:_The_Molecules_of_Life/2.06:_Carbohydrates",
+      "sourcePageId": 3784,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "carbohydrates",
+          "monosaccharides",
+          "disaccharides",
+          "polysaccharides",
+          "starch",
+          "glycogen",
+          "cellulose",
+          "showtoc:no",
+          "sugars",
+          "glucose",
+          "fructose"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4232,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/02:_The_Molecules_of_Life/2.07:_Amino_Acids",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/02:_The_Molecules_of_Life/2.07:_Amino_Acids",
+      "sourcePageId": 3785,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "proteins",
+          "hydrophobic",
+          "monomers",
+          "amino acids",
+          "hydrophilic",
+          "essential amino acids",
+          "showtoc:no",
+          "basic",
+          "acidic",
+          "diet",
+          "R groups"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4233,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/02:_The_Molecules_of_Life/2.08:_Enantiomers",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/02:_The_Molecules_of_Life/2.08:_Enantiomers",
+      "sourcePageId": 3786,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "amino acids",
+          "enantiomers",
+          "protein synthesis",
+          "showtoc:no",
+          "chirality",
+          "Methane",
+          "carbon",
+          "organic molecules",
+          "optical isomers",
+          "chiral",
+          "receptor proteins"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4234,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/02:_The_Molecules_of_Life/2.09:_Polypeptides",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/02:_The_Molecules_of_Life/2.09:_Polypeptides",
+      "sourcePageId": 3787,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "DNA",
+          "mRNA",
+          "transcription",
+          "translation",
+          "proteins",
+          "amino acids",
+          "polypeptide",
+          "messenger RNA",
+          "showtoc:no",
+          "codons",
+          "peptide"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4235,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/02:_The_Molecules_of_Life/2.10:_Proteins",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/02:_The_Molecules_of_Life/2.10:_Proteins",
+      "sourcePageId": 3788,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "proteins",
+          "enzymes",
+          "mutations",
+          "antibodies",
+          "macromolecules",
+          "amino acids",
+          "peptides",
+          "denaturation",
+          "protein folding",
+          "showtoc:no",
+          "cell structure"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4236,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/02:_The_Molecules_of_Life/2.11:_Rules_of_Protein_Structure",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/02:_The_Molecules_of_Life/2.11:_Rules_of_Protein_Structure",
+      "sourcePageId": 3789,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "amino acids",
+          "tertiary structure",
+          "denaturation",
+          "nucleotides",
+          "polypeptide",
+          "protein",
+          "gene",
+          "chaperones",
+          "showtoc:no",
+          "structure",
+          "renaturation"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4237,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/02:_The_Molecules_of_Life/2.12:_Glycoproteins",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/02:_The_Molecules_of_Life/2.12:_Glycoproteins",
+      "sourcePageId": 3790,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "plasma membrane",
+          "carbohydrates",
+          "hydrophilic",
+          "glycosylation",
+          "glycoproteins",
+          "showtoc:no",
+          "glycophorin A",
+          "O-linked",
+          "N-linked",
+          "amino sugars",
+          "RBC"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4238,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/02:_The_Molecules_of_Life/2.13:_Nucleotides",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/02:_The_Molecules_of_Life/2.13:_Nucleotides",
+      "sourcePageId": 3791,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "DNA",
+          "RNA",
+          "purines",
+          "deoxyribose",
+          "ribose",
+          "nucleotides",
+          "pyrimidines",
+          "showtoc:no",
+          "nucleicacids",
+          "nucleobase",
+          "nucleoside"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4239,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/02:_The_Molecules_of_Life/2.14:_Proteomics",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/02:_The_Molecules_of_Life/2.14:_Proteomics",
+      "sourcePageId": 3792,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "mRNA",
+          "enzymes",
+          "genes",
+          "transcription factors",
+          "genome",
+          "RNA editing",
+          "metabolome",
+          "proteome",
+          "transcriptome",
+          "showtoc:no",
+          "alternative splicing"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4215,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/03:_The_Cellular_Basis_of_Life",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/03:_The_Cellular_Basis_of_Life",
+      "sourcePageId": 3737,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic-guide",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "lysosomes",
+          "nucleus",
+          "ribosomes",
+          "apoptosis",
+          "cytoskeleton",
+          "centrosomes",
+          "diffusion",
+          "showtoc:no",
+          "animal_cells",
+          "endoplasmic_reticulum",
+          "golgi_apparatus"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4240,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/03:_The_Cellular_Basis_of_Life/3.01:_Animal_Cells",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/03:_The_Cellular_Basis_of_Life/3.01:_Animal_Cells",
+      "sourcePageId": 3965,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "Golgi apparatus",
+          "nucleus",
+          "plasma membrane",
+          "cytosol",
+          "lysosome",
+          "peroxisome",
+          "vacuole",
+          "showtoc:no",
+          "mitochondrion",
+          "animal cell",
+          "liver cell"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4241,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/03:_The_Cellular_Basis_of_Life/3.02:_Cell_Membranes",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/03:_The_Cellular_Basis_of_Life/3.02:_Cell_Membranes",
+      "sourcePageId": 3966,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "eukaryotic cells",
+          "proteins",
+          "hydrophobic",
+          "plasma membrane",
+          "lipids",
+          "phospholipids",
+          "cell",
+          "glycoproteins",
+          "showtoc:no",
+          "transmembrane proteins",
+          "integral membrane proteins"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4242,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/03:_The_Cellular_Basis_of_Life/3.03:_The_Nucleus",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/03:_The_Cellular_Basis_of_Life/3.03:_The_Nucleus",
+      "sourcePageId": 3967,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "nucleus",
+          "chromatin",
+          "DNA",
+          "gene expression",
+          "nuclear envelope",
+          "transcription factors",
+          "molecular biology",
+          "showtoc:no",
+          "histones",
+          "gene transcription",
+          "eukaryotic"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4243,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/03:_The_Cellular_Basis_of_Life/3.04:_Ribosomes",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/03:_The_Cellular_Basis_of_Life/3.04:_Ribosomes",
+      "sourcePageId": 3968,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "Golgi apparatus",
+          "polypeptides",
+          "ribosomes",
+          "electron microscope",
+          "Mitochondria",
+          "messenger RNA",
+          "endoplasmic reticulum",
+          "eukaryotes",
+          "protein synthesis",
+          "showtoc:no",
+          "enzyme synthesis"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4244,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/03:_The_Cellular_Basis_of_Life/3.05:_Endoplasmic_Reticulum",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/03:_The_Cellular_Basis_of_Life/3.05:_Endoplasmic_Reticulum",
+      "sourcePageId": 3969,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "lysosomes",
+          "Golgi apparatus",
+          "ribosomes",
+          "smooth endoplasmic reticulum",
+          "rough endoplasmic reticulum",
+          "endoplasmic reticulum",
+          "protein synthesis",
+          "showtoc:no",
+          "transmembrane proteins",
+          "ER",
+          "secreted proteins"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4245,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/03:_The_Cellular_Basis_of_Life/3.06:_Golgi_Apparatus",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/03:_The_Cellular_Basis_of_Life/3.06:_Golgi_Apparatus",
+      "sourcePageId": 3970,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "Golgi apparatus",
+          "proteins",
+          "peptides",
+          "endoplasmic reticulum",
+          "glycosylation",
+          "glycoproteins",
+          "showtoc:no",
+          "plant cells",
+          "neurotransmitters",
+          "hormones",
+          "cell structure"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4246,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/03:_The_Cellular_Basis_of_Life/3.07:_Centrosomes_and_Centrioles",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/03:_The_Cellular_Basis_of_Life/3.07:_Centrosomes_and_Centrioles",
+      "sourcePageId": 3971,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "microtubules",
+          "cytokinesis",
+          "centrosomes",
+          "cancer",
+          "cell cycle",
+          "mitosis",
+          "p53",
+          "showtoc:no",
+          "spindle fibers",
+          "centrioles",
+          "anticancer drugs"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4247,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/03:_The_Cellular_Basis_of_Life/3.08:_Lysosomes_and_Peroxisomes",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/03:_The_Cellular_Basis_of_Life/3.08:_Lysosomes_and_Peroxisomes",
+      "sourcePageId": 3972,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "lysosomes",
+          "peroxisomes",
+          "autophagosomes",
+          "apoptosis",
+          "endocytosis",
+          "cell",
+          "showtoc:no",
+          "organelles",
+          "X-ALD",
+          "neurodegeneration",
+          "lysosomal storage diseases"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4248,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/03:_The_Cellular_Basis_of_Life/3.09:_Protein_Kinesis",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/03:_The_Cellular_Basis_of_Life/3.09:_Protein_Kinesis",
+      "sourcePageId": 3974,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "eukaryotic cells",
+          "exocytosis",
+          "translation",
+          "proteins",
+          "ribosomes",
+          "Mitochondria",
+          "endoplasmic reticulum",
+          "chaperones",
+          "glycosylation",
+          "showtoc:no",
+          "building blocks"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4249,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/03:_The_Cellular_Basis_of_Life/3.10:_The_Proteasome",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/03:_The_Cellular_Basis_of_Life/3.10:_The_Proteasome",
+      "sourcePageId": 3975,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "lysosomes",
+          "transcription",
+          "translation",
+          "enzymes",
+          "protein",
+          "cell cycle",
+          "showtoc:no",
+          "proteasomes",
+          "degradation",
+          "synthesis",
+          "factors"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4250,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/03:_The_Cellular_Basis_of_Life/3.11:_The_Cytoskeleton",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/03:_The_Cellular_Basis_of_Life/3.11:_The_Cytoskeleton",
+      "sourcePageId": 3988,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "microfilaments",
+          "microtubules",
+          "cytokinesis",
+          "cytoskeleton",
+          "neurons",
+          "protein",
+          "showtoc:no",
+          "cells",
+          "muscle",
+          "organelles",
+          "contraction"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4251,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/03:_The_Cellular_Basis_of_Life/3.12:_Cilia",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/03:_The_Cellular_Basis_of_Life/3.12:_Cilia",
+      "sourcePageId": 3989,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "microtubules",
+          "eukaryotic cells",
+          "ATP",
+          "Flagella",
+          "Cilia",
+          "mechanoreceptors",
+          "showtoc:no",
+          "photoreceptors",
+          "chemoreceptors",
+          "dynein",
+          "primary cilium"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4252,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/03:_The_Cellular_Basis_of_Life/3.13:_Animal_Tissues",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/03:_The_Cellular_Basis_of_Life/3.13:_Animal_Tissues",
+      "sourcePageId": 3990,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "mitosis",
+          "differentiation",
+          "showtoc:no",
+          "development",
+          "blood",
+          "muscle",
+          "epithelial",
+          "fertilized egg",
+          "cell types",
+          "animal tissues",
+          "connective"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4253,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/03:_The_Cellular_Basis_of_Life/3.14:_Adipose_Tissue",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/03:_The_Cellular_Basis_of_Life/3.14:_Adipose_Tissue",
+      "sourcePageId": 3991,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "leptin",
+          "showtoc:no",
+          "obesity",
+          "adipocytes",
+          "adipose tissue",
+          "energy reserves",
+          "white adipose tissue",
+          "brown adipose tissue",
+          "asprosin",
+          "adiponectin",
+          "heat generation"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4254,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/03:_The_Cellular_Basis_of_Life/3.15:_Junctions_between_Cells",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/03:_The_Cellular_Basis_of_Life/3.15:_Junctions_between_Cells",
+      "sourcePageId": 3993,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "apoptosis",
+          "extracellular matrix",
+          "cancer",
+          "connective tissue",
+          "epithelial tissue",
+          "cell communication",
+          "showtoc:no",
+          "histology",
+          "animal cells",
+          "junctions",
+          "molecular transport"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4255,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/03:_The_Cellular_Basis_of_Life/3.16:_Plant_Cells",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/03:_The_Cellular_Basis_of_Life/3.16:_Plant_Cells",
+      "sourcePageId": 3994,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "Golgi apparatus",
+          "nucleus",
+          "ribosomes",
+          "plasma membrane",
+          "Mitochondria",
+          "endoplasmic reticulum",
+          "showtoc:no",
+          "chloroplasts",
+          "plant cells",
+          "eukaryotic",
+          "animal cells"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4256,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/03:_The_Cellular_Basis_of_Life/3.17:_Chloroplasts",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/03:_The_Cellular_Basis_of_Life/3.17:_Chloroplasts",
+      "sourcePageId": 3995,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "photosynthesis",
+          "ATP synthase",
+          "chloroplast",
+          "thylakoid",
+          "photosystem I",
+          "photosystem II",
+          "showtoc:no",
+          "membrane",
+          "grana",
+          "Lumen",
+          "plant cell"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4257,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/03:_The_Cellular_Basis_of_Life/3.18:_Chlorophylls_and_Carotenoids",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/03:_The_Cellular_Basis_of_Life/3.18:_Chlorophylls_and_Carotenoids",
+      "sourcePageId": 3996,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "photosynthesis",
+          "chlorophyll",
+          "chloroplast",
+          "chlorophyll a",
+          "chlorophyll b",
+          "showtoc:no",
+          "carotenoids",
+          "membrane proteins",
+          "light absorption",
+          "thylakoid membrane",
+          "pigments"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4258,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/03:_The_Cellular_Basis_of_Life/3.19:_Plant_Tissues",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/03:_The_Cellular_Basis_of_Life/3.19:_Plant_Tissues",
+      "sourcePageId": 3997,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "xylem",
+          "phloem",
+          "showtoc:no",
+          "growth",
+          "plant",
+          "parenchyma",
+          "vascular",
+          "meristematic",
+          "protective",
+          "sclerenchyma",
+          "collenchyma"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4259,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/03:_The_Cellular_Basis_of_Life/3.20:_Apoptosis",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/03:_The_Cellular_Basis_of_Life/3.20:_Apoptosis",
+      "sourcePageId": 3998,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "cytokines",
+          "apoptosis",
+          "inflammation",
+          "cancer",
+          "T cells",
+          "immune system",
+          "showtoc:no",
+          "cellular signaling",
+          "DNA damage",
+          "cell death",
+          "programmed cell death mechanisms"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4260,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/03:_The_Cellular_Basis_of_Life/3.21:_Collagens",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/03:_The_Cellular_Basis_of_Life/3.21:_Collagens",
+      "sourcePageId": 3999,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "gene therapy",
+          "glycoprotein",
+          "collagen",
+          "showtoc:no",
+          "connective tissues",
+          "type I collagen",
+          "inherited diseases",
+          "osteogenesis imperfecta",
+          "Ehlers-Danlos syndrome",
+          "herniated discs",
+          "structural proteins"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4261,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/03:_The_Cellular_Basis_of_Life/3.22:_Chromatophores",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/03:_The_Cellular_Basis_of_Life/3.22:_Chromatophores",
+      "sourcePageId": 4000,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "camouflage",
+          "showtoc:no",
+          "melanophores",
+          "chromatophores",
+          "hormonal control",
+          "pigments",
+          "crustaceans",
+          "cephalopods",
+          "mollusks",
+          "lizards",
+          "color change"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4262,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/03:_The_Cellular_Basis_of_Life/3.23:_Diffusion_Active_Transport_and_Membrane_Channels",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/03:_The_Cellular_Basis_of_Life/3.23:_Diffusion_Active_Transport_and_Membrane_Channels",
+      "sourcePageId": 4070,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "osmosis",
+          "concentration gradient",
+          "diffusion",
+          "active transport",
+          "facilitated diffusion",
+          "showtoc:no",
+          "cell membranes",
+          "transmembrane proteins",
+          "sodium ions",
+          "potassium ions",
+          "transport"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4263,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/03:_The_Cellular_Basis_of_Life/3.24:_Endocytosis",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/03:_The_Cellular_Basis_of_Life/3.24:_Endocytosis",
+      "sourcePageId": 4071,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "phagocytosis",
+          "macrophages",
+          "cholesterol",
+          "endocytosis",
+          "cancer",
+          "lysosome",
+          "clathrin",
+          "Receptor-Mediated Endocytosis",
+          "immune system",
+          "showtoc:no",
+          "endosome"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4264,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/03:_The_Cellular_Basis_of_Life/3.25:_Exocytosis",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/03:_The_Cellular_Basis_of_Life/3.25:_Exocytosis",
+      "sourcePageId": 4072,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "exocytosis",
+          "plasma membrane",
+          "endocytosis",
+          "pancreas",
+          "macrophage",
+          "vesicles",
+          "showtoc:no",
+          "neurotransmitters",
+          "secretion",
+          "exocrine cells",
+          "digestive enzymes"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4216,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/04:_Cell_Metabolism",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/04:_Cell_Metabolism",
+      "sourcePageId": 3738,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic-guide",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "glycolysis",
+          "enzymes",
+          "ATP",
+          "photosynthesis",
+          "metabolism",
+          "chemiosmosis",
+          "ATP synthase",
+          "cellular respiration",
+          "G proteins",
+          "secondary messengers",
+          "showtoc:no"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4265,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/04:_Cell_Metabolism/4.01:_Enzymes",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/04:_Cell_Metabolism/4.01:_Enzymes",
+      "sourcePageId": 4626,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "proteins",
+          "enzymes",
+          "catalysts",
+          "substrates",
+          "cofactors",
+          "coenzymes",
+          "showtoc:no",
+          "amino_acids",
+          "enzyme_activity",
+          "competitive_inhibition",
+          "feedback_inhibition"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4266,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/04:_Cell_Metabolism/4.02:_ATP",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/04:_Cell_Metabolism/4.02:_ATP",
+      "sourcePageId": 4628,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "glycolysis",
+          "enzymes",
+          "ATP",
+          "adenosine triphosphate",
+          "hydrolysis",
+          "cellular respiration",
+          "showtoc:no",
+          "energy",
+          "ATPases",
+          "ADP",
+          "inorganic phosphate"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4267,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/04:_Cell_Metabolism/4.03:_NAD_and_NADP",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/04:_Cell_Metabolism/4.03:_NAD_and_NADP",
+      "sourcePageId": 4629,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "glycolysis",
+          "citric acid cycle",
+          "photosynthesis",
+          "redox reactions",
+          "coenzymes",
+          "biochemistry",
+          "Calvin cycle",
+          "showtoc:no",
+          "anabolic reactions",
+          "NAD",
+          "NADP"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4268,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/04:_Cell_Metabolism/4.04:_Glycolysis",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/04:_Cell_Metabolism/4.04:_Glycolysis",
+      "sourcePageId": 4630,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "glycolysis",
+          "fermentation",
+          "ATP",
+          "metabolism",
+          "pyruvic acid",
+          "anaerobic",
+          "eukaryotes",
+          "showtoc:no",
+          "glucose",
+          "energy",
+          "NADH"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4269,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/04:_Cell_Metabolism/4.05:_Cellular_Respiration",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/04:_Cell_Metabolism/4.05:_Cellular_Respiration",
+      "sourcePageId": 4631,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "glycolysis",
+          "oxidative phosphorylation",
+          "citric acid cycle",
+          "ATP",
+          "Mitochondria",
+          "electron transport chain",
+          "cellular respiration",
+          "eukaryotes",
+          "showtoc:no",
+          "energy metabolism",
+          "mitochondrial DNA"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4270,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/04:_Cell_Metabolism/4.06:_ATP_Synthase",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/04:_Cell_Metabolism/4.06:_ATP_Synthase",
+      "sourcePageId": 4632,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "ATP",
+          "Mitochondria",
+          "science",
+          "hydrolysis",
+          "showtoc:no",
+          "energy",
+          "ADP",
+          "research",
+          "protons",
+          "ATPsynthase",
+          "Pi"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4271,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/04:_Cell_Metabolism/4.07:_Photosynthesis_-_Pathway_of_Carbon_Fixation",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/04:_Cell_Metabolism/4.07:_Photosynthesis_-_Pathway_of_Carbon_Fixation",
+      "sourcePageId": 4633,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "ATP",
+          "photosynthesis",
+          "algae",
+          "stroma",
+          "Calvin cycle",
+          "Rubisco",
+          "chromatography",
+          "showtoc:no",
+          "glucose",
+          "autoradiography",
+          "CO2"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4272,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/04:_Cell_Metabolism/4.08:_Photosynthesis_-_The_Role_of_Light",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/04:_Cell_Metabolism/4.08:_Photosynthesis_-_The_Role_of_Light",
+      "sourcePageId": 4634,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "ATP",
+          "photosynthesis",
+          "autotrophs",
+          "chemiosmosis",
+          "photosystems",
+          "Calvin cycle",
+          "showtoc:no",
+          "chloroplasts",
+          "NADPH",
+          "oxygen",
+          "light"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4273,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/04:_Cell_Metabolism/4.09:_Photosynthesis_-_Dicovering_the_Secrets",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/04:_Cell_Metabolism/4.09:_Photosynthesis_-_Dicovering_the_Secrets",
+      "sourcePageId": 4635,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "photosynthesis",
+          "chlorophyll",
+          "showtoc:no",
+          "carbon dioxide",
+          "oxygen",
+          "van Helmont",
+          "Joseph Priestley",
+          "Ingen-Housz",
+          "light reaction",
+          "dark reaction",
+          "experimental science"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4274,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/04:_Cell_Metabolism/4.10:_Chemiosmosis",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/04:_Cell_Metabolism/4.10:_Chemiosmosis",
+      "sourcePageId": 4636,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "ATP",
+          "showtoc:no",
+          "chloroplasts",
+          "pH",
+          "ADP",
+          "thylakoids",
+          "protons",
+          "synthesis",
+          "inorganic phosphate",
+          "chemiosmotic",
+          "gradient"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4275,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/04:_Cell_Metabolism/4.11:_Metabolism",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/04:_Cell_Metabolism/4.11:_Metabolism",
+      "sourcePageId": 4648,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "photosynthesis",
+          "metabolism",
+          "catabolism",
+          "anabolism",
+          "autotrophs",
+          "heterotrophs",
+          "nutrition",
+          "showtoc:no",
+          "energy",
+          "organic molecules",
+          "digestive process"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4276,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/04:_Cell_Metabolism/4.12:_Intermediary_Metabolism",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/04:_Cell_Metabolism/4.12:_Intermediary_Metabolism",
+      "sourcePageId": 4650,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "acetyl-CoA",
+          "proteins",
+          "ATP",
+          "metabolism",
+          "carbohydrates",
+          "cellular respiration",
+          "glycolytic pathway",
+          "showtoc:no",
+          "fats",
+          "glucose metabolism",
+          "intermediary metabolism"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4277,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/04:_Cell_Metabolism/4.13:_G_Proteins",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/04:_Cell_Metabolism/4.13:_G_Proteins",
+      "sourcePageId": 4652,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "GDP",
+          "GTP",
+          "showtoc:no",
+          "GPCRs",
+          "G_proteins",
+          "G_alpha",
+          "G_beta",
+          "G_gamma",
+          "adenylyl_cyclase",
+          "cyclic_AMP",
+          "cholera_toxin"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4278,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/04:_Cell_Metabolism/4.14:_Secondary_Messengers",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/04:_Cell_Metabolism/4.14:_Secondary_Messengers",
+      "sourcePageId": 4657,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "cAMP",
+          "cGMP",
+          "showtoc:no",
+          "receptors",
+          "secondmessengers",
+          "cyclicnucleotides",
+          "inositoltrisphosphate",
+          "calciumions",
+          "Gproteins",
+          "signaltransduction",
+          "cellbiology"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4279,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/04:_Cell_Metabolism/4.15:_Bioluminescence",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/04:_Cell_Metabolism/4.15:_Bioluminescence",
+      "sourcePageId": 4659,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "luciferin",
+          "luciferase",
+          "ATP",
+          "bioluminescence",
+          "nitric oxide",
+          "showtoc:no",
+          "marine animals",
+          "fireflies",
+          "luminescent organs",
+          "predator avoidance",
+          "deep-sea"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4217,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/05:_DNA",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/05:_DNA",
+      "sourcePageId": 3760,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic-guide",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "bacteria",
+          "transformation",
+          "conjugation",
+          "DNA",
+          "replication",
+          "transduction",
+          "restriction enzymes",
+          "genetic recombination",
+          "double helix",
+          "showtoc:no",
+          "human genome project"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4280,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/05:_DNA/5.01:_Transformation_in_Bacteria",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/05:_DNA/5.01:_Transformation_in_Bacteria",
+      "sourcePageId": 4739,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "bacteria",
+          "transformation",
+          "conjugation",
+          "DNA",
+          "transduction",
+          "eukaryotes",
+          "plasmid",
+          "biotechnology",
+          "genetic recombination",
+          "showtoc:no",
+          "S pneumoniae"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4281,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/05:_DNA/5.02:_The_Hershey_-_Chase_Experiments",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/05:_DNA/5.02:_The_Hershey_-_Chase_Experiments",
+      "sourcePageId": 4740,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "DNA",
+          "RNA",
+          "bacteriophages",
+          "biochemistry",
+          "genetics",
+          "showtoc:no",
+          "HersheyChaseExperiment",
+          "Ecoli",
+          "T2virus",
+          "virusinfection",
+          "experimentresults"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4282,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/05:_DNA/5.03:_The_Double_Helix_of_DNA",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/05:_DNA/5.03:_The_Double_Helix_of_DNA",
+      "sourcePageId": 4741,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "DNA",
+          "replication",
+          "molecule",
+          "genetics",
+          "showtoc:no",
+          "DoubleHelix",
+          "FrancisCrick",
+          "JamesWatson",
+          "1953",
+          "nobelprize",
+          "1962"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4283,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/05:_DNA/5.04:_Base_Pairing_in_DNA_and_RNA",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/05:_DNA/5.04:_Base_Pairing_in_DNA_and_RNA",
+      "sourcePageId": 4742,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "DNA",
+          "adenine",
+          "guanine",
+          "cytosine",
+          "thymine",
+          "biochemistry",
+          "showtoc:no",
+          "hydrogen bonds",
+          "base pairing",
+          "Watson-Crick",
+          "nucleotide pairing"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4284,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/05:_DNA/5.05:_DNA_Replication",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/05:_DNA/5.05:_DNA_Replication",
+      "sourcePageId": 4743,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "mitosis",
+          "showtoc:no",
+          "eukaryotic",
+          "cellcycle",
+          "DNAreplication",
+          "Sphase",
+          "G2phase",
+          "OriginRecognitionComplex",
+          "licensingfactors",
+          "Cdc6",
+          "Cdt1"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4285,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/05:_DNA/5.06:_The_Meselson_-_Stahl_Experiment",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/05:_DNA/5.06:_The_Meselson_-_Stahl_Experiment",
+      "sourcePageId": 4745,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "DNA",
+          "replication",
+          "nucleotides",
+          "genes",
+          "semiconservative",
+          "E. coli",
+          "showtoc:no",
+          "chromosomes",
+          "Watson",
+          "Crick",
+          "synthesis"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4286,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/05:_DNA/5.07:_Restriction_Enzymes",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/05:_DNA/5.07:_Restriction_Enzymes",
+      "sourcePageId": 4746,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "CRISPR",
+          "restriction enzymes",
+          "biotechnology",
+          "recombinant DNA",
+          "genetics",
+          "showtoc:no",
+          "sequencing",
+          "DNA cutting",
+          "endonucleases",
+          "DNA fragments",
+          "artificial restriction enzymes"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4287,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/05:_DNA/5.08:_DNA_Sequencing_by_the_Dideoxy__Method",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/05:_DNA/5.08:_DNA_Sequencing_by_the_Dideoxy__Method",
+      "sourcePageId": 4747,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "DNA",
+          "nucleotides",
+          "DNA polymerase",
+          "E. coli",
+          "showtoc:no",
+          "sequencing",
+          "dATP",
+          "dGTP",
+          "dCTP",
+          "dTTP",
+          "dideoxynucleotides"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4288,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/05:_DNA/5.09:_Genome_Sizes",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/05:_DNA/5.09:_Genome_Sizes",
+      "sourcePageId": 4748,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "bacteria",
+          "phenotype",
+          "mutations",
+          "viruses",
+          "genes",
+          "genome",
+          "eukaryotes",
+          "showtoc:no",
+          "sequencing",
+          "essential genes",
+          "geneticengineering"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4289,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/05:_DNA/5.10:_The_Human_Genome_Projects",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/05:_DNA/5.10:_The_Human_Genome_Projects",
+      "sourcePageId": 4749,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "DNA",
+          "gene expression",
+          "proteome",
+          "vertebrates",
+          "showtoc:no",
+          "Drosophila",
+          "human genome",
+          "gene duplication",
+          "evolutionary biology",
+          "gene density",
+          "gene diversity"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4290,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/05:_DNA/5.11:_The_Human_and_Chimpanzee_Genomes",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/05:_DNA/5.11:_The_Human_and_Chimpanzee_Genomes",
+      "sourcePageId": 4759,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "evolution",
+          "protein",
+          "gene",
+          "genome",
+          "species",
+          "genetics",
+          "showtoc:no",
+          "human",
+          "chimpanzee",
+          "FOXP2",
+          "language"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4291,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/05:_DNA/5.12:_Pyrosequencing",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/05:_DNA/5.12:_Pyrosequencing",
+      "sourcePageId": 4760,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "DNA",
+          "PCR",
+          "genome",
+          "biotechnology",
+          "showtoc:no",
+          "sequencing",
+          "microorganisms",
+          "dideoxy",
+          "Frederick Sanger",
+          "pyrosequencing",
+          "polymerase"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4292,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/05:_DNA/5.13:_DNA_Repair",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/05:_DNA/5.13:_DNA_Repair",
+      "sourcePageId": 4761,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "DNA",
+          "mutations",
+          "DNA repair",
+          "homologous recombination",
+          "showtoc:no",
+          "human genome",
+          "chemotherapy",
+          "tumor suppressor genes",
+          "breast cancer",
+          "cancers",
+          "gene repair"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4293,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/05:_DNA/5.14:_Harlequin_Chromosomes",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/05:_DNA/5.14:_Harlequin_Chromosomes",
+      "sourcePageId": 4762,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "DNA replication",
+          "mutations",
+          "stem cells",
+          "mitosis",
+          "eukaryotes",
+          "differentiation",
+          "showtoc:no",
+          "chromosomes",
+          "daughter cells",
+          "Skeletal Muscle",
+          "immortal strands"
+        ]
+      }
+    },
+    {
+      "sandboxPageId": 4294,
+      "sandboxPath": "Sandboxes/johnnyphung/biology/05:_DNA/5.15:_Metagenomics_-_Exploring_the_Microbial_World",
+      "sourcePath": "Bookshelves/Introductory_and_General_Biology/Biology_(Kimball)/05:_DNA/5.15:_Metagenomics_-_Exploring_the_Microbial_World",
+      "sourcePageId": 4763,
+      "crosscheck": "match",
+      "tags": {
+        "restore": [
+          "article:topic",
+          "authorname:kimballj",
+          "license:ccby",
+          "licenseversion:30",
+          "source@https://www.biology-pages.info/"
+        ],
+        "omitted": [
+          "bacteria",
+          "DNA",
+          "metagenomics",
+          "antibiotic resistance",
+          "biodiversity",
+          "genetic diversity",
+          "ecosystems",
+          "showtoc:no",
+          "sequencing",
+          "microbial",
+          "human microbiome"
+        ]
+      }
+    }
+  ]
+}

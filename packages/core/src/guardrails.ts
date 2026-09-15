@@ -166,7 +166,7 @@ function snapshotRoot(env: NodeJS.ProcessEnv = process.env): string {
   return env.REMEDY_SNAPSHOT_DIR ?? '.remedy/snapshots';
 }
 
-function snapshotDir(pageId: number, env: NodeJS.ProcessEnv = process.env): string {
+export function snapshotDir(pageId: number, env: NodeJS.ProcessEnv = process.env): string {
   return join(snapshotRoot(env), String(pageId));
 }
 
