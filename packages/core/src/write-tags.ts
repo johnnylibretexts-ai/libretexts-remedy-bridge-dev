@@ -2,11 +2,12 @@
  * Restore attribution/license page tags on a sandbox page.
  *
  * The Biology sandbox clone dropped every page tag, so LicenseControl renders
- * an empty `<a href="#">` (axe `link-name`) on every page. Only the tags that
- * carry license and attribution meaning are restored; anything that drives
- * site templates or layout (`article:*`, `showtoc:no` — dev.libretexts.org
- * lacks Template:AutoDefinitionList, so `article:topic` renders a broken
- * template marker there) or is a free keyword is reported as omitted.
+ * an empty `<a href="#">` (axe `link-name`) on every page. Only the two tags
+ * LicenseControl reads are restored. Everything else is reported as omitted:
+ * `article:*` and `authorname:*` drive site templates (dev.libretexts.org
+ * lacks Template:AutoDefinitionList; the author box renders `alt=" "`),
+ * `showtoc:no` changes layout, `source@` is inert, and the CC attribution
+ * sentence is already in every page body.
  */
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -20,7 +21,7 @@ import {
 } from './guardrails.js';
 import type { PageRef } from './types.js';
 
-const RESTORE_PREFIXES = ['license:', 'licenseversion:', 'authorname:', 'source@'];
+const RESTORE_PREFIXES = ['license:', 'licenseversion:'];
 
 export interface TagSelection {
   restore: string[];

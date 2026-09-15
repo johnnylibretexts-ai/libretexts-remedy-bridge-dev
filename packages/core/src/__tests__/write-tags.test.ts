@@ -157,7 +157,7 @@ describe('writePageTags', () => {
 });
 
 describe('selectRestorableTags', () => {
-  it('keeps only license, licenseversion, authorname and source@ tags', () => {
+  it('keeps only license and licenseversion tags', () => {
     const source = [
       'article:topic',
       'authorname:kimballj',
@@ -172,14 +172,18 @@ describe('selectRestorableTags', () => {
 
     const { restore, omitted } = selectRestorableTags(source);
 
-    expect(restore).toEqual([
+    expect(restore).toEqual(['license:ccby', 'licenseversion:30']);
+    // article:* and authorname:* drive site templates (broken Template:AutoDefinitionList on dev;
+    // author box with alt=" "); source@ is inert metadata. Attribution text is already in the body.
+    expect(omitted).toEqual([
+      'article:topic',
       'authorname:kimballj',
-      'license:ccby',
-      'licenseversion:30',
+      'biology',
+      'periodic table',
+      'showtoc:no',
       'source@https://www.biology-pages.info/',
+      'hydrogen',
     ]);
-    // article:* drives site templates (dev lacks Template:AutoDefinitionList) — layout, not attribution.
-    expect(omitted).toEqual(['article:topic', 'biology', 'periodic table', 'showtoc:no', 'hydrogen']);
   });
 });
 
