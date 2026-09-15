@@ -3,10 +3,12 @@
  *
  * The Biology sandbox clone dropped every page tag, so LicenseControl renders
  * an empty `<a href="#">` (axe `link-name`) on every page. Only the tags that
- * carry license and attribution meaning are restored; anything that changes
- * layout (e.g. `showtoc:no`) or is a free keyword is reported as omitted.
+ * carry license and attribution meaning are restored; anything that drives
+ * site templates or layout (`article:*`, `showtoc:no` — dev.libretexts.org
+ * lacks Template:AutoDefinitionList, so `article:topic` renders a broken
+ * template marker there) or is a free keyword is reported as omitted.
  */
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type Expert from '@libretexts/cxone-expert-node';
 import {
@@ -18,7 +20,7 @@ import {
 } from './guardrails.js';
 import type { PageRef } from './types.js';
 
-const RESTORE_PREFIXES = ['license:', 'licenseversion:', 'authorname:', 'source@', 'article:'];
+const RESTORE_PREFIXES = ['license:', 'licenseversion:', 'authorname:', 'source@'];
 
 export interface TagSelection {
   restore: string[];
@@ -121,8 +123,19 @@ export async function writePageTags({
 
   if (dryRun || (added.length === 0 && removed.length === 0)) return plan;
 
-  const operator = operatorFromEnv(env);
-  const snapshotPath = await saveTagSnapshot(before, page, operator, revisionSummary, env);
+  const snapshotPath = await putTagsWithSnapshot(expert, page, before, after, { mode: 'apply', revisionSummary, env });
+  return { ...plan, written: true, snapshotPath };
+}
+
+async function putTagsWithSnapshot(
+  expert: Expert,
+  page: PageRef,
+  before: string[],
+  after: string[],
+  opts: { mode: 'apply' | 'revert'; revisionSummary?: string; revertedFrom?: string; env: NodeJS.ProcessEnv },
+): Promise<string> {
+  const operator = operatorFromEnv(opts.env);
+  const snapshotPath = await saveTagSnapshot(before, page, operator, opts.revisionSummary, opts.env);
 
   await expert.pages.putPageTags(page.id, tagsToXml(after), undefined, {
     headers: { 'Content-Type': 'application/xml; charset=utf-8' },
@@ -133,17 +146,48 @@ export async function writePageTags({
       ts: new Date().toISOString(),
       page: { id: page.id, path: page.path, hostname: page.hostname },
       rules: ['page-tags'],
-      mode: 'apply',
+      mode: opts.mode,
       beforeHash: hashContent(JSON.stringify(before)),
       afterHash: hashContent(JSON.stringify(after)),
       operator,
-      revisionSummary,
+      revisionSummary: opts.revisionSummary,
       snapshotPath,
+      revertedFrom: opts.revertedFrom,
     },
-    env.REMEDY_AUDIT_LOG,
+    opts.env.REMEDY_AUDIT_LOG,
   );
+  return snapshotPath;
+}
 
-  return { ...plan, written: true, snapshotPath };
+export interface RevertPageTagsOptions {
+  expert: Expert;
+  /** A `*.tags.json` file written by an earlier apply. */
+  snapshotPath: string;
+  env?: NodeJS.ProcessEnv;
+}
+
+/** Put a page's tag list back to exactly what a snapshot recorded. Replace, not merge. */
+export async function revertPageTags({ expert, snapshotPath, env = process.env }: RevertPageTagsOptions): Promise<WritePageTagsResult> {
+  const snapshot = JSON.parse(await readFile(snapshotPath, 'utf8')) as {
+    meta: { pageId: number; pagePath: string; hostname: string };
+    tags: string[];
+  };
+  const page: PageRef = { id: snapshot.meta.pageId, path: snapshot.meta.pagePath, hostname: snapshot.meta.hostname };
+  assertWriteAllowed(page, env);
+
+  const before = tagValues(await expert.pages.getPageTags(page.id));
+  const after = [...new Set(snapshot.tags)];
+  const added = after.filter((t) => !before.includes(t));
+  const removed = before.filter((t) => !after.includes(t));
+  if (added.length === 0 && removed.length === 0) return { written: false, before, after, added, removed };
+
+  const safety = await putTagsWithSnapshot(expert, page, before, after, {
+    mode: 'revert',
+    revisionSummary: `Revert page tags to snapshot ${snapshotPath}`,
+    revertedFrom: snapshotPath,
+    env,
+  });
+  return { written: true, before, after, added, removed, snapshotPath: safety };
 }
 
 /* -------------------------------------------------------------------------- *

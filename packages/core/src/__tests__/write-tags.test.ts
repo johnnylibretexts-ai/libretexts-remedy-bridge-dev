@@ -1,10 +1,10 @@
-import { mkdtemp, readFile, readdir } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, readdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { describe, expect, it } from 'vitest';
 import type Expert from '@libretexts/cxone-expert-node';
 import { WriteNotAllowedError } from '../guardrails.js';
-import { restoreTagsFromManifest, selectRestorableTags, writePageTags } from '../write-tags.js';
+import { restoreTagsFromManifest, revertPageTags, selectRestorableTags, writePageTags } from '../write-tags.js';
 
 function fakeExpert(currentTags: string[], calls: unknown[][]): Expert {
   return {
@@ -157,7 +157,7 @@ describe('writePageTags', () => {
 });
 
 describe('selectRestorableTags', () => {
-  it('keeps only license, licenseversion, authorname, source@ and article: tags', () => {
+  it('keeps only license, licenseversion, authorname and source@ tags', () => {
     const source = [
       'article:topic',
       'authorname:kimballj',
@@ -173,13 +173,13 @@ describe('selectRestorableTags', () => {
     const { restore, omitted } = selectRestorableTags(source);
 
     expect(restore).toEqual([
-      'article:topic',
       'authorname:kimballj',
       'license:ccby',
       'licenseversion:30',
       'source@https://www.biology-pages.info/',
     ]);
-    expect(omitted).toEqual(['biology', 'periodic table', 'showtoc:no', 'hydrogen']);
+    // article:* drives site templates (dev lacks Template:AutoDefinitionList) — layout, not attribution.
+    expect(omitted).toEqual(['article:topic', 'biology', 'periodic table', 'showtoc:no', 'hydrogen']);
   });
 });
 
@@ -242,5 +242,29 @@ describe('restoreTagsFromManifest', () => {
 
     expect(results).toHaveLength(1);
     expect(results[0].sandboxPageId).toBe(4219);
+  });
+});
+
+describe('revertPageTags', () => {
+  it('puts back exactly the tag list recorded in a snapshot and audits it as a revert', async () => {
+    const env = await testEnv();
+    const calls: unknown[][] = [];
+    const expert = fakeExpert(['article:topic', 'license:ccby'], calls);
+
+    // Produce a real snapshot first: page had only "hydrogen" before an earlier write.
+    const snapshotPath = join(env.REMEDY_SNAPSHOT_DIR!, '4219', '2026-09-15T15-48-46-700Z_abc.tags.json');
+    await mkdir(join(env.REMEDY_SNAPSHOT_DIR!, '4219'), { recursive: true });
+    await writeFile(
+      snapshotPath,
+      JSON.stringify({ meta: { pageId: 4219, pagePath: 'Sandboxes/johnnyphung/biology/1.02', hostname: 'dev.libretexts.org' }, tags: ['hydrogen'] }),
+    );
+
+    const result = await revertPageTags({ expert, snapshotPath, env });
+
+    expect(result).toMatchObject({ written: true, before: ['article:topic', 'license:ccby'], after: ['hydrogen'] });
+    expect(calls).toHaveLength(1);
+    expect((calls[0] as [number, string])[1]).toBe('<tags><tag value="hydrogen"/></tags>');
+    const audit = JSON.parse((await readFile(env.REMEDY_AUDIT_LOG!, 'utf8')).trim().split('\n').pop()!);
+    expect(audit).toMatchObject({ mode: 'revert', page: { id: 4219 }, revertedFrom: snapshotPath });
   });
 });

@@ -13,6 +13,7 @@ import {
   describeClient,
   createExpertClient,
   restoreTagsFromManifest,
+  revertPageTags,
   MissingEnvError,
   WriteNotAllowedError,
 } from '@libretexts/remedy-core';
@@ -471,6 +472,34 @@ program
       }
     },
   );
+
+program
+  .command('tags-revert')
+  .description('Put a page\'s tag list back to exactly what a *.tags.json snapshot recorded (replace, not merge).')
+  .requiredOption('--snapshot-path <path>', 'the .tags.json file written by tags-restore')
+  .option('--i-have-confirmed', 'skip the interactive y/N prompt')
+  .action(async (opts: { snapshotPath: string; iHaveConfirmed?: boolean }) => {
+    try {
+      const snapshot = JSON.parse(await readFile(opts.snapshotPath, 'utf8')) as { meta: { pageId: number; pagePath: string }; tags: string[] };
+      console.log(kleur.bold(`Page ${snapshot.meta.pageId}  ${snapshot.meta.pagePath}`));
+      console.log(kleur.dim(`  revert to: [${snapshot.tags.join(', ')}]`));
+      if (!opts.iHaveConfirmed) {
+        const ok = await confirm(`Replace the live tag list on page ${snapshot.meta.pageId} with the snapshot?`, 'n');
+        if (!ok) {
+          console.log(kleur.yellow('Aborted.'));
+          return;
+        }
+      }
+      const r = await revertPageTags({ expert: createExpertClient(), snapshotPath: opts.snapshotPath });
+      if (!r.written) {
+        console.log(kleur.green('✓ Live tags already match the snapshot — nothing to do.'));
+        return;
+      }
+      console.log(kleur.green(`✓ reverted: -${r.removed.length} +${r.added.length}; safety snapshot ${r.snapshotPath}`));
+    } catch (err) {
+      handleError(err);
+    }
+  });
 
 function slugify(s: string): string {
   return s.replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80) || 'page';

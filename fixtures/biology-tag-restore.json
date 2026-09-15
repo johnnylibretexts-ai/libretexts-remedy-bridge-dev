@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-15T06:12:21.748Z",
+  "generatedAt": "2026-09-15T15:50:37.089Z",
   "sourceBook": "https://bio.libretexts.org/",
   "pages": [
     {
@@ -10,13 +10,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic-guide",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic-guide",
           "biology",
           "electronegativity",
           "atoms",
@@ -39,13 +39,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "electrophoresis",
           "chromatography",
           "showtoc:no",
@@ -68,13 +68,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "biology",
           "periodic table",
           "atoms",
@@ -97,13 +97,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "covalent bond",
           "electronegativity",
           "ionic bond",
@@ -126,13 +126,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "DNA",
           "polypeptides",
           "proteins",
@@ -155,13 +155,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "DNA",
           "evaporation",
           "temperature",
@@ -184,13 +184,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "ammonia",
           "showtoc:no",
           "acids",
@@ -213,13 +213,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "molarity",
           "molecular weight",
           "showtoc:no",
@@ -242,13 +242,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "proteins",
           "enzymes",
           "showtoc:no",
@@ -271,13 +271,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic-guide",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic-guide",
           "proteins",
           "cholesterol",
           "carbohydrates",
@@ -300,13 +300,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "alcohols",
           "showtoc:no",
           "ethers",
@@ -329,13 +329,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "amino acids",
           "fatty acids",
           "showtoc:no",
@@ -358,13 +358,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "triglyceride",
           "showtoc:no",
           "glycerol",
@@ -387,13 +387,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "hydrophobic",
           "cephalin",
           "phospholipids",
@@ -416,13 +416,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "cholesterol",
           "steroid",
           "atherosclerosis",
@@ -445,13 +445,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "carbohydrates",
           "monosaccharides",
           "disaccharides",
@@ -474,13 +474,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "proteins",
           "hydrophobic",
           "monomers",
@@ -503,13 +503,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "amino acids",
           "enantiomers",
           "protein synthesis",
@@ -532,13 +532,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "DNA",
           "mRNA",
           "transcription",
@@ -561,13 +561,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "proteins",
           "enzymes",
           "mutations",
@@ -590,13 +590,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "amino acids",
           "tertiary structure",
           "denaturation",
@@ -619,13 +619,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "plasma membrane",
           "carbohydrates",
           "hydrophilic",
@@ -648,13 +648,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "DNA",
           "RNA",
           "purines",
@@ -677,13 +677,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "mRNA",
           "enzymes",
           "genes",
@@ -706,13 +706,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic-guide",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic-guide",
           "lysosomes",
           "nucleus",
           "ribosomes",
@@ -735,13 +735,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "Golgi apparatus",
           "nucleus",
           "plasma membrane",
@@ -764,13 +764,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "eukaryotic cells",
           "proteins",
           "hydrophobic",
@@ -793,13 +793,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "nucleus",
           "chromatin",
           "DNA",
@@ -822,13 +822,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "Golgi apparatus",
           "polypeptides",
           "ribosomes",
@@ -851,13 +851,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "lysosomes",
           "Golgi apparatus",
           "ribosomes",
@@ -880,13 +880,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "Golgi apparatus",
           "proteins",
           "peptides",
@@ -909,13 +909,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "microtubules",
           "cytokinesis",
           "centrosomes",
@@ -938,13 +938,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "lysosomes",
           "peroxisomes",
           "autophagosomes",
@@ -967,13 +967,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "eukaryotic cells",
           "exocytosis",
           "translation",
@@ -996,13 +996,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "lysosomes",
           "transcription",
           "translation",
@@ -1025,13 +1025,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "microfilaments",
           "microtubules",
           "cytokinesis",
@@ -1054,13 +1054,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "microtubules",
           "eukaryotic cells",
           "ATP",
@@ -1083,13 +1083,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "mitosis",
           "differentiation",
           "showtoc:no",
@@ -1112,13 +1112,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "leptin",
           "showtoc:no",
           "obesity",
@@ -1141,13 +1141,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "apoptosis",
           "extracellular matrix",
           "cancer",
@@ -1170,13 +1170,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "Golgi apparatus",
           "nucleus",
           "ribosomes",
@@ -1199,13 +1199,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "photosynthesis",
           "ATP synthase",
           "chloroplast",
@@ -1228,13 +1228,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "photosynthesis",
           "chlorophyll",
           "chloroplast",
@@ -1257,13 +1257,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "xylem",
           "phloem",
           "showtoc:no",
@@ -1286,13 +1286,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "cytokines",
           "apoptosis",
           "inflammation",
@@ -1315,13 +1315,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "gene therapy",
           "glycoprotein",
           "collagen",
@@ -1344,13 +1344,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "camouflage",
           "showtoc:no",
           "melanophores",
@@ -1373,13 +1373,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "osmosis",
           "concentration gradient",
           "diffusion",
@@ -1402,13 +1402,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "phagocytosis",
           "macrophages",
           "cholesterol",
@@ -1431,13 +1431,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "exocytosis",
           "plasma membrane",
           "endocytosis",
@@ -1460,13 +1460,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic-guide",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic-guide",
           "glycolysis",
           "enzymes",
           "ATP",
@@ -1489,13 +1489,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "proteins",
           "enzymes",
           "catalysts",
@@ -1518,13 +1518,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "glycolysis",
           "enzymes",
           "ATP",
@@ -1547,13 +1547,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "glycolysis",
           "citric acid cycle",
           "photosynthesis",
@@ -1576,13 +1576,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "glycolysis",
           "fermentation",
           "ATP",
@@ -1605,13 +1605,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "glycolysis",
           "oxidative phosphorylation",
           "citric acid cycle",
@@ -1634,13 +1634,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "ATP",
           "Mitochondria",
           "science",
@@ -1663,13 +1663,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "ATP",
           "photosynthesis",
           "algae",
@@ -1692,13 +1692,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "ATP",
           "photosynthesis",
           "autotrophs",
@@ -1721,13 +1721,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "photosynthesis",
           "chlorophyll",
           "showtoc:no",
@@ -1750,13 +1750,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "ATP",
           "showtoc:no",
           "chloroplasts",
@@ -1779,13 +1779,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "photosynthesis",
           "metabolism",
           "catabolism",
@@ -1808,13 +1808,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "acetyl-CoA",
           "proteins",
           "ATP",
@@ -1837,13 +1837,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "GDP",
           "GTP",
           "showtoc:no",
@@ -1866,13 +1866,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "cAMP",
           "cGMP",
           "showtoc:no",
@@ -1895,13 +1895,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "luciferin",
           "luciferase",
           "ATP",
@@ -1924,13 +1924,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic-guide",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic-guide",
           "bacteria",
           "transformation",
           "conjugation",
@@ -1953,13 +1953,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "bacteria",
           "transformation",
           "conjugation",
@@ -1982,13 +1982,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "DNA",
           "RNA",
           "bacteriophages",
@@ -2011,13 +2011,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "DNA",
           "replication",
           "molecule",
@@ -2040,13 +2040,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "DNA",
           "adenine",
           "guanine",
@@ -2069,13 +2069,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "mitosis",
           "showtoc:no",
           "eukaryotic",
@@ -2098,13 +2098,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "DNA",
           "replication",
           "nucleotides",
@@ -2127,13 +2127,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "CRISPR",
           "restriction enzymes",
           "biotechnology",
@@ -2156,13 +2156,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "DNA",
           "nucleotides",
           "DNA polymerase",
@@ -2185,13 +2185,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "bacteria",
           "phenotype",
           "mutations",
@@ -2214,13 +2214,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "DNA",
           "gene expression",
           "proteome",
@@ -2243,13 +2243,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "evolution",
           "protein",
           "gene",
@@ -2272,13 +2272,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "DNA",
           "PCR",
           "genome",
@@ -2301,13 +2301,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "DNA",
           "mutations",
           "DNA repair",
@@ -2330,13 +2330,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "DNA replication",
           "mutations",
           "stem cells",
@@ -2359,13 +2359,13 @@
       "crosscheck": "match",
       "tags": {
         "restore": [
-          "article:topic",
           "authorname:kimballj",
           "license:ccby",
           "licenseversion:30",
           "source@https://www.biology-pages.info/"
         ],
         "omitted": [
+          "article:topic",
           "bacteria",
           "DNA",
           "metagenomics",
