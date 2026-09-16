@@ -6,6 +6,8 @@ export * from './wcag.js';
 export * from './fix.js';
 export * from './pipeline.js';
 export * from './write-page.js';
+export * from './write-tags.js';
+export * from './tag-manifest.js';
 export * from './local-pipeline.js';
 export * from './conductor-compat.js';
 export * from './tiers.js';
