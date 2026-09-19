@@ -184,7 +184,7 @@ const routes: Record<string, Handler> = {
     // Consume before the write so a double-click cannot replay a restoration.
     restoreSessions.delete(token);
     try {
-      const result = await revertPage(page, { snapshotTs: session.snapshotTs, expectedCurrentHash: session.hash });
+      const result = await revertPage(page, { snapshotTs: session.snapshotTs, expectedCurrentHash: session.hash, requestedBy: optionalStr(body.requested_by ?? body.requestedBy) });
       return { restored: result.written, snapshot_timestamp: session.snapshotTs,
         snapshot_path: result.preRevertSnapshotPath, restored_hash: hashContent(result.revertedToHtml) };
     } catch (err) {
@@ -392,6 +392,7 @@ const routes: Record<string, Handler> = {
         revisionSummary,
         source: 'pipeline',
         env,
+        requestedBy: optionalStr(body.requested_by ?? body.requestedBy),
       });
       pipelinePreviewSessions.delete(previewToken);
       return {
@@ -455,6 +456,7 @@ const routes: Record<string, Handler> = {
         revisionSummary,
         source: 'fix',
         env,
+        requestedBy: optionalStr(body.requested_by ?? body.requestedBy),
       });
       targetedPreviewSessions.delete(previewToken);
       return {
