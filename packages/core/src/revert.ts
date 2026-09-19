@@ -32,6 +32,8 @@ export interface RevertOptions {
   snapshotPath?: string;
   /** Dry-run — don't write, return the diff candidate only. Default false. */
   dryRun?: boolean;
+  /** Application user this restore is made on behalf of; recorded alongside the process operator. */
+  requestedBy?: string;
   /** Reject a restore if the live page changed since the reviewed preview. */
   expectedCurrentHash?: string;
   /** Custom revision summary written to CXone. */
@@ -154,6 +156,7 @@ export async function revertPage(
     pagePath: page.path,
     hostname: page.hostname,
     operator: operatorFromEnv(env),
+    requestedBy: opts.requestedBy,
     rules: ['__revert__'],
     revisionSummary: `pre-revert safety snapshot (→ ${chosen.ts})`,
     source: 'revert',
@@ -179,6 +182,7 @@ export async function revertPage(
     beforeHash: hashContent(currentHtml),
     afterHash: chosen.hash,
     operator: operatorFromEnv(env),
+    requestedBy: opts.requestedBy,
     revisionSummary: summary,
     snapshotPath: preRevertSnapshot.metaPath,
     revertedFrom: chosen.metaPath,

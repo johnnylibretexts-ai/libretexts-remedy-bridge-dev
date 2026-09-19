@@ -101,6 +101,8 @@ export interface AuditEntry {
   beforeHash: string;
   afterHash: string;
   operator: string;
+  /** Application user the write was made on behalf of (e.g. the Conductor reviewer). */
+  requestedBy?: string;
   revisionSummary?: string;
   /** Path on disk to the HTML snapshot of the before-state (if saved). */
   snapshotPath?: string;
@@ -144,6 +146,8 @@ export interface SnapshotMeta {
   hostname: string;
   /** Operator who initiated the write. */
   operator: string;
+  /** Application user the write was made on behalf of (e.g. the Conductor reviewer). */
+  requestedBy?: string;
   /** SHA-256 hash (first 16 hex chars) of the HTML. */
   hash: string;
   /** Rule ids that will be applied after this snapshot. */
